@@ -1,0 +1,66 @@
+#!/usr/bin/env php
+<?php
+/*
+collezione di comandi richiamabili da cli
+
+TODO:
+    - ricerca nel wiki se non trova in locale
+
+
+*/
+
+class Command {
+    function __construct($cmd, $description=''){
+        $this->cmd         = $cmd;
+        $this->description = $description;
+    }
+    //
+    function __toString() {
+        return $this->cmd;
+    }
+
+}
+
+$commands = [
+    'while'       => new Command('while [ 1 ]; do  cmd;  done',''),
+    'grep'        => new Command('grep -e $PATTERN -f $FILE ',''),
+    'find'        => new Command('find $dir -type f -name ',''),
+    'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ',''),
+    'img_resize'  => new Command('convert myfigure.png -resize 200x100 myfigure.jpg',''),
+    'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
+    'bower'       => new Command('bower install --save $lib_name',''),
+    'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
+    'user_add_group'    => new Command('sudo usermod -a -G www-data  $taz',''),
+    'sudo_wwwdata'      => new Command('sudo -u www-data bin/$script $param',''),
+
+
+    'git_remote_url'       => new Command('git config --get remote.origin.url',''),
+    'git_branch'           => new Command('git checkout -b iss53',''),
+    'git_merge'            => new Command('git merge iss53',''),
+    'git_switch_to_master' => new Command('git checkout master',''),
+];
+
+function action_usage($argv){
+  return <<<__END__
+uso:
+    {$argv[0]} list => list keys
+    {$argv[0]} [key]
+il primo argomento viene utilizzato per cercare un comando nel dizionario
+__END__;
+}
+//------------------------------------------------------------------------------
+//  main
+//------------------------------------------------------------------------------
+$action = isset($argv[1]) ? $argv[1] : '';
+if( empty($action) ) {
+    die(action_usage($argv));
+} else {
+    if( "list" == $action ) {
+        foreach( array_keys($commands) as $key){
+            echo "$key \n";
+        }
+    } elseif( isset($commands[$action]) ) {
+        echo $commands[$action]."\n";
+    }
+}
+
