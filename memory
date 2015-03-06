@@ -30,10 +30,13 @@ $commands = [
     'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
     'bower'       => new Command('bower install --save $lib_name',''),
     'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
-    'user_add_group'    => new Command('sudo usermod -a -G www-data  $taz',''),
+    'user_add_group'    => new Command('sudo usermod -a -G www-data  $user',''),
     'sudo_wwwdata'      => new Command('sudo -u www-data bin/$script $param',''),
 
+    // pfff tools
+    'php_grep'       => new Command("sgrep -e 'array(...)' /var/www/dir/",''),
 
+    // GIT
     'git_remote_url'       => new Command('git config --get remote.origin.url',''),
     'git_branch'           => new Command('git checkout -b iss53',''),
     'git_merge'            => new Command('git merge iss53',''),
