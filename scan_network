@@ -1,0 +1,5 @@
+# nmap -sP 192.168.1.0/24
+# scan for open ports
+# nmap -v -sT 192.168.1.0/24
+# scan what software opend the port
+nmap -v -sV 192.168.1.0/24
