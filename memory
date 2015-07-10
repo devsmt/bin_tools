@@ -23,6 +23,7 @@ class Command {
 
 $commands = [
     'while'       => new Command('while [ 1 ]; do  cmd;  done',''),
+    'for'         => new Command('for i in {A..C} "label:" {1..3}; do echo $i; done',''),
     'grep'        => new Command('grep -e $PATTERN -f $FILE ',''),
     'find'        => new Command('find $dir -type f -name ',''),
     'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ',''),
@@ -37,10 +38,12 @@ $commands = [
     'php_grep'       => new Command("sgrep -e 'array(...)' /var/www/dir/",''),
 
     // GIT
+    'git_log'              => new Command("git log --after=2015-05-01 --pretty=format:'%s'",''),
     'git_remote_url'       => new Command('git config --get remote.origin.url',''),
     'git_branch'           => new Command('git checkout -b iss53',''),
     'git_merge'            => new Command('git merge iss53',''),
     'git_switch_to_master' => new Command('git checkout master',''),
+    'git_reset_file'       => new Command('git checkout --theirs $file_name',''),
 ];
 
 function action_usage($argv){

@@ -10,7 +10,6 @@ scopo del programma
 
 // ogni linguaggio deve implementare le azioni previste
 interface ILangCommand {
-    public $filename = '';
     public function lint();
     public function compile();
     public function format();
@@ -18,9 +17,27 @@ interface ILangCommand {
 }
 
 // ogni linguaggio ha le relative funzioni incapsulate in una classe
-class CSSLang implements ILangCommand {}
-class JSLang implements ILangCommand {}
-class PHPLang implements ILangCommand {}
+class CSSLang implements ILangCommand {
+    public $filename;
+    public function lint(){}
+    public function compile(){}
+    public function format(){}
+    public function compress(){}
+}
+class JSLang implements ILangCommand {
+    public $filename;
+    public function lint(){}
+    public function compile(){}
+    public function format(){}
+    public function compress(){}
+}
+class PHPLang implements ILangCommand {
+    public $filename;
+    public function lint(){}
+    public function compile(){}
+    public function format(){}
+    public function compress(){}
+}
 
 // il front controller determina il linguaggio corrente dall'estensione del file e passa l'azione al controller opportuno
 class LangDispatcher {
@@ -33,7 +50,6 @@ class LangDispatcher {
     }
 }
 
-LangDispatcher::getController($filename)->format();
 
 //----------------------------------------------------------------------------
 //  utils
@@ -182,11 +198,13 @@ class CommandLineOption {
 ProgController::$a_flags = [
     'go'   => new CommandLineOption('not a simulation', function(){ }),
     'test' => new CommandLineOption('do common tests', function(){ })
-]);
+];
 $a_flags = CLI::getFlags($argv, ProgController::$a_flags );
 $action = isset($argv[1])?$argv[1]:'';
 switch($action) {
-    case 'x':
+    case 'format':
+        $filename = $argv[2];
+        LangDispatcher::getController($filename)->format();
         die(' ... ');
     break;
     case 'test':
