@@ -28,6 +28,10 @@ $commands = [
     'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ',''),
     'img_resize'  => new Command('convert myfigure.png -resize 200x100 myfigure.jpg',''),
     'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
+
+    'gzip'         => new Command('tar -zcvf archive.tar.gz directory/ ',''),
+    'gunzip'         => new Command('tar -zxvf archive.tar.gz',''),
+
     'bower'       => new Command('bower install --save $lib_name',''),
     'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
     'user_add_group'    => new Command('sudo usermod -a -G www-data  $taz',''),
