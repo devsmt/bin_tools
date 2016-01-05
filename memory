@@ -37,6 +37,9 @@ $commands = [
     
     'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
     'bzip'        => new Command('bzip2 -zkfq --best %s'),
+    'gzip'         => new Command('tar -zcvf archive.tar.gz directory/ ',''),
+    'gunzip'         => new Command('tar -zxvf archive.tar.gz',''),
+
 
     'bower'       => new Command('bower install --save $lib_name',''),
     'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
