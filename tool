@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/bin/env hhvm
 <?php
 /*
 scopo del programma
@@ -33,20 +33,50 @@ class JSLang implements ILangCommand {
 }
 class PHPLang implements ILangCommand {
     public $filename;
-    public function lint(){}
-    public function compile(){}
-    public function format(){}
-    public function compress(){}
+    public function lint(){
+        return `php -l {$this->filename}`;
+    }
+    public function compile(){
+        // unapplicable
+    }
+    public function format(){
+        return `php_fmt {$this->filename}`;
+    }
+    public function compress(){
+        // unapplicable
+    }
 }
 
-// il front controller determina il linguaggio corrente dall'estensione del file e passa l'azione al controller opportuno
+// il front controller determina il linguaggio corrente dall'estensione del file e
+// passa l'azione al controller opportuno
 class LangDispatcher {
     // ritorna un controller
     public static function getController($filename) {
-        $c = new JSLang();
+        $extension = strtolower( ( new SplFileInfo($filename) )->getExtension() );
+        switch($extension){
+          case 'js':
+              $c = new JSLang();
+          break;
+
+          case 'ts':
+              $c = new TSLang();
+          break;
+
+          case 'php':
+              $c = new PHPLang();
+          break;
+
+          case 'css':
+              $c = new CSSLang();
+          break;
+
+          default:
+              die(__FUNCTION__.' unhandled file type '.$filename );
+          break;
+        }
         // switch extension
         $c->filename = $filename;
-        return true;
+        return $c;
     }
 }
 
@@ -204,9 +234,27 @@ $action = isset($argv[1])?$argv[1]:'';
 switch($action) {
     case 'format':
         $filename = $argv[2];
-        LangDispatcher::getController($filename)->format();
-        die(' ... ');
+        $r = LangDispatcher::getController($filename)->format();
+        die($r);
     break;
+
+    case 'lint':
+        $filename = $argv[2];
+        $r = LangDispatcher::getController($filename)->lint();
+        die($r);
+    break;
+    case 'compile':
+        $filename = $argv[2];
+        $r = LangDispatcher::getController($filename)->format();
+        die($r);
+    break;
+    case 'compress':
+        $filename = $argv[2];
+        $r = LangDispatcher::getController($filename)->format();
+        die($r);
+    break;
+
+
     case 'test':
         die( ProgController::actionTest() );
     break;

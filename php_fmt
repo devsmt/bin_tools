@@ -1,0 +1,8 @@
+hhvm /usr/local/bin/php.tools/fmt.phar --lint-before --indent_with_space=4    "$@"
+# --exclude=WrongConstructorName
+# --list
+# ShortArray
+# RemoveIncludeParentheses
+# DoubleToSingleQuote
+# SpaceBetweenMethods
+echo "run hhvm /usr/local/bin/php.tools/fmt.phar --selfupdate"

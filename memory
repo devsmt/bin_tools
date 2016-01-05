@@ -16,7 +16,13 @@ class Command {
     }
     //
     function __toString() {
-        return $this->cmd;
+        return sprintf("%s\n%s", $this->cmd,
+            (
+                !empty($this->description) ?
+                sprintf( 'description:%s' , $this->description ) :
+                ''
+            )
+        );
     }
 
 }
@@ -28,7 +34,10 @@ $commands = [
     'find'        => new Command('find $dir -type f -name ',''),
     'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ',''),
     'img_resize'  => new Command('convert myfigure.png -resize 200x100 myfigure.jpg',''),
+    
     'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
+    'bzip'        => new Command('bzip2 -zkfq --best %s'),
+
     'bower'       => new Command('bower install --save $lib_name',''),
     'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
     'user_add_group'    => new Command('sudo usermod -a -G www-data  $user',''),
@@ -44,6 +53,11 @@ $commands = [
     'git_merge'            => new Command('git merge iss53',''),
     'git_switch_to_master' => new Command('git checkout master',''),
     'git_reset_file'       => new Command('git checkout --theirs $file_name',''),
+
+    'ctags'       => new Command('ctags -R --languages=PHP',''),
+    'composer'    => new Command('composer require predis/predis',''),
+
+    'tee'    => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT' ),
 ];
 
 function action_usage($argv){
