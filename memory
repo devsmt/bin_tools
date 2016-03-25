@@ -4,14 +4,13 @@
 collezione di comandi richiamabili da cli
 
 TODO:
-    - ricerca nel wiki se non trova in locale
+- ricerca nel wiki se non trova in locale
 
-
-*/
+ */
 
 class Command {
-    function __construct($cmd, $description=''){
-        $this->cmd         = $cmd;
+    function __construct($cmd, $description = '') {
+        $this->cmd = $cmd;
         $this->description = $description;
     }
     //
@@ -19,7 +18,7 @@ class Command {
         return sprintf("%s\n%s", $this->cmd,
             (
                 !empty($this->description) ?
-                sprintf( 'description:%s' , $this->description ) :
+                sprintf('description:%s', $this->description) :
                 ''
             )
         );
@@ -28,43 +27,54 @@ class Command {
 }
 
 $commands = [
-    'while'       => new Command('while [ 1 ]; do  cmd;  done',''),
-    'for'         => new Command('for i in {A..C} "label:" {1..3}; do echo $i; done',''),
-    'grep'        => new Command('grep -e $PATTERN -f $FILE ',''),
-    'find'        => new Command('find $dir -type f -name ',''),
-    'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ',''),
-    'img_resize'  => new Command('convert myfigure.png -resize 200x100 myfigure.jpg',''),
+    'while' => new Command('while [ 1 ]; do  cmd;  done', ''),
+    'for' => new Command('for i in {A..C} "label:" {1..3}; do echo $i; done', ''),
+    'grep' => new Command('grep -e $PATTERN -f $FILE ', ''),
+    'find' => new Command('find $dir -type f -name ', ''),
+    'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ', ''),
+    'img_resize' => new Command('convert myfigure.png -resize 200x100 myfigure.jpg', ''),
+
+    'zip' => new Command('zip -9 -r $zip_file $folder_name', ''),
+    'unzip' => new Command('unzip $zip_file -d $destination_folder', ''),
+
+    'bzip' => new Command('bzip2 -zkfq --best $filename'),
+    'compress.tar.gz' => new Command('tar -zcvf archive.tar.gz directory/ ', ''),
+    'extract.tar.gz' => new Command('tar -xzfv archive.tar.gz', ''),
+
+    'gzip' => new Command('cat $file | gzip > file.gz', ''),
+    'gunzip' => new Command('gunzip file.gz   ', ''),
+
+    'bower' => new Command('bower install --save $lib_name', ''),
+    'date_log' => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log', ''),
+    'user_add_group' => new Command('sudo usermod -a -G www-data  $user', ''),
+    'sudo_wwwdata' => new Command('sudo -u www-data bin/$script $param', ''),
     
-    'zip'         => new Command('zip -9 -r $zip_file $folder_name',''),
-    'bzip'        => new Command('bzip2 -zkfq --best %s'),
-    'gzip'         => new Command('tar -zcvf archive.tar.gz directory/ ',''),
-    'gunzip'         => new Command('tar -zxvf archive.tar.gz',''),
-
-
-    'bower'       => new Command('bower install --save $lib_name',''),
-    'date_log'    => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log',''),
-    'user_add_group'    => new Command('sudo usermod -a -G www-data  $user',''),
-    'sudo_wwwdata'      => new Command('sudo -u www-data bin/$script $param',''),
+    // network commands
+    'scp_upload' => new Command('sshpass -p "$pass" scp $l_path tmirandola@$host:$r_path',''),
+    'scp_download' => new Command('sshpass -p "$pass" scp tmirandola@$host:$r_path $l_path',''),
 
     // pfff tools
-    'php_grep'       => new Command("sgrep -e 'array(...)' /var/www/dir/",''),
+    'php_grep' => new Command("sgrep -e 'array(...)' /var/www/dir/", ''),
 
     // GIT
-    'git_log'              => new Command("git log --after=2015-05-01 --pretty=format:'%s'",''),
-    'git_remote_url'       => new Command('git config --get remote.origin.url',''),
-    'git_branch'           => new Command('git checkout -b iss53',''),
-    'git_merge'            => new Command('git merge iss53',''),
-    'git_switch_to_master' => new Command('git checkout master',''),
-    'git_reset_file'       => new Command('git checkout --theirs $file_name',''),
+    'git_log' => new Command("git log --after=2015-05-01 --pretty=format:'%s'", ''),
+    'git_remote_url' => new Command('git config --get remote.origin.url', ''),
+    'git_branch' => new Command('git checkout -b iss53', ''),
+    'git_merge' => new Command('git merge iss53', ''),
+    'git_switch_to_master' => new Command('git checkout master', ''),
+    'git_reset_file' => new Command('git checkout --theirs $file_name', ''),
 
-    'ctags'       => new Command('ctags -R --languages=PHP',''),
-    'composer'    => new Command('composer require predis/predis',''),
+    'ctags' => new Command('ctags -R --languages=PHP', ''),
+    'composer' => new Command('composer require predis/predis', ''),
 
-    'tee'    => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT' ),
+    'tee' => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT'),
+    'youtube-dl' => new Command('youtube-dl "https://www.youtube.com/watch?v=bb4TxjvQlh0"  --keep-video  --extract-audio  --audio-format wav  --audio-quality 16K  --id'),
+
+    'ubuntu_version' => new Command('lsb_release -a', ''),
 ];
 
-function action_usage($argv){
-  return <<<__END__
+function action_usage($argv) {
+    return <<<__END__
 uso:
     {$argv[0]} list => list keys
     {$argv[0]} [key]
@@ -75,15 +85,22 @@ __END__;
 //  main
 //------------------------------------------------------------------------------
 $action = isset($argv[1]) ? $argv[1] : '';
-if( empty($action) ) {
+$action = strtolower($action);
+if (empty($action)) {
     die(action_usage($argv));
 } else {
-    if( "list" == $action ) {
-        foreach( array_keys($commands) as $key){
+    if ("list" == $action) {
+        foreach (array_keys($commands) as $key) {
             echo "$key \n";
         }
-    } elseif( isset($commands[$action]) ) {
-        echo $commands[$action]."\n";
+    } elseif (isset($commands[$action])) {
+        echo $commands[$action] . "\n";
+    } else {
+        echo "searching:\n";
+        foreach (array_keys($commands) as $key) {
+            if (false !== strpos( $key, $action   )) {
+                echo "'$action' found in '$key' \n";
+            }
+        }
     }
 }
-

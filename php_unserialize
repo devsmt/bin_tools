@@ -1,0 +1,10 @@
+#!/usr/bin/php
+<?php
+if( isset($argv[1]) ){
+    print_r(
+        unserialize(file_get_contents($argv[1]))
+    );
+} else {
+    echo "file name not provided \n";
+}
+

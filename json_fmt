@@ -1,2 +1,2 @@
 # sudo apt-get install python-demjson
-jsonlint -f $@
+jsonlint --format  $@
