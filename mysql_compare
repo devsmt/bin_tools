@@ -1,0 +1,7 @@
+
+
+# symple compare
+
+mysqldump -h localhost -u root -p --no-data dbname1>/tmp/file1.sql
+mysqldump -h localhost -u root -p --no-data dbname2>/tmp/file2.sql
+meld /tmp/file1.sql /tmp/file2.sql

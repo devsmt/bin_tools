@@ -4,9 +4,10 @@
 dati due valori, rirona la percentule che il secondo valore rappresenta del primo
 */
 
-// dato $totale e $parziale, ritorna intero 0-100 rappresentante la percentuale
-function get_perc($totale, $parziale, $decimal=2){
-    $x = 100 / ($totale/$parziale);
+// dato $totale e $perc, ritorna float valore
+function get_perc($totale, $perc ){
+    $decimal = 2;
+    $x = $totale / 100 * $perc;
     $x = (float) round( $x, $decimal );
     return $x;
 }
@@ -15,5 +16,5 @@ if( isset($argv[1]) && isset($argv[2]) && is_numeric($argv[1]) && is_numeric($ar
     $parziale = $argv[2];
     echo get_perc($totale, $parziale)."\n";
 } else {
-    die("specificare 2 valori: totale subtotale = perc% \n");
+    die("specificare 2 valori: totale perc% = subtotale \n");
 }

@@ -1,0 +1,59 @@
+#!/usr/bin/env php
+<?php
+/*
+wrapper su PHPMD, static analysis tool, verifica il codice sia conforme a determinate regole
+@see http://phpmd.org/documentation/index.html
+*/
+
+//----------------------------------------------------------------------------
+//  subroutines
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+//  actions
+//----------------------------------------------------------------------------
+//
+function action_ussage() {
+        return <<<__END__
+uso:
+    {$argv[0]} [action] [--go] [--test]
+uso del programma
+__END__;
+}
+
+//----------------------------------------------------------------------------
+//  main
+//----------------------------------------------------------------------------
+$action = isset($argv[1]) ? $argv[1] : 'controllers';
+
+switch($action) {
+    case 'controllers':
+        $a_rules = [
+            'cleancode',
+            'codesize',
+            'controversial',
+            'design',
+            'naming',
+            'unusedcode'
+        ];
+        // --suffixes .php,.phtml
+        // naming,codesize,unusedcode,
+        // $res = `phpmd ./application/controllers text cleancode --minimumpriority=3`;
+        echo "========== PHPMD CONTROLLERS ==========  \n";
+        $dir = __DIR__;
+        $target_dir = pwd();//'./application/controllers';
+        $res = `phpmd $target_dir text  $dir/phpmd_rules.xml`;
+        die($res);
+    break;
+    case 'models':
+    case 'views':
+        echo " TODO \n";
+        break;
+    default:
+        die(action_ussage());
+    break;
+}
+
+
+
+

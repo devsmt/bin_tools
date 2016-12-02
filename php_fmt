@@ -1,8 +1,16 @@
-hhvm /usr/local/bin/php.tools/fmt.phar --lint-before --indent_with_space=4    "$@"
+
+# questo formatter richiede php7!
+# disponibile php_beautifier
+
+# https://github.com/phpfmt/fmt/blob/master/fmt.phar
+php /usr/local/bin/php.tools/fmt.php --lint-before --indent_with_space=4  "$@"
 # --exclude=WrongConstructorName
 # --list
 # ShortArray
 # RemoveIncludeParentheses
 # DoubleToSingleQuote
 # SpaceBetweenMethods
-echo "run hhvm /usr/local/bin/php.tools/fmt.phar --selfupdate"
+# echo "run php /usr/local/bin/php.tools/fmt.phar --selfupdate"
+
+
+# https://github.com/phpfmt/fmt/blob/51d48a2fe0c0664a837dee54b9eace6ef755055c/fmt.phar

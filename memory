@@ -1,5 +1,6 @@
-#!/usr/bin/env php
+#!/sr/bin/php
 <?php
+#!/usr/bin/env php
 
 class CLI {
 
@@ -96,38 +97,108 @@ class Command {
 }
 
 $commands = [
-    'while' => new Command('while [ 1 ]; do  cmd;  done', ''),
-    'for' => new Command('for i in {A..C} "label:" {1..3}; do echo $i; done', ''),
+
+//----------------------------------------------------------------------------
+//  bash basics
+//----------------------------------------------------------------------------
+    'bash_while' => new Command('while [ 1 ]; do  cmd;  done', ''),
+    'bash_for' => new Command('for i in {A..C} "label:" {1..3}; do echo $i; done', ''),
+    'bash_allargs' => 'java com.myserver.Program "$@"',
+    'bash_io_redirect' => '
+# Redirect stdout to file
+1> filename.txt
+
+# Redirect and append stdout to file
+1>> filename.txt
+
+# Redirect stderr to file
+2> filename.txt
+
+# Redirect and append stderr to file
+2>> filename.txt
+
+# Redirect both stdout and stderr to file
+&> filename ',
+
+    'date_log' => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log', ''),
+
+//----------------------------------------------------------------------------
+//  linux basic commands
+//----------------------------------------------------------------------------
     'grep' => new Command('grep -e $PATTERN -f $FILE ', ''),
     'find' => new Command('find $dir -type f -name ', ''),
     'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ', ''),
     'img_resize' => new Command('convert myfigure.png -resize 200x100 myfigure.jpg', ''),
 
-    'zip' => new Command('zip -9 -r $zip_file $folder_name', ''),
-    'unzip' => new Command('unzip $zip_file -d $destination_folder', ''),
+    'compress.zip' => new Command('zip -9 -r $zip_file $folder_name', ''),
+    'extract.unzip' => new Command('unzip $zip_file -d $destination_folder', ''),
 
-    'bzip' => new Command('bzip2 -zkfq --best $filename'),
+    'compress.bzip' => new Command('bzip2 -zkfq --best $filename'),
+
     'compress.tar.gz' => new Command('tar -zcvf archive.tar.gz directory/ ', ''),
     'extract.tar.gz' => new Command('tar -xzfv archive.tar.gz', ''),
 
-    'gzip' => new Command('cat $file | gzip > file.gz', ''),
-    'gunzip' => new Command('gunzip file.gz   ', ''),
+    'compress.gzip' => new Command('cat $file | gzip > file.gz', ''),
+    'extract.gunzip' => new Command('gunzip file.gz   ', ''),
 
-    'bower' => new Command('bower install --save $lib_name', ''),
-    'date_log' => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log', ''),
+    'dictionary' => new Command('loook word  ', 'cerca una parola nel dizionario del sistema'),
+
     'user_add_group' => new Command('sudo usermod -a -G www-data  $user', ''),
     'sudo_wwwdata' => new Command('sudo -u www-data bin/$script $param', ''),
 
+    'tee' => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT'),
+    'ubuntu_version' => new Command('lsb_release -cds', ''),
+    'hostname' => new Command('hostname -f', ''),
+
+    'gpg' => new Command('gpg -c your_file.odt
+gpg your_file.odt.gpg
+echo $your_password | gpg --passphrase-fd 0 --batch --yes --no-tty your_file.gpg' , ''),
+
+
+    'awk' => new Command("ls -lh | awk '{ print $2 }'",''),
+    'sed' => new Command("sed -i 's/ugly/beautiful/g' /home/usr/test/test.txt",''),
+    'count_lines' => new Command("wc -l",''),
+
+    'crontab' => new Command(" 0 23 * * * root  /usr/local/bin/command", ''),
+
+    'apt_installed' => new Command('sudo apt list --installed | grep php7.0 ', ''),
+    'apt_list'      => new Command('sudo apt-cache search php7-*', ''),
+    'ufw'           => new Command('sudo ufw allow 80/tcp'),
+    //----------------------------------------------------------------------------
+    //  mysql commands
+    //----------------------------------------------------------------------------
+    'mysql_dump' => new Command('mysqldump -u user --p=$password $dbname > $backup_db_file', ''),
+    'mysql_restore' => new Command('mysql -u user --p=$password $dbname < $backup_db_file', ''),
+
+    //----------------------------------------------------------------------------
     // network commands
+    //----------------------------------------------------------------------------
     'scp_upload' => new Command('sshpass -p "$pass" scp $l_path tmirandola@$host:$r_path',''),
     'scp_download' => new Command('sshpass -p "$pass" scp tmirandola@$host:$r_path $l_path',''),
-    'youtube-dl' => new Command('youtube-dl "https://www.youtube.com/watch?v=bb4TxjvQlh0"  --keep-video  --extract-audio  --audio-format wav  --audio-quality 16K  --id'),
+    'youtube-dl' => new Command('
+# aggiornare sempre all ultima versione
+sudo youtube-dl -U
+youtube-dl -x --audio-format mp3   https://www.youtube.com/watch?v=3kW99COiygw
+'),
+    'ffmpeg' => new Command('
+# mv resulting video to home
+mv Game\ of\ Thrones\ soundtrack\;\ Cellocyl\ 2014-6pDlHdcfKbo.webm ~/Desktop/GoTSoundtrack.webm
+ffmpeg -i ~/Desktop/GoTSoundtrack.webm -acodec libmp3lame -aq 4  ~/Desktop/GoTSoundtrack.mp3
+mpg123  ~/Desktop/GoTSoundtrack.mp3
+    '),
     'curl' => new Command('curl -I -d "method=Say.Hello" http://www.google.com', ''),
     'wget' => new Command('wget -l 1 -v -k -p -E http://test.com/test', 'mirror completo di un sito'),
     'nethogs' => new Command('sudo nethogs wlan0', 'conoscere i processi che stanno utilizzando la nostra connessione'),
-    'rsync' => new Command('rsync $cmd_dry_run -vazC --stats --progress -h --force --delete --no-perms --no-owner --no-group $exclude  -e \"ssh -p22\" $local_path $user@$host:$remote_path','upload di tutta la directory'),
 
+    'rsync_push' => new Command('rsync -v $cmd_dry_run --archive --cvs-exclude --compress --stats --progress --human-readable --force --delete --no-perms --no-owner --no-group $exclude  --rsh \"ssh -p22\" $local_path $user@$host:$remote_path','upload di tutta la directory (PUSH)'),
+    'rsync_pull' => new Command('rsync -v --compress --rsh ssh user@host:/path/to/local/file.txt /path/to/remote/file.txt', 'remote to local (PULL)'),
+    'rsync_local' => new Command('rsync -v --archive --compress --delete /local_path_A/ /local_path_B', 'sincronizza in modo efficiente directory locali'),
+
+    //----------------------------------------------------------------------------
+    //  dev specific commands
+    //----------------------------------------------------------------------------
     // pfff tools
+    'bower' => new Command('bower install --save $lib_name', ''),
     'php_grep' => new Command("sgrep -e 'array(...)' /var/www/dir/", ''),
 
     // GIT
@@ -141,10 +212,13 @@ $commands = [
     'ctags' => new Command('ctags -R --languages=PHP', ''),
     'composer' => new Command('composer require predis/predis', ''),
 
-    'tee' => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT'),
+    'redis' => new Command('redis-cli
+set test test1
+get test
+keys user:* # le chiavi che rispondono alla regex
+del test
+    ', ''),
 
-
-    'ubuntu_version' => new Command('lsb_release -a', ''),
     'wiki_serach' => new Command('/home/taz/Dropbox/mywebsite/evidenceweb/bin/tool wiki:search wget', 'cerca informazioni nel wiki'),
 ];
 

@@ -1,2 +1,7 @@
 # sudo apt-get install python-demjson
-jsonlint --format  $@
+#/usr/bin/jsonlint-py  --format  $@
+# cat "/var/www/lampa_agenti_v3/var/cache_mobile/w/categorie_*-*_2016_44.txt" | jq
+
+# sudo apt install yajl
+echo "use json_reformat < $1 > file.json";
+echo "\n";

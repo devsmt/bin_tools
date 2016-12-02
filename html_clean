@@ -1,0 +1,48 @@
+#!/usr/bin/env hhvm
+<?php
+/*
+// usa pandoc per tradurre l'html formatato in formato mediawiki, poi dal formato MW ricompila un html semplificato
+// questo processo preserva le immagini embedde con url:data()
+*/
+
+//----------------------------------------------------------------------------
+//  subroutines
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+//  actions
+//----------------------------------------------------------------------------
+//
+function action_ussage() {
+        return <<<__END__
+uso:
+    {$argv[0]} [action] [--go] [--test]
+uso del programma
+__END__;
+}
+
+//----------------------------------------------------------------------------
+//  main
+//----------------------------------------------------------------------------
+/*$action = isset($argv[1]) ? $argv[1] : 'convert';
+
+switch($action) {
+    case 'x':
+        die(' ... ');
+    break;
+    default:
+        die(action_ussage());
+    break;
+}/ */
+
+$file_path = isset($argv[1]) ? $argv[1] : '';
+if( empty($file_path) ) {
+  die('indicare un file da pulire');
+}
+
+
+// usa pandoc per tradurre l'ahtml formatato in formato mediawiki, poi dal formato MW ricompila un html semplificato
+// questo processo preserva le immagini embedde con url:data()
+echo `pandoc -f html -t mediawiki -o $file_path.mw  +RTS -K7770000000 -RTS $file_path`;
+echo `pandoc -thtml $file_path.mw`;
+echo `pandoc -fmediawiki -thtml -o $file_path.2.html  $file_path.mw`;
