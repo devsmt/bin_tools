@@ -1,4 +1,4 @@
-#!/sr/bin/php
+#!/usr/bin/php
 <?php
 #!/usr/bin/env php
 
@@ -93,7 +93,12 @@ class Command {
             )
         );
     }
-
+}
+// stampa key che sono alias
+class Alias extends Command {
+    function __toString() {
+        return sprintf("Alias @see %s", $this->cmd  );
+    }
 }
 
 $commands = [
@@ -127,10 +132,11 @@ $commands = [
 //----------------------------------------------------------------------------
     'grep' => new Command('grep -e $PATTERN -f $FILE ', ''),
     'find' => new Command('find $dir -type f -name ', ''),
-    'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -exec rm -f {} \; ', ''),
+    'find_delete' => new Command('find $dir -maxdepth 1 -type f -mtime +30 -delete \; ', ''),
     'img_resize' => new Command('convert myfigure.png -resize 200x100 myfigure.jpg', ''),
+    'imagemagick' => new Alias('img_resize'),
 
-    'compress.zip' => new Command('zip -9 -r $zip_file $folder_name', ''),
+    'compress.zip' => new Command('zip -9 -j -r $zip_file $folder_name', ''),
     'extract.unzip' => new Command('unzip $zip_file -d $destination_folder', ''),
 
     'compress.bzip' => new Command('bzip2 -zkfq --best $filename'),
@@ -164,6 +170,12 @@ echo $your_password | gpg --passphrase-fd 0 --batch --yes --no-tty your_file.gpg
     'apt_installed' => new Command('sudo apt list --installed | grep php7.0 ', ''),
     'apt_list'      => new Command('sudo apt-cache search php7-*', ''),
     'ufw'           => new Command('sudo ufw allow 80/tcp'),
+    'cron_log'      => new Command('grep -i CRON /var/log/syslog'),
+
+
+
+
+
     //----------------------------------------------------------------------------
     //  mysql commands
     //----------------------------------------------------------------------------
@@ -193,6 +205,20 @@ mpg123  ~/Desktop/GoTSoundtrack.mp3
     'rsync_push' => new Command('rsync -v $cmd_dry_run --archive --cvs-exclude --compress --stats --progress --human-readable --force --delete --no-perms --no-owner --no-group $exclude  --rsh \"ssh -p22\" $local_path $user@$host:$remote_path','upload di tutta la directory (PUSH)'),
     'rsync_pull' => new Command('rsync -v --compress --rsh ssh user@host:/path/to/local/file.txt /path/to/remote/file.txt', 'remote to local (PULL)'),
     'rsync_local' => new Command('rsync -v --archive --compress --delete /local_path_A/ /local_path_B', 'sincronizza in modo efficiente directory locali'),
+
+
+    //----------------------------------------------------------------------------
+    //  sysadmin
+    //----------------------------------------------------------------------------
+
+    'logrotate' => new Command('
+sudo vi /etc/logrotate.d/appname.log
+/var/log/appname.log {
+        rotate 2
+        weekly
+        size 250k
+        compress
+} ', 'log rotate'),
 
     //----------------------------------------------------------------------------
     //  dev specific commands

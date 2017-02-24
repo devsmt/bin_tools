@@ -13,7 +13,7 @@ function get_perc($totale, $parziale, $decimal=2){
 if( isset($argv[1]) && isset($argv[2]) && is_numeric($argv[1]) && is_numeric($argv[2]) ) {
     $totale   = $argv[1];
     $parziale = $argv[2];
-    echo get_perc($totale, $parziale)."\n";
+    echo get_perc($totale, $parziale)."% \n";
 } else {
     die("specificare 2 valori: totale subtotale = perc% \n");
 }
