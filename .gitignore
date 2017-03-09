@@ -1,5 +1,14 @@
-/counter_mny
+counter_mny
+counter_Fin_Indep
 /ssh_PROD
 /ssh_TEST
 /ssh_cantini
 /ssh_dbauto
+ssh_*
+/WOD_DB
+/WOD
+open_ws3
+ssh_orthros
+disk_clean
+
+

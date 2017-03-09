@@ -198,7 +198,11 @@ mv Game\ of\ Thrones\ soundtrack\;\ Cellocyl\ 2014-6pDlHdcfKbo.webm ~/Desktop/Go
 ffmpeg -i ~/Desktop/GoTSoundtrack.webm -acodec libmp3lame -aq 4  ~/Desktop/GoTSoundtrack.mp3
 mpg123  ~/Desktop/GoTSoundtrack.mp3
     '),
-    'curl' => new Command('curl -I -d "method=Say.Hello" http://www.google.com', ''),
+    'curl' => new Command('
+        curl -I -d "method=Say.Hello" http://www.google.com
+        curl http://www.google.com/image.gif -o /tmp/img.gif
+        httpstat http://localhost/project
+        ', ''),
     'wget' => new Command('wget -l 1 -v -k -p -E http://test.com/test', 'mirror completo di un sito'),
     'nethogs' => new Command('sudo nethogs wlan0', 'conoscere i processi che stanno utilizzando la nostra connessione'),
 
@@ -245,7 +249,7 @@ keys user:* # le chiavi che rispondono alla regex
 del test
     ', ''),
 
-    'wiki_serach' => new Command('/home/taz/Dropbox/mywebsite/evidenceweb/bin/tool wiki:search wget', 'cerca informazioni nel wiki'),
+    'wiki_search' => new Command('/home/taz/Dropbox/mywebsite/evidenceweb/bin/tool wiki:search wget', 'cerca informazioni nel wiki'),
 ];
 
 function action_usage($argv) {
@@ -286,7 +290,7 @@ if (empty($action)) {
         }
         echo process_lev(array_keys($commands), $str_search );
         echo "usa:\n".
-        "memory wiki_serach \n".
+        "memory wiki_search \n".
         "per cercare nel WIKI";
     }
 }
