@@ -1,0 +1,109 @@
+#!/usr/bin/env php
+<?php
+
+/*
+
+interfaccia unificata sui formatter per i vari linguaggi
+da jedit vien passato il filename, dall'estensione carica un comando adatto
+ */
+
+declare (strict_types = 1);
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo `$cmd` . "\n";
+}
+define('SIZE_KB', pow(1024, $factor = 1), false);
+define('SIZE_MB', pow(1024, $factor = 2), false); //----------------------------------------------------------------------------
+// main
+//----------------------------------------------------------------------------
+
+$file_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+
+if (!request_is_cli()) {
+    die("usa questo comando da cli.");
+} else {
+    set_time_limit(0);
+    if ($argc == 1) {
+        action_usage('$argc=' . $argc);
+    } else {
+        $ext = pathinfo($file_path, PATHINFO_EXTENSION); // se script cli, prova php
+        if (empty($ext) || $file_path == $ext) {
+            $ext = 'php';
+        }
+        switch ($ext) {
+        case 'php':
+        case 'phtml':
+            format_php($file_path);
+            break; // C, C++, C++/CLI, Objective‑C, C#, and Java
+
+
+        case 'js':
+            echo e("js_fmt $file_path ");
+            break;
+        // prettier funziona con tutti i linguaggi web https://github.com/prettier/prettier#what-does-prettier-do
+        // sudo npm install --global prettier
+        case 'ts':
+        case 'jsx':
+        case 'less':
+        case 'css':
+            // for css @see
+            // https://github.com/stylelint/stylelint/blob/master/docs/user-guide/cli.md
+        case 'scss':
+            // tsfmt --replace Controller.ts  non funziona bene
+            // no --pad-parens, le parentesi hanno senso
+            // no --pad-oper rovina le regexp
+            // echo `astyle --style=java --indent=spaces=4 --convert-tabs --indent-labels  --delete-empty-lines --add-brackets --errors-to-stdout -v $file_path ` . PHP_EOL;
+            // echo "now use C+I & C+m Del Del" . PHP_EOL;
+
+
+            echo e("prettier --single-quote --tab-width 4 --write $file_path ");
+
+            break;
+        case 'xml':`xmlindent -w $file_path`;
+            break;
+
+
+        case 'json':
+            $bytes = intval(filesize($file_path)); // in bytes, or FALSE
+            if ($bytes < 30 * SIZE_MB) {
+                $json = $str_content = file_get_contents($file_path);
+                $a = json_decode($json, $use_assoc = true);
+                if ($a === false) {
+                    die(json_last_error_msg());
+                }
+                $json_2 = json_encode($a, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                echo $json_2 . PHP_EOL;
+            } else {
+                $h_b_s = human_filesize($bytes);
+                echo "TODO use /usr/bin/json_reformat $bytes $h_b_s " . PHP_EOL;
+            }
+            break;
+        case 'sql':
+            $cmd = "/usr/bin/sqlformat -r $file_path -o $file_path";
+            echo `$cmd`.PHP_EOL;
+            break;
+        default:
+            action_usage($ext);
+            break;
+        }
+    }
+    exit(0);
+}
+//-- actions --------------------------------------
+//
+
+function format_php($file_path) {
+    return e("/data/bin_tools/php_fmt $file_path");
+}
+function action_usage($ext) {
+    echo "extension '$ext' unrecognized\n";
+}
+// comment
+
+function ensure_spaces($file_name) {"perl -p -i -e 's/\t/    /g'  $file_name ";
+}
+//-- utils ----------------------------------------
+
+function request_is_cli() {
+    return strtoupper(PHP_SAPI) === 'CLI';}
+exit(0);

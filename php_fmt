@@ -2,7 +2,8 @@
 # questo formatter richiede php7!
 # disponibile php_beautifier
 
-# https://github.com/phpfmt/fmt/blob/master/fmt.phar
+# https://github.com/Shaked/php.tools
+echo "php.tools fmt:"
 php /usr/local/bin/php.tools/fmt.php --lint-before --indent_with_space=4  "$@"
 # --exclude=WrongConstructorName
 # --list
@@ -12,5 +13,11 @@ php /usr/local/bin/php.tools/fmt.php --lint-before --indent_with_space=4  "$@"
 # SpaceBetweenMethods
 # echo "run php /usr/local/bin/php.tools/fmt.phar --selfupdate"
 
-
+# https://github.com/phpfmt/fmt/blob/master/fmt.phar
 # https://github.com/phpfmt/fmt/blob/51d48a2fe0c0664a837dee54b9eace6ef755055c/fmt.phar
+
+# curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+
+
+phpcs --version
+php /data/bin_tools/phpcs.phar --standard=PSR1   "$@"
