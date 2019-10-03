@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo `$cmd` . "\n";
+}
+// main
+$file_path = arg_get(1, $d = ''); // 0=>pgr name
+$size = arg_get(2, $d = '');
+if (empty($file_path) ) {
+    echo "provide a file to resize as arg 1 " . PHP_EOL;
+} elseif( empty($size)  ) {
+    echo "provide a new size, es 100x100 " . PHP_EOL;
+} else {
+    if (is_dir($file_path)) {
+        $dir = $file_path;
+        die("arg 1 is a dir. unhandled \n");
+    } elseif (file_exists($file_path)) {
+        file_resize($file_path);
+    }
+}
+exit(0);
+//
+function file_resize($file_path) {
+    $ext = pathinfo($file_path, PATHINFO_EXTENSION);
+    $size = arg_get(2, $d = '200x100'); // play with different q settings
+    $file_path2 = "$file_path.$size.$ext";
+    // convert myfigure.png -resize 200x100 myfigure.jpg
+    e("convert $file_path -resize $size $file_path2 ");
+}
+//
+function arg_get($i, $d = '') {
+    return isset($_SERVER['argv'][$i]) ? $_SERVER['argv'][$i] : $d;
+}
+// if there is no saving in the generated file, delete it
+function if_no_gain_delete($p1, $p2) {
+}

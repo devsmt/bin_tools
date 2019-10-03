@@ -1,0 +1,32 @@
+#!/usr/bin/php
+<?php
+require_once __DIR__.'/Utils.php';
+// enable autoloading of classes
+require_once(__DIR__.'/mysql-workbench-schema-exporter/lib/MwbExporter/Core/SplClassLoader.php');
+$classLoader = new SplClassLoader();
+$classLoader->setIncludePath(__DIR__.'/mysql-workbench-schema-exporter/lib');
+$classLoader->register();
+
+// define a formatter PHP
+$formatter = new \MwbExporter\Formatter\Doctrine2\Annotation\Loader();
+
+//$formatter = new \MwbExporter\Formatter\Doctrine2\Yaml\Loader($setup=array(
+//    'extendTableNameWithSchemaName' => true
+//));
+
+
+// create a formatter YML
+$formatter = new \MwbExporter\Formatter\Doctrine1\Yaml\Loader($setup=array(
+    'extendTableNameWithSchemaName' => true
+));
+
+
+// parse the mwb file
+if( !isset($argv[1]) || !is_file($argv[1]) || !is_readable($argv[1]) ){
+    die("provide a mwb database description as argument.\n");
+}
+$mwb = new \MwbExporter\Core\Workbench\Document($argv[1], $formatter);
+
+// show the output
+echo $mwb->display();
+?>

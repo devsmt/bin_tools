@@ -1,0 +1,8 @@
+
+#!/bin/bash
+echo "running tslint requires: tslint --init"
+#
+# @see https://github.com/palantir/tslint
+# for instruction on instalation
+#
+/data/bin_tools/tslint/bin/tslint "$@"

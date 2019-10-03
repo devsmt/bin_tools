@@ -1,0 +1,14 @@
+#!/usr/bin/php
+<?php
+require_once __DIR__.'/Utils.php';
+require_once '/usr/share/php/textile/classTextile.php';
+
+if( !is_readable($argv[1]) ){
+    die('aggiungi come parametro un percorso  aun file leggibile');
+}
+
+$string = file_get_contents( $argv[1] );
+
+$textile = new Textile;
+echo $textile->TextileThis($string)."\n";
+

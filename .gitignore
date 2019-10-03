@@ -3,5 +3,6 @@ ssh_*
 WOD*
 open_ws3
 disk_clean
-
-
+/squirrel-sql-3.4.0/
+/zend/
+/symfony1.4/

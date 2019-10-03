@@ -1,0 +1,85 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo `$cmd` . "\n";
+}
+// main
+$file_path = arg_get(1, $d = ''); // 0=>pgr name
+if (empty($file_path)) {
+    echo "provide a file to analize" . PHP_EOL;
+} else {
+    if (is_dir($file_path)) {
+        $dir = $file_path;
+        foreach( ['jpg','png','gif','svg'] as $ext ) {
+            foreach (glob($dir . '/*.'.$ext ) as $file_path) {
+                file_optimize($file_path);
+            }
+        }
+        `thunar $dir &`;
+    } elseif (file_exists($file_path)) {
+        file_optimize($file_path);
+    }  elseif( $file_path == 'unit_test' ) {
+        echo "run tests \n";
+    }
+
+}
+exit(0);
+//
+function file_optimize($file_path) {
+    $ext = pathinfo($file_path, PATHINFO_EXTENSION);
+    //
+    // jpegtran     optimize JPEG images
+    // optipng      lossless PNG optimization
+    // pngquant     lossy    PNG optimization
+    // mozjpeg
+    //
+    // @see https://images.guide/
+    if ($ext == 'jpg') {
+        $quality = arg_get(2, $d = '80'); // play with different q settings
+        $file_path2 = "$file_path.$quality.jpg";
+        e("convert -strip -interlace Plane -quality $quality $file_path $file_path2 ");
+        //
+        // jpegtran -copy none -optimize -progressive -outfile output.jpg input.jpg
+        $file_path3 = "$file_path.jplib.jpg";
+        e("jpegtran -copy none -optimize -progressive -outfile $file_path3 $file_path   ");
+        // find if image is progressive
+        // npm install --global is-progressive-cli
+    } elseif ($ext == 'png') {
+        $file_path2 = "$file_path.2.png";
+        $c = "optipng -o7 -strip all -out $file_path2 $file_path ";
+        e($c);
+    } elseif ($ext == 'gif') {
+        echo "Instead of crazy huge animated GIFs, deliver H.264 videos (or WebM for Chrome, Firefox and Opera)! \n";
+        e("gifsicle   --optimize=3 $file_path -o $file_path.2.gif");
+    } elseif ($ext == 'svg') {
+        // npm install -g svgo
+        e("svgo $file_path -o $file_path.2.svg ");
+    } else {
+        echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+            $ext
+        ), "</pre>\n";
+        die(); // debug_print_backtrace()
+    }
+    //
+    if( $ext == 'jpg' || $ext == 'png' ){
+        e(" cwebp -q 60 $file_path -o $file_path.webp ");
+        echo   <<<__END__
+        <picture>
+            <source srcset="$file_path.webp" type="image/webp">
+            <source srcset="$file_path.jpg" type="image/jpg">
+            <img src="$file_path.jpg" alt="">
+        </picture>
+__END__;
+    }
+    echo "use srcset breakpoints \n" ;
+}
+//
+function arg_get($i, $d = '') {
+    return isset($_SERVER['argv'][$i]) ? $_SERVER['argv'][$i] : $d;
+}
+// if there is no saving in the generated file, delete it
+function if_no_gain_delete($p1, $p2){
+}
