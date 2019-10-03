@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+/*
+wrapper su CSS tidy con migliori default
+*/
+
+function tidy($path) {
+    $cmd ="/usr/bin/csstidy $path --preserve_css=true --optimise_shorthands=2 --remove_bslash=false --merge_selectors=2 --silent=true --compress_font-weight=false --template=low ";
+    //echo ($cmd),"\n\n";
+    echo `$cmd`;
+}
+
+function usage($argv){
+  return <<<__END__
+wrapper su CSS tidy con migliori default
+uso:
+    {$argv[0]} [filename]
+uso del programma
+__END__;
+}
+//------------------------------------------------------------------------------
+//  main
+//------------------------------------------------------------------------------
+/*
+$action = isset($argv[1])?$argv[1]:'test';
+
+switch($action) {
+    case 'tidy':
+        die(' ... ');
+    break;
+    default:
+        die(usage());
+    break;
+}
+*/
+
+$file = isset($argv[1])?$argv[1]:'';
+if( empty($file) ) {
+    die(usage());
+} else {
+    tidy($file);
+}

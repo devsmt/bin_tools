@@ -1,0 +1,7 @@
+<?php
+// check target directory
+//  foreach php file
+//      minimize with php -w or php_strip_whitespace()
+//  cat to output file
+//  strip initial line of output
+echo "TODO \n";

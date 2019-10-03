@@ -1046,7 +1046,7 @@ class WikiCreole
 //  main
 //----------------------------------------------------------------------------
 
-
+require_once '/home/taz/Dropbox/mywebsite/evidenceweb/lib/geshi/geshi.php';
 $wiki_markup = file_get_contents('php://stdin');
 
 if( !empty($wiki_markup)  ) {

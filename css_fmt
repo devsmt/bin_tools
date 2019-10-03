@@ -1,2 +1,11 @@
-csstidy $0
- 
+csstidy \
+ --compress_colors=true \
+ --compress_font-weight=true \
+ --discard_invalid_properties=false \
+ --lowercase_s=true \
+ --preserve_css=true \
+ --remove_bslash=true \
+ --remove_last_;=true \
+ --silent=false \
+ --sort_properties=true \
+ --sort_selectors=false $1

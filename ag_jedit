@@ -1,0 +1,106 @@
+#!/usr/bin/env php
+<?php
+// uso: ag_jedit  "coalesce" --php
+// cerca files con ag, aprili con jedit alla linea specifica
+
+
+// ottieni una chiave di hash o un defualt
+function h_get(array $h, string $k, string $def = '') {
+    if (array_key_exists($k, $h)) {
+        return $h[$k];
+    }
+
+    // cerca una sottochiave
+    if (strpos($k, '.') !== false) {
+        foreach (explode('.', $k) as $segment) {
+            if (is_array($h) && array_key_exists($h, $segment)) {
+                $h = $h[$segment];
+            } else {
+                return $def;
+            }
+        }
+        return $h;
+    }
+    // no match
+    return $def;
+}
+
+/*
+function e(string $cmd, $is_debug = false) {
+    if ($is_debug || V_LEVEL) {
+        echo "\n"."cmd: " . $cmd . "\n";
+    }
+    $last_line = exec($cmd, $a_output, $exit_code);
+    if (count($a_output)) {
+        echo 'out:' . implode("\n", $a_output) . "\n";
+        return $a_output;
+    }
+    if ($exit_code != 0) {
+        echo "exec ERROR! code:$exit_code \n";
+        exit(1);
+    } else {
+        echo "OK\n";
+    }
+}
+*/
+
+// escapeshellarg
+$arg1 = ( h_get($argv, 1, '') );
+$arg2 = ( h_get($argv, 2, '') );// --php flag
+$cmd = "ag --ackmate  \"$arg1\" $arg2 .";
+echo $cmd."\n";
+$res = `$cmd `;
+$a_lines = explode(PHP_EOL, $res);
+
+/* simplistic alg, non considera la linea a cui rimandare
+// solo le linee che iniziano con :
+$a_lines = array_values(array_filter($a_lines, function ($line) {
+// false will be skipped
+return substr($line, 0, 1) == ':';
+}));
+$a_lines = array_map(function ($val) {
+return trim($val, ':');
+}, $a_lines);
+
+foreach ($a_lines as $file) {
+echo "open $file \n";
+`jedit $file +line:396,21`;
+}
+ */
+
+// "26;18 5:  if the style is empty so you can easily add styling to anything." => "26;18 "
+function parse_line($line) {
+    $a_tok = explode(' ', $line);
+    if (empty($a_tok)) {
+        return [];
+    }
+    // "26;18"
+    // return [26,18];
+    $a_pos = explode(';', $a_tok[0]);
+    return $h_pos = ['line' => $a_pos[0], 'col' => $a_pos[1]];
+}
+
+$a_res = [];
+$c = count($a_lines);
+for ($i = 0; $i < $c; $i++) {
+    $line = $a_lines[$i];
+    $is_file_line = substr($line, 0, 1) == ':';
+    if ($is_file_line) {
+        // get next line
+        $i++;
+        $next_line = $a_lines[$i];
+        $a_res[trim($line, ':')] = parse_line($next_line);
+    }
+}
+foreach ($a_res as $file => $h_pos) {
+    $file_name = basename($file);
+    extract($h_pos);
+    if( '_' == substr($file_name,0,1) ) {
+        // skip
+    } else {
+    echo "open $file  @$line,$col \n";
+        `jedit $file +line:$line,$col`;
+    }
+}
+
+exit(0);

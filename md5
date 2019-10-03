@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+/*
+scopo del programma
+*/
+
+function wrapper() {
+    $cmd =" ";
+    echo exec($cmd),"\n";
+}
+
+function usage($argv){
+  return <<<__END__
+uso:
+    {$argv[0]} [code]
+uso del programma
+__END__;
+}
+//------------------------------------------------------------------------------
+//  main
+//------------------------------------------------------------------------------
+
+//$action = isset($argv[1])?$argv[1]:null;
+
+if( isset($argv[1]) ){
+    die( md5($argv[1]) ."\n" );
+} else {
+     die(usage());
+}
+
+

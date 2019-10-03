@@ -1,1 +1,60 @@
-echo TODO
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo `$cmd` . "\n";
+}
+
+// main
+$file_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+
+if (empty($file_path)) {
+    die('no file to lint.');
+}
+
+if (!request_is_cli()) {
+    die("usa questo comando da cli.");
+} else {
+    set_time_limit(0);
+    if ($argc == 1) {
+        action_usage();
+    } else {
+
+        $ext = pathinfo($file_path, PATHINFO_EXTENSION); // se script cli, prova php
+        if (empty($ext) || $file_path == $ext) {
+            $ext = 'php';
+        }
+
+
+        switch ($ext) {
+        case 'php':
+            $cmd = "php -l $file_path";
+            e($cmd);
+            break;
+        case 'ts':
+            $cmd = "/data/bin_tools/ts_lint $file_path";
+            e($cmd);
+            break;
+        default:
+            break;
+        }
+    }
+    exit(0);
+}
+//-- actions --------------------------------------
+//
+function action_XXX() {
+
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+//-- utils ----------------------------------------
+
+
+exit(0);

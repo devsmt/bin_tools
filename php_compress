@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+
+function main() {
+    set_time_limit(0);
+    //if ($_SERVER['argc'] == 1) {
+    //    action_usage();
+    //} else {
+    //    $action = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+    //    switch ($action) {
+    //    case 'XXX':
+    //        action_XXX();
+    //        break;
+    //    default:
+    //        action_usage();
+    //        break;
+    //    }
+    //}
+
+    $source = stream_get_contents(STDIN) ;
+    if(empty( $source )){
+        die( 'provice code on STDIN '.PHP_EOL);
+    }
+    $code = php_compress($source);
+    echo $code;
+    exit(0);
+}
+
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+// compress the code
+function php_compress($source) {
+    $code = '';
+    $tokens = token_get_all($source);
+    foreach ($tokens as $token) {
+        if (is_string($token)) {
+            // simple 1-character token
+            $code .= trim($token);
+        } else {
+            // token array
+            list($id, $text) = $token;
+            switch ($id) {
+            case T_COMMENT:
+            case T_DOC_COMMENT:
+                // no action on comments
+                break;
+            default:
+                // anything else -> output "as is"
+                $s = trim($text);
+                $code .= ($s == ' ') ? '' : $s .' ';
+                break;
+            }
+        }
+    }
+    return $code.PHP_EOL;
+}
+
+
+main();
+
+
+
+
+

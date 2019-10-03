@@ -1,0 +1,1648 @@
+ADDACC Add Access Code
+ADDAJE Add Autostart Job Entry
+ADDALRACNE Add Alert Action Entry
+ADDALRD Add Alert Description
+ADDALRSLTE Add Alert Selection Entry
+ADDAUTLE Add Authorization List Entry
+ADDBKP Add Breakpoint
+ADDBNDDIRE Add Binding Directory Entry
+ADDCCTRTE Add Circuit Route
+ADDCCTSRV Add Circuit Service
+ADDCFGLE Add Configuration List Entries
+ADDCMNE Add Communications Entry
+ADDCNNLE Add Connection List Entry
+ADDCOMSNMP Add Community for SNMP
+ADDDIRE Add Directory Entry
+ADDDIRSHD Add Directory Shadow System
+ADDDLOAUT Add DLO Authority
+ADDDSTLE Add Distribution List Entry
+ADDDSTQ Add Distribution Queue
+ADDDSTRTE Add Distribution Route
+ADDDSTSYSN Add Secondary System Name
+ADDDTADFN Add Data Definition
+ADDEMLCFGE Add Configuration Entry
+ADDENVVAR Add Environment Variable
+ADDEWCBCDE Add EWC Barcode Entry
+ADDEWCM Add Wireless Ctl Member
+ADDEWCPTCE Add EWC PTC Entry
+ADDEWLM Add Wireless Line Member
+ADDEXITPGM Add Exit Program
+ADDFCTE Add Forms Control Entry
+ADDFNTTBLE Add Font Table Entry
+ADDICFDEVE Add ICF Device Entry
+ADDIPIADR Add IP over IPX Address
+ADDIPIIFC Add IP over IPX Interface
+ADDIPIRTE Add IP over IPX Route
+ADDIPSIFC Add IP over SNA Interface
+ADDIPSLOC Add IP over SNA Location
+ADDIPSRTE Add IP over SNA Route
+ADDIPXCCT Add IPX Circuit
+ADDJOBJS Add Job using Job Scheduler
+ADDJOBQE Add Job Queue Entry
+ADDJOBSCDE Add Job Schedule Entry
+ADDLANADPI Add LAN Adapter Information
+ADDLFM Add Logical File Member
+ADDLIBLE Add Library List Entry
+ADDLICKEY Add License Key Information
+ADDLNK Add Link
+ADDMFS Add Mounted FS
+ADDMSGD Add Message Description
+ADDNCK Add Nickname
+ADDNETJOBE Add Network Job Entry
+ADDNETTBLE Add Network Table Entry
+ADDNODLE Add Node List Entry
+ADDNWSSTGL Add Server Storage Link
+ADDOPTCTG Add Optical Cartridge
+ADDOPTSVR Add Optical Server
+ADDPCLTBLE Add Protocol Table Entry
+ADDPEXDFN Add PEX Definition
+ADDPFCST Add PF Constraint
+ADDPFM Add Physical File Member
+ADDPFRCOL Add Performance Collection
+ADDPFTRG Add Physical File Trigger
+ADDPFVLM Add Phy File Variable Len Mbr
+ADDPGM Add Program
+ADDPJE Add Prestart Job Entry
+ADDPRBACNE Add Problem Action Entry
+ADDPRBSLTE Add Problem Selection Entry
+ADDRDBDIRE Add RDB Directory Entry
+ADDREXBUF Add REXX Buffer
+ADDRJECMNE Add RJE Communication Entry
+ADDRJERDRE Add RJE Reader Entry
+ADDRJEWTRE Add RJE Writer Entry
+ADDRMTDFN Add Remote Definition
+ADDRMTSVR Add Remote Server
+ADDRPYLE Add Reply List Entry
+ADDRTGE Add Routing Entry
+ADDSCHIDXE Add Search Index Entry
+ADDSNILOC Add SNA over IPX Location
+ADDSOCE Add Sphere of Control Entry
+ADDSRVTBLE Add Service Table Entry
+ADDTAPCTG Add Tape Cartridge
+ADDTCPHTE Add TCP/IP Host Table Entry
+ADDTCPIFC Add TCP/IP Interface
+ADDTCPLNK Add TCP/IP Link
+ADDTCPPORT Add TCP/IP Port Restriction
+ADDTCPRSI Add TCP/IP Remote System
+ADDTCPRTE Add TCP/IP Route
+ADDTRC Add Trace
+ADDWSE Add Work Station Entry
+ALCOBJ Allocate Object
+ANSLIN Answer Line
+ANSQST Answer Questions
+ANZACCGRP Analyze Process Access Group
+ANZBESTMDL Analyze BEST/1 Model
+ANZDBF Analyze Database Files
+ANZDBFKEY Analyze Database File Keys
+ANZDFTPWD Analyze Default Passwords
+ANZPFRDTA Analyze Performance Data
+ANZPGM Analyze Programs
+ANZPRB Analyze Problem
+ANZPRFACT Analyze Profile Activity
+ANZQRY Analyze Query
+ANZS34OCL Analyze S/34 OCL
+ANZS36OCL System/36 OCL Analysis
+ANZUSROBJ ANALYZE USER OBJECTS
+APING Verify APPC Connection
+APYJRNCHG Apply Journaled Changes
+APYPTF Apply Program Temporary Fix
+AREXEC Run Remote Command
+ASKQST Ask Question
+BCHJOB Batch Job
+CALL Call Program
+CALLPRC Call Bound Procedure
+CD Change Current Directory
+CFGDEVMLB Configure Device Media Library
+CFGDSTSRV Configure Distribution Service
+CFGIPI Configure IPI
+CFGIPS Configure IP over SNA
+CFGIPX Configure IPX
+CFGRPDS Configure VM/MVS Bridge
+CFGSYSSEC Configure System Security
+CFGTCP Configure TCP/IP
+CFGTCPAPP Configure TCP/IP Applications
+CFGTCPBP Configure TCP/IP BOOTP
+CFGTCPFTP Configure TCP/IP FTP
+CFGTCPHTTP Configure TCP/IP HTTP
+CFGTCPLPD Configure TCP/IP LPD
+CFGTCPPTP Configure Point-to-Point TCPIP
+CFGTCPRTD Configure TCP/IP RouteD
+CFGTCPRXC Configure TCP/IP REXEC
+CFGTCPSMTP Configure TCP/IP SMTP
+CFGTCPSNMP Configure TCP/IP SNMP
+CFGTCPTELN Configure TCP/IP TELNET
+CFGTCPWSG Configure TCP/IP Workstation
+CHDIR Change Current Directory
+CHGACGCDE Change Accounting Code
+CHGACTPRFL Change Active Profile List
+CHGACTSCDE Change Activation Scd Entry
+CHGAJE Change Autostart Job Entry
+CHGALRACNE Change Alert Action Entry
+CHGALRD Change Alert Description
+CHGALRSLTE Change Alert Selection Entry
+CHGALRTBL Change Alert Table
+CHGAUD Change Auditing Value
+CHGAUT Change Authority
+CHGAUTJS Change Job Authority using JS
+CHGAUTLE Change Auth List Entry
+CHGBCKUP Change Backup Options
+CHGBPA Change BOOTP Attributes
+CHGCCTRTE Change Circuit Route
+CHGCCTSRV Change Circuit Service
+CHGCFGL Change Configuration List
+CHGCFGLE Change Cfg List Entries
+CHGCLNUP Change Cleanup
+CHGCLS Change Class
+CHGCMD Change Command
+CHGCMDDFT Change Command Default
+CHGCMNE Change Communications Entry
+CHGCNNL Change Connection List
+CHGCNNLE Change Connection List Entry
+CHGCOMSNMP Change Community for SNMP
+CHGCOSD Change Class-of-Service Desc
+CHGCRQD Change CRQ Description
+CHGCSI Change Comm Side Information
+CHGCTLAPPC Change Ctl Desc (APPC)
+CHGCTLASC Change Ctl Desc (Async)
+CHGCTLBSC Change Ctl Desc (BSC)
+CHGCTLFNC Change Ctl Desc (Finance)
+CHGCTLHOST Change Ctl Desc (SNA Host)
+CHGCTLLWS Change Ctl Desc (Local WS)
+CHGCTLNET Change Ctl Desc (Network)
+CHGCTLRTL Change Ctl Desc (Retail)
+CHGCTLRWS Change Ctl Desc (Remote WS)
+CHGCTLTAP Change Ctl Desc (Tape)
+CHGCTLVWS Change Ctl Desc (Virtual WS)
+CHGCURDIR Change Current Directory
+CHGCURLIB Change Current Library
+CHGDBG Change Debug
+CHGDDMF Change DDM File
+CHGDEVAPPC Change Device Desc (APPC)
+CHGDEVASC Change Device Desc (Async)
+CHGDEVBSC Change Device Desc (BSC)
+CHGDEVDKT Change Device Desc (Diskette)
+CHGDEVDSP Change Device Desc (Display)
+CHGDEVFNC Change Device Desc (Finance)
+CHGDEVHOST Change Device Desc (SNA Host)
+CHGDEVINTR Change Device Desc (Intra)
+CHGDEVMLB Change Device Desc (Media Lib)
+CHGDEVNET Change Device Desc (Network)
+CHGDEVOPT Change Device Desc (Optical)
+CHGDEVPR Change Device Desc (Printer)
+CHGDEVRTL Change Device Desc (Retail)
+CHGDEVSNPT Change Device Desc (SNPT)
+CHGDEVSNUF Change Device Desc (SNUF)
+CHGDEVTAP Change Device Desc (Tape)
+CHGDIRE Change Directory Entry
+CHGDIRSHD Change Directory Shadow System
+CHGDKTF Change Diskette File
+CHGDLOAUD Change DLO Auditing Level
+CHGDLOAUT Change DLO Authority
+CHGDLOOWN Change DLO Owner
+CHGDLOPGP Change DLO Primary Group
+CHGDOCD Change Do*****ent Description
+CHGDSPF Change Display File
+CHGDSTA Change Distribution Attributes
+CHGDSTD Change Distribution
+CHGDSTL Change Distribution List
+CHGDSTPWD Change DST Password
+CHGDSTQ Change Distribution Queue
+CHGDSTRTE Change Distribution Route
+CHGDTA Change Data
+CHGDTAARA Change Data Area
+CHGEMLCFGE Change Configuration Entry
+CHGENVVAR Change Environment Variable
+CHGEWCBCDE Change EWC Barcode Entry
+CHGEWCM Change Wireless Ctl Member
+CHGEWCPTCE Change EWC PTC Entry
+CHGEWLM Change Wireless Line Member
+CHGEXPSCDE Change Expiration Scd Entry
+CHGFCNARA Change Functional Area
+CHGFCT Change Forms Control Table
+CHGFCTE Change Forms Control Entry
+CHGFTPA Change FTP Attributes
+CHGFTR Change Filter
+CHGGPHFMT Change Graph Format
+CHGGPHPKG Change Graph Package
+CHGGRPA Change Group Attributes
+CHGHLLPTR Change HLL Pointer
+CHGHTTPA Change HTTP Attributes
+CHGICFDEVE Change ICF Device Entry
+CHGICFF Change ICF File
+CHGIPIADR Change IP over IPX Address
+CHGIPIIFC Change IP over IPX Interface
+CHGIPLA Change IPL Attributes
+CHGIPSIFC Change IP over SNA Interface
+CHGIPSLOC Change IP over SNA Location
+CHGIPSTOS Change IP over SNA TOS
+CHGIPXCCT Change IPX Circuit
+CHGIPXD Change IPX Description
+CHGJOB Change Job
+CHGJOBD Change Job Description
+CHGJOBJS Change Job using Job Scheduler
+CHGJOBQE Change Job Queue Entry
+CHGJOBSCDE Change Job Schedule Entry
+CHGJOBTYP Change Job Type
+CHGJRN Change Journal
+CHGKBDMAP Change Keyboard Map
+CHGLANADPI Change LAN Adapter Information
+CHGLF Change Logical File
+CHGLFM Change Logical File Member
+CHGLIB Change Library
+CHGLIBL Change Library List
+CHGLICINF Change License Information
+CHGLINASC Change Line Desc (Async)
+CHGLINBSC Change Line Desc (BSC)
+CHGLINDDI Change Line Desc (DDI)
+CHGLINETH Change Line Desc (Ethernet)
+CHGLINFAX Change Line Desc (Fax)
+CHGLINFR Change Line Desc (Frame Relay)
+CHGLINIDLC Change Line Desc (IDLC)
+CHGLINNET Change Line Desc (Network)
+CHGLINSDLC Change Line Desc (SDLC)
+CHGLINTDLC Change Line Desc (TDLC)
+CHGLINTRN Change Line Desc (Token-Ring)
+CHGLINWLS Change Line Desc (Wireless)
+CHGLINX25 Change Line Desc (X.25)
+CHGLPDA Change LPD Attributes
+CHGM36CFG Change Machine Configuration
+CHGMNU Change Menu
+CHGMOD Change Module
+CHGMODD Change Mode Description
+CHGMSGD Change Message Description
+CHGMSGF Change Message File
+CHGMSGQ Change Message Queue
+CHGNCK Change Nickname
+CHGNETA Change Network Attributes
+CHGNETJOBE Change Network Job Entry
+CHGNFSEXP Change NFS Export
+CHGNODGRPA Change Node Group Attributes
+CHGNTBD Change NetBIOS Description
+CHGNWIATM Change NWI ATM
+CHGNWIFR Change Network Interface (FR)
+CHGNWIISDN Change Network Interface ISDN
+CHGNWSA Change NWS Attributes
+CHGNWSALS Change Network Server Alias
+CHGNWSD Change Network Server Desc
+CHGNWSUSRA Change NWS User Attributes
+CHGOBJAUD Change Object Auditing
+CHGOBJD Change Object Description
+CHGOBJOWN Change Object Owner
+CHGOBJPGP Change Object Primary Group
+CHGOPTA Change Optical Attributes
+CHGOPTVOL Change Optical Volume
+CHGOUTQ Change Output Queue
+CHGOWN Change Owner
+CHGPCOPRF Change PC Organizer Profile
+CHGPDGPRF Change PDG Profile
+CHGPEXDFN Change PEX Definition
+CHGPF Change Physical File
+CHGPFCST Change PF Constraint
+CHGPFM Change Physical File Member
+CHGPFRCOL Change Performance Collection
+CHGPGM Change Program
+CHGPGMVAR Change Program Variable
+CHGPGP Change Primary Group
+CHGPJ Change Prestart Job
+CHGPJE Change Prestart Job Entry
+CHGPOPA Change POP Server Attributes
+CHGPRB Change Problem
+CHGPRBACNE Change Problem Action Entry
+CHGPRBSLTE Change Problem Selection Entry
+CHGPRF Change Profile
+CHGPRTF Change Printer File
+CHGPSFCFG Change PSF Configuration
+CHGPTR Change Pointer
+CHGPWD Change Password
+CHGPWRSCD Change Power On/Off Schedule
+CHGPWRSCDE Change Power Schedule Entry
+CHGQRYA Change Query Attributes
+CHGQSTDB Change Q/A Database
+CHGRCYAP Chg Recovery for Access Paths
+CHGRDBDIRE Change RDB Directory Entry
+CHGRJECMNE Change RJE Communication Entry
+CHGRJERDRE Change RJE Reader Entry
+CHGRJEWTRE Change RJE Writer Entry
+CHGRMTDFN Change Remote Definition
+CHGRPYLE Change Reply List Entry
+CHGRTDA Change RouteD Attributes
+CHGRTGE Change Routing Entry
+CHGRWSPWD Change RWS Controller Password
+CHGRXCA Change REXEC Attributes
+CHGS34LIBM Change S/34 Library Member
+CHGS36 Change S/36 Configuration
+CHGS36A Change S/36 Environment Attr
+CHGS36MSGL Change S/36 Message List
+CHGS36PGMA Change S/36 Program Attributes
+CHGS36PRCA Change S/36 Proc Attributes
+CHGS36SRCA Change S/36 Source Attributes
+CHGSAVF Change Save File
+CHGSBSD Change Subsystem Description
+CHGSCHIDX Change Search Index
+CHGSECA Change Security Attributes
+CHGSECAUD Change Security Auditing
+CHGSHRPOOL Change Shared Storage Pool
+CHGSMTPA Change SMTP Attributes
+CHGSNILOC Change SNA over IPX Location
+CHGSNMPA Change SNMP Attributes
+CHGSPLFA Change Spooled File Attributes
+CHGSRCPF Change Source Physical File
+CHGSRVA Change Service Attributes
+CHGSRVPGM Change Service Program
+CHGSSND Change Session Description
+CHGSSNMAX Change Session Maximum
+CHGSYSDIRA Change System Dir Attributes
+CHGSYSJOB Change System Job
+CHGSYSLIBL Change System Library List
+CHGSYSVAL Change System Value
+CHGTAPCTG Change Tape Cartridge
+CHGTAPF Change Tape File
+CHGTCPA Change TCP/IP Attributes
+CHGTCPHTE Change TCP/IP Host Table Entry
+CHGTCPIFC Change TCP/IP Interface
+CHGTCPLNK Change TCP/IP Link
+CHGTCPRTE Change TCP/IP Route
+CHGTELNA Change TELNET Attributes
+CHGTFTPA Change TFTP Attributes
+CHGUSRAUD Change User Auditing
+CHGUSRPRF Change User Profile
+CHGUSRPRTI Change User Print Info
+CHGVAR Change Variable
+CHGVT1MAP Change VT100 keyboard map
+CHGVTMAP Change VT Keyboard Map
+CHGWSE Change Work Station Entry
+CHGWSGA Change WSG Attributes
+CHGWTR Change Writer
+CHKCMNTRC Check Communications Trace
+CHKDKT Check Diskette
+CHKDLO Check Do*****ent Library Object
+CHKIN Check In Object
+CHKOBJ Check Object
+CHKOBJITG Check Object Integrity
+CHKOUT Check Out Object
+CHKPRDOPT Check Product Option
+CHKPWD Check Password
+CHKRCDLCK Check Record Locks
+CHKS36SRCA Check S/36 Source Attributes
+CHKTAP Check Tape
+CLOF Close File
+CLRDKT Clear Diskette
+CLRJOBQ Clear Job Queue
+CLRLIB Clear Library
+CLRMSGQ Clear Message Queue
+CLROUTQ Clear Output Queue
+CLRPFM Clear Physical File Member
+CLRPOOL Clear Pool
+CLRSAVF Clear Save File
+CLRTRCDTA Clear Trace Data
+CMD Command Definition
+CMPJRNIMG Compare Journal Images
+CMPPFM Compare Physical File Member
+CMPPTFLVL Compare PTF Level
+CNLRJERDR Cancel RJE Reader
+CNLRJEWTR Cancel RJE Writer
+COMMIT Commit
+COPY Copy Object
+COPYRIGHT Copyright
+CPROBJ Compress Object
+CPY Copy Object
+CPYCFGL Copy Configuration List
+CPYDOC Copy Do*****ent
+CPYF Copy File
+CPYFCNARA Copy Functional Area
+CPYFRMDIR Copy From Directory
+CPYFRMDKT Copy From Diskette
+CPYFRMPCD Copy From PC Do*****ent
+CPYFRMQRYF Copy From Query File
+CPYFRMSTMF Copy From Stream File
+CPYFRMTAP Copy From Tape
+CPYGPHFMT Copy Graph Format
+CPYGPHPKG Copy Graph Package
+CPYJOBJS Copy Job using Job Scheduler
+CPYLIB Copy Library
+CPYOPT Copy Optical
+CPYPFRDTA Copy Performance Data
+CPYPTF Copy Program Temporary Fix
+CPYSPLF Copy Spooled File
+CPYSRCF Copy Source File
+CPYTODIR Copy To Directory
+CPYTODKT Copy To Diskette
+CPYTOPCD Copy To PC Do*****ent
+CPYTOSTMF Copy To Stream File
+CPYTOTAP Copy To Tape
+CRTALRTBL Create Alert Table
+CRTAUTHLR Create Authority Holder
+CRTAUTL Create Authorization List
+CRTBESTMDL Create BEST/1 Model
+CRTBNDCBL Create Bound COBOL Program
+CRTBNDCL Create Bound CL Program
+CRTBNDDIR Create Binding Directory
+CRTBNDRPG Create Bound RPG Program
+CRTCBLMOD Create COBOL Module
+CRTCBLPGM Create COBOL Program
+CRTCFGL Create Configuration List
+CRTCLD Create C Locale Description
+CRTCLMOD Create CL Module
+CRTCLPGM Create CL Program
+CRTCLS Create Class
+CRTCMD Create Command
+CRTCNNL Create Connection List
+CRTCOSD Create Class-of-Service Desc
+CRTCRQD Create CRQ Description
+CRTCSI Create Comm Side Information
+CRTCTLAPPC Create Ctl Desc (APPC)
+CRTCTLASC Create Ctl Desc (Async)
+CRTCTLBSC Create Ctl Desc (BSC)
+CRTCTLFNC Create Ctl Desc (Finance)
+CRTCTLHOST Create Ctl Desc (SNA Host)
+CRTCTLLWS Create Ctl Desc (Local WS)
+CRTCTLNET Create Ctl Desc (Network)
+CRTCTLRTL Create Ctl Desc (Retail)
+CRTCTLRWS Create Ctl Desc (Remote WS)
+CRTCTLTAP Create Ctl Desc (Tape)
+CRTCTLVWS Create Ctl Desc (Virtual WS)
+CRTDDMF Create DDM File
+CRTDEVAPPC Create Device Desc (APPC)
+CRTDEVASC Create Device Desc (Async)
+CRTDEVBSC Create Device Desc (BSC)
+CRTDEVDKT Create Device Desc (Diskette)
+CRTDEVDSP Create Device Desc (Display)
+CRTDEVFNC Create Device Desc (Finance)
+CRTDEVHOST Create Device Desc (SNA Host)
+CRTDEVINTR Create Device Desc (Intra)
+CRTDEVMLB Create Device Desc (Media Lib)
+CRTDEVNET Create Device Desc (Network)
+CRTDEVOPT Create Device Desc (Optical)
+CRTDEVPRT Create Device Desc (Printer)
+CRTDEVRTL Create Device Desc (Retail)
+CRTDEVSNPT Create Device Desc (SNPT)
+CRTDEVSNUF Create Device Desc (SNUF)
+CRTDEVTAP Create Device Desc (Tape)
+CRTDFUDSPF Create DFU Display File
+CRTDIR Create Directory
+CRTDKTF Create Diskette File
+CRTDOC Create Do*****ent
+CRTDSPF Create Display File
+CRTDSTL Create Distribution List
+CRTDTAARA Create Data Area
+CRTDTADCT Create Data Dictionary
+CRTDTAQ Create Data Queue
+CRTDUPOBJ Create Duplicate Object
+CRTEDTD Create Edit Description
+CRTFCNARA Create Functional Area
+CRTFCT Create Forms Control Table
+CRTFLR Create Folder
+CRTFNTRSC Create Font Resource
+CRTFORMDF Create Form Definition
+CRTFTR Create Filter
+CRTGPHFMT Create Graph Format
+CRTGPHPKG Create Graph Package
+CRTGSS Create Graphics Symbol Set
+CRTHSTDTA Create Historical Data
+CRTICFF Create ICF File
+CRTIPXD Create IPX Description
+CRTJOBD Create Job Description
+CRTJOBQ Create Job Queue
+CRTJRN Create Journal
+CRTJRNRCV Create Journal Receiver
+CRTLF Create Logical File
+CRTLIB Create Library
+CRTLINASC Create Line Desc (Async)
+CRTLINBSC Create Line Desc (BSC)
+CRTLINDDI Create Line Desc (DDI)
+CRTLINETH Create Line Desc (Ethernet)
+CRTLINFAX Create Line Desc (Fax)
+CRTLINFR Create Line Desc (Frame Relay)
+CRTLINIDLC Create Line Desc (IDLC)
+CRTLINNET Create Line Desc (Network)
+CRTLINSDLC Create Line Desc (SDLC)
+CRTLINTDLC Create Line Desc (TDLC)
+CRTLINTRN Create Line Desc (Token-Ring)
+CRTLINWLS Create Line Desc (Wireless)
+CRTLINX25 Create Line Desc (X.25)
+CRTLOCALE Create Locale
+CRTM36CFG Create Machine Configuration
+CRTMNU Create Menu
+CRTMODD Create Mode Description
+CRTMSGF Create Message File
+CRTMSGFMNU Create Menu from Msg Files
+CRTMSGQ Create Message Queue
+CRTNODGRP Create Node Group
+CRTNODL Create Node List
+CRTNTBD Create NetBIOS Description
+CRTNWIATM Create NWI ATM
+CRTNWIFR Create Network Interface (FR)
+CRTNWIISDN Create Network Interface ISDN
+CRTNWSALS Create Network Server Alias
+CRTNWSD Create Network Server Desc
+CRTNWSSTG Create NWS Storage Space
+CRTOUTQ Create Output Queue
+CRTOVL Create Overlay
+CRTPAGDFN Create Page Definition
+CRTPAGSEG Create Page Segment
+
+CRTPDG Create Print Descriptor Group
+CRTPF Create Physical File
+CRTPGM Create Program
+CRTPNLGRP Create Panel Group
+CRTPRTF Create Printer File
+CRTPSFCFG Create PSF Configuration
+CRTQMFORM Create Query Management Form
+CRTQMQRY Create Query Management Query
+CRTQSTDB Create Q/A Database
+CRTQSTLOD Create Q/A Database Load
+CRTRJEBSCF Create RJE BSC File
+CRTRJECFG Create RJE Configuration
+CRTRJECMNF Create RJE Communication File
+CRTRPGMOD Create RPG Module
+CRTRPGPGM Create RPG/400 Program
+CRTRPTPGM Create Auto Report RPG Program
+CRTS36CBL Create S/36 COBOL Program
+CRTS36DSPF Create S/36 Display File
+CRTS36MNU Create S/36 Menu
+CRTS36MSGF Create S/36 Message File
+CRTS36RPG Create RPG II Program
+CRTS36RPGR Create Console Display File
+CRTS36RPT Create S/36 RPG II Auto Report
+CRTSAVF Create Save File
+CRTSBSD Create Subsystem Description
+CRTSCHIDX Create Search Index
+CRTSPADCT Create Spelling Aid Dictionary
+CRTSQLC Create SQL C Program
+CRTSQLCBL Create SQL COBOL Program
+CRTSQLCBLI Create SQL ILE COBOL Object
+CRTSQLCI Create SQL ILE C object
+CRTSQLFTN Create SQL FORTRAN Program
+CRTSQLPKG Create SQL Package
+CRTSQLPLI Create SQL PL/I Program
+CRTSQLRPG Create SQL RPG Program
+CRTSQLRPGI Create SQL ILE RPG Object
+CRTSRCPF Create Source Physical File
+CRTSRVPGM Create Service Program
+CRTSSND Create Session Description
+CRTTAPCGY Create Tape Category
+CRTTAPF Create Tape File
+CRTTBL Create Table
+CRTUDFS Create User-Defined FS
+CRTUSRPRF Create User Profile
+CRTVLDL Create Validation List
+CRTWSCST Create WSCST
+CVTBASSTR Convert S/36 Stream File
+CVTBASUNF Convert S/36 Unformatted File
+CVTBGUDTA Convert BGU Data
+CVTCLSRC Convert CL Source
+CVTDAT Convert Date
+CVTDLSNAM Convert DLS Name
+CVTEDU Convert Education
+CVTIPSIFC Convert IP Address
+CVTIPSLOC Convert Network ID / Location
+CVTNAMSMTP Convert SMTP Names
+CVTOPTBKU Convert Optical Backup
+CVTPFRDTA Convert Performance Data
+CVTRJEDTA Convert RJE Data
+CVTRPGSRC Convert RPG Source
+CVTS36CFG Convert S/36 Configuration
+CVTS36FCT Convert Forms Control Table
+CVTS36JOB Convert S/36 Migration Job
+CVTS36QRY Convert S/36 Query
+CVTS38JOB Convert S/38 Migration Job
+CVTTCPCL Convert TCP/IP CL Source
+CVTTOFLR Convert To Folder
+DATA Data
+DCL Declare CL Variable
+DCLF Declare File
+DCPOBJ Decompress Object
+DEL Remove Link
+DEP Dependent Definition
+DLCOBJ Deallocate Object
+DLTALR Delete Alert
+DLTALRTBL Delete Alert Table
+DLTAPARDTA Delete APAR Data
+DLTAUTHLR Delete Authority Holder
+DLTAUTL Delete Authorization List
+DLTBESTMDL Delete BEST/1 model
+DLTBNDDIR Delete Binding Directory
+DLTCFGL Delete Configuration List
+DLTCLD Delete C Locale Description
+DLTCLS Delete Class
+DLTCMD Delete Command
+DLTCMNTRC Delete Communications Trace
+DLTCNNL Delete Connection List
+DLTCOSD Delete Class-of-Service Desc
+DLTCRQD Delete CRQ Description
+DLTCSI Delete Comm Side Information
+DLTCSPMAP Delete CSP/AE Map Group
+DLTCTLD Delete Controller Description
+DLTDEVD Delete Device Description
+DLTDEVMLB Delete Device Media Library
+DLTDFUPGM Delete DFU Program
+DLTDKTLBL Delete Diskette Label
+DLTDLO Delete Do*****ent Library Object
+DLTDOCL Delete Do*****ent List
+DLTDST Delete Distribution
+DLTDSTL Delete Distribution List
+DLTDTAARA Delete Data Area
+DLTDTADCT Delete Data Dictionary
+DLTDTAQ Delete Data Queue
+DLTEDTD Delete Edit Description
+DLTF Delete File
+DLTFCNARA Delete Functional Area
+DLTFCT Delete Forms Control Table
+DLTFNTRSC Delete Font Resource
+DLTFNTTBL Delete Font Table
+DLTFORMDF Delete Form Definition
+DLTFTR Delete Filter
+DLTGPHFMT Delete Graph Format
+DLTGPHPKG Delete Graph Package
+DLTGSS Delete Graphic Symbol Set
+DLTHSTDTA Delete Historical Data
+DLTIPXD Delete IPX Description
+DLTJOBD Delete Job Description
+DLTJOBQ Delete Job Queue
+DLTJRN Delete Journal
+DLTJRNRCV Delete Journal Receiver
+DLTLIB Delete library
+DLTLICPGM Delete Licensed Program
+DLTLIND Delete Line Description
+DLTLOCALE Delete Locale
+DLTM36 Delete Machine
+DLTM36CFG Delete Machine Configuration
+DLTMNU Delete Menu
+DLTMOD Delete Module
+DLTMODD Delete Mode Description
+DLTMSGF Delete Message File
+DLTMSGQ Delete Message Queue
+DLTNETF Delete Network File
+DLTNODGRP Delete Node Group
+DLTNODL Delete Node List
+DLTNTBD Delete NetBIOS Descriptions
+DLTNWID Delete Network Interface Desc
+DLTNWSALS Delete Network Server Alias
+DLTNWSAPP Delete Network Server App
+DLTNWSD Delete Network Server Desc
+DLTNWSSTG Delete NWS Storage Space
+DLTOUTQ Delete Output Queue
+DLTOVL Delete Overlay
+DLTOVR Delete Override
+DLTOVRDEVE Delete Override Pgm Dev Entry
+DLTPAGDFN Delete Page Definition
+DLTPAGSEG Delete Page Segment
+DLTPDG Delete Print Descriptor Group
+DLTPEXDTA Delete PEX Data
+DLTPFRDTA Delete Performance Data
+DLTPGM Delete Program
+DLTPNLGRP Delete Panel Group
+DLTPRB Delete Problem
+DLTPSFCFG Delete PSF Configuration
+DLTPTF Delete Program Temporary Fix
+DLTQMFORM Delete Query Management Form
+DLTQMQRY Delete Query Management Query
+DLTQRY Delete Query
+DLTQST Delete Questions and Answers
+DLTQSTDB Delete Q/A Database
+DLTRJECFG Delete RJE Configuration
+DLTSBSD Delete Subsystem Description
+DLTSCHIDX Delete Search Index
+DLTSHF Delete Bookshelf
+DLTSPADCT Delete Spelling Aid Dictionary
+DLTSPLF Delete Spooled File
+DLTSQLPKG Delete SQL Package
+DLTSRVPGM Delete Service Program
+DLTSSND Delete Session Description
+DLTTAPCGY Delete Tape Category
+DLTTBL Delete Table
+DLTUDFS Delete User-Defined FS
+DLTUSRIDX Delete User Index
+DLTUSRPRF Delete User Profile
+DLTUSRQ Delete User Queue
+DLTUSRSPC Delete User Space
+DLTVLDL Delete Validation List
+DLTWSCST Delete WSCST
+DLYJOB Delay Job
+DMPCLPGM Dump CL Program
+DMPDLO Dump Do*****ent Library Object
+DMPJOB Dump Job
+DMPJOBINT Dump Job Internal
+DMPOBJ Dump Object
+DMPSYSOBJ Dump System Object
+DMPTAP Dump Tape
+DMPTRC Dump Trace
+DO Do Group
+DSCJOB Disconnect Job
+DSPACC Display Access Code
+DSPACCAUT Display Access Code Authority
+DSPACCGRP Display Access Group
+DSPACTPJ Display Active Prestart Jobs
+DSPACTPRFL Display Active Profile List
+DSPACTSCD Display Activation Schedule
+DSPAPPNINF Display APPN Information
+DSPAUDJRNE Display Audit Journal Entries
+DSPAUT Display Authority
+DSPAUTHLR Display Authority Holder
+DSPAUTL Display Authorization List
+DSPAUTLDLO Display Authorization List DLO
+DSPAUTLOBJ Display Authorization List Obj
+DSPAUTUSR Display Authorized Users
+DSPBCKSTS Display Backup Status
+DSPBCKUP Display Backup Options
+DSPBCKUPL Display Backup List
+DSPBKP Display Breakpoints
+DSPBNDDIR Display Binding Directory
+DSPCCTRTE Display Circuit Route
+DSPCCTSRV Display Circuit Service
+DSPCDEFNT Display Coded Font
+DSPCFGL Display Configuration List
+DSPCLS Display Class
+DSPCMD Display Command
+DSPCNNL Display Connection List
+DSPCNNSTS Display Connection Status
+DSPCOSD Display Class-of-Service Desc
+DSPCPCST Display CHKPND Constraint
+DSPCSI Display Comm Side Information
+DSPCTLD Display Controller Description
+DSPCURDIR Display Current Directory
+DSPDBG Display Debug
+DSPDBGWCH Display Debug Watch
+DSPDBR Display Data Base Relations
+DSPDDMF Display DDM File
+DSPDEVD Display Device Description
+DSPDIRE Display Directory Entries
+DSPDKT Display Diskette
+DSPDLOAUD Display DLO Auditing Level
+DSPDLOAUT Display DLO Authority
+DSPDLONAM Display DLO Name
+DSPDOC Display Do*****ent
+DSPDSTL Display Distribution List
+DSPDSTLOG Display Distribution Log
+DSPDSTSRV Display Distribution Services
+DSPDTA Display Data
+DSPDTAARA Display Data Area
+DSPDTADCT Display Data Dictionary
+DSPEDTD Display Edit Description
+DSPEWCBCDE Display EWC Barcode Entry
+DSPEWCM Display Wireless Ctl Member
+DSPEWCPTCE Display EWC PTC Entry
+DSPEWLM Display Wireless Line Member
+DSPEXPSCD Display Expiration Schedule
+DSPFD Display File Description
+DSPFFD Display File Field Description
+DSPFLR Display Folder
+DSPFNTRSCA Display Font Resource Attr
+DSPFNTTBL Display Font Table
+DSPHDWRSC Display Hardware Resources
+DSPHFS Display Hierarchical File Sys.
+DSPHLPDOC Display Help Do*****ent
+DSPHSTGPH Display Historical Graph
+DSPHSTJS Display History using JS
+DSPIPLA Display IPL Attributes
+DSPIPXCCT Display IPX Circuit
+DSPIPXD Display IPX Description
+DSPJOB Display Job
+DSPJOBD Display Job Description
+DSPJOBJS Display Job using JS
+DSPJOBLOG Display Job Log
+DSPJOBTBL Display Job Tables
+DSPJRN Display Journal
+DSPJRNRCVA Display Journal Receiver Atr
+DSPKBDMAP Display Keyboard Map
+DSPLANADPP Display LAN Adapter Profile
+DSPLANMLB Display LAN Media Library
+DSPLANSTS Display LAN Status
+DSPLIB Display Library
+DSPLIBD Display Library Description
+DSPLIBL Display Library List
+DSPLICKEY Display License Key Info
+DSPLIND Display Line Description
+DSPLNK Display Object Links
+DSPLOG Display Log
+DSPM36 Display Machine
+DSPM36CFG Display Machine Configuration
+DSPMFSINF Display Mounted FS Information
+DSPMNUA Display Menu Attributes
+DSPMOD Display Module
+DSPMODD Display Mode Description
+DSPMODSRC Display Module Source
+DSPMODSTS Display Mode Status
+DSPMSG Display Messages
+DSPMSGD Display Message Description
+DSPNCK Display Nickname
+DSPNETA Display Network Attributes
+DSPNODGRP Display Node Group
+DSPNTBD Display NetBIOS Description
+DSPNWID Display Network Interface Desc
+DSPNWSA Display NWS Attributes
+DSPNWSALS Display Network Server Alias
+DSPNWSD Display Network Server Desc
+DSPNWSSSN Display Network Server Session
+DSPNWSSTC Display NWS Statistics
+DSPNWSSTG Display NWS Storage Space
+DSPNWSUSR Display Network Server Users
+DSPNWSUSRA Display NWS User Attributes
+DSPOBJAUT Display Object Authority
+DSPOBJD Display Object Description
+DSPOPCLNK Display OptiConnect Link Sts
+DSPOPT Display Optical
+DSPOPTLCK Display Optical Locks
+DSPOPTSVR Display Optical Server
+DSPOVR Display Override
+DSPPDGPRF Display PDG Profile
+DSPPFM Display Physical File Member
+DSPPFRDTA Display Performance Data
+DSPPFRGPH Display Performance Graph
+DSPPGM Display Program
+DSPPGMADP Display Program Adopt
+DSPPGMREF Display Program References
+DSPPGMVAR Display Program Variable
+DSPPRB Display Problems
+DSPPSFCFG Display PSF Configuration
+DSPPTF Display Program Temporary Fix
+DSPPWRSCD Display Power On/Off Schedule
+DSPRCDLCK Display Record Locks
+DSPRCYAP Dsp Recovery for Access Paths
+DSPRDBDIRE Display RDB Directory Entries
+DSPRJECFG Display RJE Configuration
+DSPRMTDFN Display Remote Definition
+DSPS36 Display S/36 Configuration
+DSPSAVF Display Save File
+DSPSBSD Display Subsystem Description
+DSPSECA Display Security Attributes
+DSPSECAUD Display Security Auditing
+DSPSFWRSC Display Software Resources
+DSPSOCSTS Display Sphere of Control Sts
+DSPSPLF Display Spooled File
+DSPSRVA Display Service Attributes
+DSPSRVPGM Display Service Program
+DSPSRVSTS Display Service Status
+DSPSYSSTS Display System Status
+DSPSYSVAL Display System Value
+DSPTAP Display Tape
+DSPTAPCGY Display Tape Category
+DSPTAPCTG Display Tape Cartridge
+DSPTAPSTS Display Tape Status
+DSPTM Display Trademarks
+DSPTRC Display Trace
+DSPTRCDTA Display Trace Data
+DSPUDFS Display User-Defined FS
+DSPUPGPRP Display Upgrade Preparation
+DSPUSRPMN Display User Permission
+DSPUSRPRF Display User Profile
+DSPUSRPRTI Display User Print Info
+DSPVT1MAP Display VT100 keyboard map
+DSPVTMAP Display VT Keyboard Map
+DSPWSUSR Display Work Station User
+DUPDKT Duplicate Diskette
+DUPOPT Duplicate Optical
+DUPTAP Duplicate Tape
+EDTAUTL Edit Authorization List
+EDTBCKUPL Edit Backup List
+EDTCPCST Edit CHKPND Constraints
+EDTDLOAUT Edit DLO Authority
+EDTDOC Edit Do*****ent
+EDTLIBL Edit Library List
+EDTOBJAUT Edit Object Authority
+EDTQST Edit Questions and Answers
+EDTRBDAP Edit Rebuild of Access Paths
+EDTRCYAP Edit Recovery for Access Path
+EDTS36PGMA Edit S/36 Program Attributes
+EDTS36PRCA Edit S/36 Procedure Attribute
+EDTS36SRCA Edit S/36 Source Attributes
+EDTWSOAUT Edit Workstation Object Aut
+EJTEMLOUT Eject Emulation Output
+ELEM Element Definition
+ELSE Else
+EMLPRTKEY Emulate Printer Keys
+ENDBCHJOB End Batch Job
+ENDCBLDBG End COBOL Debug
+ENDCLNUP End Cleanup
+ENDCMNSVR End Communications Server
+ENDCMNTRC End Communications Trace
+ENDCMTCTL End Commitment Control
+ENDCPYSCN End Copy Screen
+ENDCTLRCY End Controller Recovery
+ENDDBG End Debug Mode
+ENDDBGSVR End Debug Server
+ENDDBMON End Database Monitor
+ENDDEVRCY End Device Recovery
+ENDDIRSHD End Directory Shadowing
+ENDDO End Do Group
+ENDEPMENV End EPM Environments
+ENDGRPJOB End Group Job
+ENDHOSTSVR End Host Server
+ENDINP End Input
+ENDIPIIFC End IP over IPX Interface
+ENDIPSIFC End IP over SNA Interface
+ENDIPX End IPX
+ENDIPXCCT End IPX Circuit
+ENDISDB End ISDB
+ENDJOB End Job
+ENDJOBABN End Job Abnormal
+ENDJOBTRC End Job Trace
+ENDJRNAP End Journal Access Path
+ENDJRNPF End Journaling PF Changes
+ENDJS End Job Scheduler
+ENDLINRCY End Line Recovery
+ENDM36 End Machine
+ENDMOD End Mode
+ENDMSF End Mail Server Framework
+ENDNFSSVR End NFS Server
+ENDNWIRCY End Network Interface Recovery
+ENDNWSAPP End Network Server Application
+ENDPASTHR End Pass-Through
+ENDPEX End Performance Explorer
+ENDPFRCOL End Performance Collection
+ENDPFRMON End Performance Monitor
+ENDPGM End Program
+ENDPGMEXP End Program Export List
+ENDPJ End Prestarted Jobs
+ENDPRTEML End Printer Emulation
+ENDRCV End Receive
+ENDRDBRQS End relational database request
+ENDRDR End Reader
+ENDRJESSN End RJE Session
+ENDRMTSPT End Remote Support
+ENDRQS End Request
+ENDS36 End S/36 Session
+ENDSBS End Subsystem
+ENDSRVJOB End Service Job
+ENDSYS End System
+ENDTCP End TCP/IP
+ENDTCPCNN End TCP/IP Connection
+ENDTCPIFC End TCP/IP Interface
+ENDTCPLNK End TCP/IP Link
+ENDTCPPTP End Point-to-Point TCP/IP
+ENDTCPSVR End TCP/IP Server
+ENDTIESSN End TIE Session
+ENDTRPMGR End Trap Manager
+ENDWTR End Writer
+EOF End of File
+ERASE Remove Link
+EXPORT Export a Program Symbol
+EXPORTFS Change NFS Export
+EXTPGMINF Extract Program Information
+FILDOC File Do*****ent
+FMTDTA Format Data
+FNDSTRPART Find String in Parts with PDM
+FNDSTRPDM Find String Using PDM
+FTP Start TCP/IP File Transfer
+GENCAT Generate Message Catalog
+GENS36RPT Generate S/36 Report
+GENS38RPT Generate S/38 Report
+GO Go to Menu
+GOTO Go To
+GRTACCAUT Grant Access Code Authority
+GRTOBJAUT Grant Object Authority
+GRTUSRAUT Grant User Authority
+GRTUSRPMN Grant User Permission
+GRTWSOAUT Grant Workstation Object Aut
+HLDCMNDEV Hold Communications Device
+HLDDSTQ Hold Distribution Queue
+HLDJOB Hold Job
+HLDJOBQ Hold Job Queue
+HLDJOBSCDE Hold Job Schedule Entry
+HLDOUTQ Hold Output Queue
+HLDRDR Hold Reader
+HLDSPLF Hold Spooled File
+HLDWTR Hold Writer
+IF If
+INSNWSAPP Install Network Server App
+INSPTF Install Program Temporary Fix
+INZDKT Initialize Diskette
+INZDSTQ Initialize Distribution Queue
+INZOPT Initialize Optical
+INZPCS Initialize Client Access/400
+INZPFM Initialize Physical File Mbr
+INZSYS Initialize System
+INZTAP Initialize Tape
+IPXPING Verify IPX Connection
+LNKDTADFN Link/Unlink Data Definition
+LODPTF Load Program Temporary Fix
+LODQSTDB Load Q/A Database
+LODRUN Load and Run
+LPR Send TCP/IP Spooled File
+MD Create Directory
+MDLSYS Model System
+MGRS36 Complete System/36 Migration
+MGRS36APF System/36 APF Migration
+MGRS36CBL System/36 Cobol Migration
+MGRS36DFU System/36 DFU Migration
+MGRS36DSPF System/36 Display File Migrate
+MGRS36ITM Migrate S/36 item
+MGRS36LIB System/36 Library Migration
+MGRS36MNU System/36 Menu Migration
+MGRS36MSGF System/36 Message File Migrate
+MGRS36QRY System/36 Query Migration
+MGRS36RPG System/36 RPG II Migration
+MGRS36SEC System/36 User ID Migration
+MGRS38OBJ Migrate S/38 object
+MIGRATE Migration Menu
+MKDIR Create Directory
+MONMSG Monitor Message
+MOUNT Add Mounted FS
+MOV Move Object
+MOVDOC Move Do*****ent
+MOVE Move Object
+MOVOBJ Move Object
+MRGFMRSPL Merge spool file with a form
+MRGFORMD Merge Form Description
+MRGMSGCLG Merge Message Catalog
+MRGMSGF Merge Message File
+MRGSRC Merge Source
+MRGTCPHT Merge TCP/IP Host Table
+NETSTAT Work with TCP/IP Network Sts
+OPNDBF Open Data Base File
+OPNQRYF Open Query File
+OVRDBF Override with Data Base File
+OVRDKTF Override with Diskette File
+OVRDSPF Override with Display File
+OVRICFDEVE Override ICF Pgm Device Entry
+OVRICFF Override ICF File
+OVRMSGF Override Message File
+OVRPRTF Override with Printer File
+OVRSAVF Override with Save File
+OVRTAPF Override with Tape File
+PARM Parameter Definition
+PGM Program
+PING Verify TCP/IP Connection
+PMTCTL Prompt Control Definition
+POSDBF Position Data Base File
+PRTACTRPT Print Activity Report
+PRTADPOBJ Print Adopting Objects
+PRTAFPDTA Print AFP Data
+PRTCMDUSG Print Command Usage
+PRTCMNSEC Print Communications Security
+PRTCMNTRC Print Communications Trace
+PRTCPTRPT Print Component Report
+PRTDEVADR Print Device Addresses
+PRTDOC Print Do*****ent
+PRTDSKINF Print Disk Information
+PRTERRLOG Print Error Log
+PRTINTDTA Print Internal Data
+PRTIPSCFG Print IP over SNA
+PRTJOBDAUT Print JOBD Authority
+PRTJOBRPT Print Job Interval Report
+PRTJOBTRC Print Job Trace
+PRTLCKRPT Print Lock Report
+PRTPEXRPT Print PEX Report
+PRTPOLRPT Print Pool Report
+PRTPUBAUT Print Publicly Auth Objects
+PRTPVTAUT Print Private Authorities
+PRTQAUT Print Queue Authority
+PRTRSCRPT Print Resource Report
+PRTSBSDAUT Print Subsystem Description
+PRTSCDJS Print Schedule using JS
+PRTSQLINF Print SQL Information
+PRTSWL Print Stop Word List
+PRTSYSINF Print System Information
+PRTSYSRPT Print System Report
+PRTSYSSECA Print System Security Attr
+PRTTNSRPT Print Transaction Report
+PRTTRCRPT Print Job Trace Report
+PRTTRGPGM Print Trigger Programs
+PRTUSROBJ Print User Objects
+PRTUSRPRF Print User Profile
+PWRDWNSYS Power Down System
+QMUS36 System/36 Command Selection
+QPZA000844 Send Distribution
+QRYDOCLIB Query Do*****ent Library
+QRYDST Query Distributions
+QRYPRBSTS Query Problem Status
+QRYTIEF Query TIE Files
+QUAL Qualifier Definition
+RCLACTGRP Reclaim Activation Group
+RCLDDMCNV Reclaim DDM Conversations
+RCLDLO Reclaim Do*****ent Lib Object
+RCLLIB Reclaim Library
+RCLOPT Reclaim Optical
+RCLRSC Reclaim Resources
+RCLSPLSTG Reclaim Spool Storage
+RCLSTG Reclaim Storage
+RCLTMPSTG Reclaim Temporary Storage
+RCVDST Receive Distribution
+RCVF Receive File
+RCVJRNE Receive Journal Entry
+RCVMGRDTA Receive Migration Data
+RCVMSG Receive Message
+RCVNETF Receive Network File
+RCVTIEF Receive TIE File
+RD Remove Directory
+READFILE Read a File
+REN Rename Object
+RESMGRNAM no discription
+RETURN Return
+RGZDLO Reorganize Do*****ent Lib Object
+RGZPFM Reorganize Physical File Mbr
+RLSCMNDEV Release Communications Device
+RLSDSTQ Release Distribution Queue
+RLSIFSLCK Release File System Locks
+RLSJOB Release Job
+RLSJOBQ Release Job Queue
+RLSJOBSCDE Release Job Schedule Entry
+RLSOUTQ Release Output Queue
+RLSRDR Release Reader
+RLSRMTPHS Release Remote Phase
+RLSSPLF Release Spooled File
+RLSWTR Release Writer
+RMDIR Remove Directory
+RMVACC Remove Access Code
+RMVAJE Remove Autostart Job Entry
+RMVALRD Remove Alert Description
+RMVAUTLE Remove Auth List Entry
+RMVBKP Remove Breakpoint
+RMVBNDDIRE Remove Binding Directory Entry
+RMVCCTRTE Remove Circuit Route
+RMVCCTSRV Remove Circuit Service
+RMVCFGLE Remove Cfg List Entries
+RMVCMNE Remove Communications Entry
+RMVCNNLE Remove Connection List Entry
+RMVCOMSNMP Remove Community for SNMP
+RMVDIR Remove Directory
+RMVDIRE Remove Directory Entry
+RMVDIRSHD Remove Directory Shadow System
+RMVDLOAUT Remove DLO Authority
+RMVDSTLE Remove Distribution List Entry
+RMVDSTQ Remove Distribution Queue
+RMVDSTRTE Remove Distribution Route
+RMVDSTSYSN Remove Secondary System Name
+RMVEMLCFGE Remove Configuration Entry
+RMVEWCBCDE Remove EWC Barcode Entry
+RMVEWCPTCE Remove EWC PTC Entry
+RMVEXITPGM Remove Exit Program
+RMVFCTE Remove Forms Control Entry
+RMVFTRACNE Remove Filter Action Entry
+RMVFTRSLTE Remove Filter Selection Entry
+RMVICFDEVE Remove ICF Device Entry
+RMVIPIADR Remove IP over IPX Address
+RMVIPIIFC Remove IP over IPX Interface
+RMVIPIRTE Remove IP over IPX Route
+RMVIPSIFC Remove IP over SNA Interface
+RMVIPSLOC Remove IP over SNA Location
+RMVIPSRTE Remove IP over SNA Route
+RMVIPXCCT Remove IPX Circuit
+RMVJOBQE Remove Job Queue Entry
+RMVJOBSCDE Remove Job Schedule Entry
+RMVJRNCHG Remove Journaled Changes
+RMVLANADPI Remove LAN Adapter Information
+RMVLANADPT Remove LAN Adapter
+RMVLIBLE Remove Library List Entry
+RMVLICKEY Remove License Key Information
+RMVLNK Remove Link
+RMVM Remove Member
+RMVMFS Remove Mounted FS
+RMVMSG Remove Message
+RMVMSGD Remove Message Description
+RMVNCK Remove Nickname
+RMVNETJOBE Remove Network Job Entry
+RMVNETTBLE Remove Network Table Entry
+RMVNODLE Remove Node List Entry
+RMVNWSSTGL Remove Server Storage Link
+RMVOPTCTG Remove Optical Cartridge
+RMVOPTSVR Remove Optical Server
+RMVPCLTBLE Remove Protocol Table Entry
+RMVPEXDFN Remove PEX Definition
+RMVPFCST Remove PF Constraint
+RMVPFTRG Remove Physical File Trigger
+RMVPGM Remove Program
+RMVPJE Remove Prestart Job Entry
+RMVPTF Remove Program Temporary Fix
+RMVRDBDIRE Remove RDB Directory Entry
+RMVREXBUF Remove REXX Buffer
+RMVRJECMNE Remove RJE Communication Entry
+RMVRJERDRE Remove RJE Reader Entry
+RMVRJEWTRE Remove RJE Writer Entry
+RMVRMTDFN Remove Remote Definition
+RMVRPYLE Remove Reply List Entry
+RMVRTGE Remove Routing Entry
+RMVSCHIDXE Remove Search Index Entry
+RMVSNILOC Remove SNA over IPX Location
+RMVSOCE Remove Sphere of Control Entry
+RMVSRVTBLE Remove Service Table Entry
+RMVTAPCTG Remove Tape Cartridge
+RMVTCPHTE Remove TCP/IP Host Table Entry
+RMVTCPIFC Remove TCP/IP Interface
+RMVTCPLNK Remove TCP/IP Link
+RMVTCPPORT Remove TCP/IP Port Restriction
+RMVTCPRSI Remove TCP/IP Remote System
+RMVTCPRTE Remove TCP/IP Route
+RMVTRC Remove Trace
+RMVWSE Remove Work Station Entry
+RNM Rename Object
+RNMCNNLE Rename Connection List Entry
+RNMDIRE Rename Directory Entry
+RNMDKT Rename Diskette
+RNMDLO Rename Do*****ent Library Object
+RNMDSTL Rename Distribution List
+RNMLANADPI Rename LAN Adapter
+RNMM Rename Member
+RNMNCK Rename Nickname
+RNMOBJ Rename Object
+RNMTCPHTE Rename TCP/IP Host Table Entry
+ROLLBACK Rollback
+RPLDOC Replace Do*****ent
+RQSORDAST Request Order Assistance
+RRTJOB Reroute Job
+RSMBKP Resume Breakpoint
+RSMCTLRCY Resume Controller Recovery
+RSMDEVRCY Resume Device Recovery
+RSMLINRCY Resume Line Recovery
+RSMNWIRCY Resume NWI Recovery
+RST Restore Object
+RSTAUT Restore Authority
+RSTCFG Restore Configuration
+RSTDLO Restore Do*****ent Lib Object
+RSTLIB Restore Library
+RSTLICPGM Restore Licensed Program
+RSTOBJ Restore Object
+RSTS36F Restore S/36 File
+RSTS36FLR Restore S/36 Folder
+RSTS36LIBM Restore S/36 Library Members
+RSTS38AUT Restore S/38 Authorities
+RSTSHF Restore Bookshelf
+RSTUSRPRF Restore User Profiles
+RTVAUTLE Retrieve Auth List Entry
+RTVBCKUP Retrieve Backup Options
+RTVBNDSRC Retrieve Binder Source
+RTVCFGSRC Retrieve Configuration Source
+RTVCFGSTS Retrieve Configuration Status
+RTVCLDSRC Retrieve C Locale Description
+RTVCLNUP Retrieve Cleanup
+RTVCLSRC Retrieve CL Source
+RTVCURDIR Retrieve Current Directory
+RTVDLOAUT Retrieve DLO Authority
+RTVDLONAM Retrieve DLO Name
+RTVDOC Retrieve Do*****ent
+RTVDSKINF Retrieve Disk Information
+RTVDTAARA Retrieve Data Area
+RTVGRPA Retrieve Group Attributes
+RTVJOBA Retrieve Job Attributes
+RTVJRNE Retrieve Journal Entry
+RTVLIBD Retrieve Library Description
+RTVMBRD Retrieve Member Description
+RTVMSG Retrieve Message
+RTVNETA Retrieve Network Attributes
+RTVOBJD Retrieve Object Description
+RTVPDGPRF Retrieve PDG Profile
+RTVPWRSCDE Retrieve Power Schedule Entry
+RTVQMFORM Retrieve Query Management Form
+RTVQMQRY Retrieve Query Mgmt Query
+RTVS36A Retrieve S/36 Environment Attr
+RTVSWLSRC Retrieve Stop Word List Source
+RTVSYSINF Retrieve System Information
+RTVSYSVAL Retrieve System Value
+RTVUSRPRF Retrieve User Profile
+RTVUSRPRTI Retrieve User Print Info
+RTVWSCST Retrieve WSCST source
+RUNBCKUP Run Backup
+RUNLPDA Run LPDA-2
+RUNQRY Run Query
+RUNRMTCMD Run Remote Command
+RUNSQLSTM Run SQL Statements
+RVKACCAUT Revoke Access Code Authority
+RVKOBJAUT Revoke Object Authority
+RVKPUBAUT Revoke Public Authority
+RVKUSRPMN Revoke User Permission
+RVKWSOAUT Revoke Workstation Object Aut
+SAV Save Object
+SAVAPARDTA Save APAR Data
+SAVCFG Save Configuration
+SAVCHGOBJ Save Changed Objects
+SAVDLO Save Do*****ent Library Object
+SAVEBRKMSG Send Break Message
+SAVLIB Save Library
+SAVLICPGM Save Licensed Program
+SAVOBJ Save Object
+SAVRST Save Restore
+SAVRSTCHG Save Restore Changed Objects
+SAVRSTDLO Save Restore Doc/Lib Object
+SAVRSTLIB Save Restore Library
+SAVRSTOBJ Save Restore Object
+SAVS36F Save S/36 File
+SAVS36LIBM Save S/36 Library Members
+SAVSAVFDTA Save Save File Data
+SAVSECDTA Save Security Data
+SAVSHF Save Bookshelf
+SAVSTG Save Storage
+SAVSYS Save System
+SBMCODEJOB Submit CODE Batch Job
+SBMDBJOB Submit Data Base Jobs
+SBMDKTJOB Submit Diskette Jobs
+SBMFNCJOB Submit Finance Job
+SBMJOB Submit Job
+SBMNETJOB Submit Network Job
+SBMNWSCMD Submit Network Server Command
+SBMRJEJOB Submit RJE Job
+SBMRMTCMD Submit Remote Command
+SETATNPGM Set Attention Program
+SETCSTDTA Set Customization Data
+SETKBDMAP Set Keyboard Map
+SETOBJACC Set Object Access
+SETPGMINF Set Program Information
+SETTAPCGY Set Tape Category
+SETUPGENV Set Upgrade Environment
+SETVT1MAP Set VT100 keyboard map
+SETVTMAP Set VT Keyboard Map
+SETVTTBL Set VT Mapping Tables
+SIGNOFF Sign Off
+SLTCMD Select Command
+SNDDST Send Distribution
+SNDDSTQ Send Distribution Queue
+SNDF Send File
+SNDFNCIMG Send Finance Diskette Image
+SNDJRNE Send Journal Entry
+SNDMGRDTA Send Migration Data
+SNDMSG Send Message
+SNDNETF Send Network File
+SNDNETMSG Send Network Message
+SNDNETSPLF Send Network Spooled File
+SNDNWSMSG Send Network Server Message
+SNDPGMMSG Send Program Message
+SNDPTFORD Send PTF Order
+SNDRCVF Send/Receive File
+SNDRJECMD Send RJE Command
+SNDRPY Send Reply
+SNDSRVRQS Send Service Request
+SNDTCPSPLF Send TCP/IP Spooled File
+SNDTIEF Send TIE File
+SNDUSRMSG Send User Message
+STATFS Display Mounted FS Information
+STRAPF Advanced Printer Function
+STRBEST Start BEST/1
+STRCBLDBG Start COBOL Debug
+STRCLNUP Start Cleanup
+STRCMNSVR Start Communications Server
+STRCMNTRC Start Communications Trace
+STRCMTCTL Start Commitment Control
+STRCODE Start CODE
+STRCPYSCN Start Copy Screen
+STRDBG Start Debug
+STRDBGSVR Start Debug Server
+STRDBMON Start Database Monitor
+STRDBRDR Start Data Base Reader
+STRDFU Start DFU
+STRDIRSHD Start Directory Shadowing
+STRDKTRDR Start Diskette Reader
+STRDKTWTR Start Diskette Writer
+STREDU Start Education
+STREML3270 Start 3270 Display Emulation
+STREPMENV Start EPM Environment
+STRHOSTSVR Start Host Server
+STRIDD Start IDDU
+STRINFSKR Start InfoSeeker
+STRIPIIFC Start IP over IPX Interface
+STRIPSIFC Start IP over SNA Interface
+STRIPX Start IPX
+STRIPXCCT Start IPX Circuit
+STRISDB Start ISDB
+STRITF Start ITF
+STRJOBTRC Start Job Trace
+STRJRNAP Start Journal Access Path
+STRJRNPF Start Journal Physical File
+STRMOD Start Mode
+STRMSF Start Mail Server Framework
+STRNFSSVR Start NFS Server
+STRNWSAPP Start Network Server App
+STROBJCVN Start Object Conversion
+STRPASTHR Start Pass-Through
+STRPCCMD Start PC Command
+STRPCO Start PC Organizer
+STRPDM Start PDM
+STRPEX Start Performance Explorer
+STRPFRCOL Start Performance Collection
+STRPFRG Start Performance Graphics
+STRPFRMON Start Performance Monitor
+STRPFRT Start Performance Tools
+STRPGMEXP Start Program Export List
+STRPGMMNU Start Programmer Menu
+STRPJ Start Prestarted Jobs
+STRPRTEML Start Printer Emulation
+STRPRTWTR Start Printer Writer
+STRQM Start DB2 Query Manager OS/400
+STRQMPRC Start Query Management Proc
+STRQMQRY Start Query Management Query
+STRQRY Start Query
+STRQST Start Question and Answer
+STRREXPRC Start REXX Procedure
+STRRJECSL Start RJE Console
+STRRJERDR Start RJE Reader
+STRRJESSN Start RJE Session
+STRRJEWTR Start RJE Writer
+STRRLU Start Report Layout Utility
+STRRMTSPT Start Remote Support
+STRRMTWTR Start Remote Writer
+STRS36 Start S/36 Session
+STRS36MGR Start S/36 Migration
+STRS36PRC Start S/36 Procedure
+STRS38MGR Start S/38 Migration
+STRSBS Start Subsystem
+STRSCHIDX Start Search Index
+STRSDA Start SDA
+STRSEU Start Source Entry Utility
+STRSPTN Start Support Network
+STRSQL Start SQL Interactive Session
+STRSRVJOB Start Service Job
+STRSST Start System Service Tools
+STRTCP Start TCP/IP
+STRTCPFTP Start TCP/IP File Transfer
+STRTCPIFC Start TCP/IP Interface
+STRTCPLNK Start TCP/IP Link
+STRTCPPTP Start Point-to-Point TCP/IP
+STRTCPSVR Start TCP/IP Server
+STRTCPTELN Start TCP/IP TELNET
+STRTIESSN Start TIE Session
+STRTRPMGR Start Trap Manager
+TELNET Start TCP/IP TELNET
+TFRBCHJOB Transfer Batch Job
+TFRCTL Transfer Control
+TFRGRPJOB Transfer to Group Job
+TFRJOB Transfer Job
+TFRPASTHR Transfer Pass-Through
+TFRSECJOB Transfer Secondary Job
+TRCCPIC Trace CPI Communications
+TRCICF Trace ICF
+TRCINT Trace Internal
+TRCJOB Trace Job
+TRCREX Trace REXX
+UNMOUNT Remove Mounted FS
+UPDDTA Update Data with Temp Program
+UPDPGM Update Program
+UPDSRVPGM Update Service Program
+UPDSYSINF Update System Information
+VFYAPPCCNN Verify APPC Connection
+VFYCMN Verify Communications
+VFYIPXCNN Verify IPX Connection
+VFYLNKLPDA Verify Link supporting LPDA-2
+VFYOPT Verify Optical
+VFYPRT Verify Printer
+VFYTAP Verify Tape
+VFYTCPCNN Verify TCP/IP Connection
+VRYCFG Vary Configuration
+WAIT Wait
+WRKACTJOB Work with Active Jobs
+WRKALR Work with Alerts
+WRKALRD Work with Alert Descriptions
+WRKALRTBL Work with Alert Table
+WRKAUT Work with Authority
+WRKAUTL Work with Authorization Lists
+WRKBNDDIR Work with Binding Directories
+WRKBNDDIRE Work with Binding Dir Entries
+WRKBPTBL Work with BOOTP table
+WRKCCTRTE Work with Circuit Routes
+WRKCCTSRV Work with Circuit Services
+WRKCFGL Work with Configuration Lists
+WRKCFGSTS Work with Configuration Status
+WRKCHTFMT Work with Chart Formats
+WRKCLS Work with Classes
+WRKCMD Work with Commands
+WRKCMTDFN Work with Commitment Def
+WRKCNNL Work with Connection Lists
+WRKCNNLE Work with CNNL Entries
+WRKCNTINF Work with Contact Information
+WRKCOSD Work with COS Descriptions
+WRKCSI Work Comm Side Information
+WRKCTLD Work with Ctl Descriptions
+WRKDBFIDD Work with DB Files using IDDU
+WRKDDMF Work with DDM Files
+WRKDEVD Work with Device Descriptions
+WRKDEVTBL Work with Device Tables
+WRKDIRE Work with Directory Entries
+WRKDIRLOC Work with Directory Locations
+WRKDIRSHD Work with Dir Shadow Systems
+WRKDOC Work with Do*****ents
+WRKDOCLIB Work with Do*****ent Libraries
+WRKDOCPRTQ Work with Do*****ent Print Queue
+WRKDPCQ Work with DSNX/PC Queues
+WRKDSKSTS Work with Disk Status
+WRKDSTL Work with Distribution Lists
+WRKDSTQ Work with Distribution Queue
+WRKDTAARA Work with Data Areas
+WRKDTADCT Work with Data Dictionaries
+WRKDTADFN Work with Data Definitions
+WRKDTAQ Work with Data Queues
+WRKEDTD Work with Edit Descriptions
+WRKENVVAR Work with Environment Var
+WRKF Work with Files
+WRKFCNARA Work with Functional Areas
+WRKFCT Work with Forms Control Table
+WRKFLR Work with Folders
+WRKFNTRSC Work with Font Resources
+WRKFORMDF Work with Form Definitions
+WRKFTR Work with Filters
+WRKFTRACNE Work with Ftr Action Entry
+WRKFTRSLTE Work with Ftr Selection Entry
+WRKGRPPDM Work with Groups Using PDM
+WRKGSS Work with Graphics Symbol Sets
+WRKHDWPRD Work with Hardware Products
+WRKHDWRSC Work with Hardware Resources
+WRKHLDOPTF Work with Held Optical Files
+WRKHTTPCFG Work with HTTP Configuration
+WRKIPXCCT Work with IPX Circuits
+WRKIPXD Work with IPX Descriptions
+WRKIPXSTS Work with IPX Status
+WRKJOB Work with Job
+WRKJOBD Work with Job Descriptions
+WRKJOBQ Work with Job Queue
+WRKJOBSCDE Work with Job Schedule Entries
+WRKJRN Work with Journal
+WRKJRNA Work with Journal Attributes
+WRKJRNRCV Work with Journal Receivers
+WRKLANADPT Work With LAN Adapters
+WRKLIB Work with Libraries
+WRKLIBPDM Work with Libraries Using PDM
+WRKLICINF Work with License Information
+WRKLIND Work with Line Descriptions
+WRKLNK Work with Object Links
+WRKM36 Work with Machines
+WRKM36CFG Work with Machine Config
+WRKMBRPDM Work with Members Using PDM
+WRKMLBSTS Work with Media Library Status
+WRKMNU Work with Menus
+WRKMOD Work with Module
+WRKMODD Work with Mode Descriptions
+WRKMSG Work with Messages
+WRKMSGD Work with Message Descriptions
+WRKMSGF Work with Message Files
+WRKMSGQ Work with Message Queues
+WRKNAMSMTP Work with Names for SMTP
+WRKNCK Work With Nickname
+WRKNETF Work with Network Files
+WRKNETJOBE Work with Network Job Entries
+WRKNETTBLE Work with Network Table Entry
+WRKNODL Work with Node List
+WRKNODLE Work with Node List Entries
+WRKNTBD Work with NetBIOS Descriptions
+WRKNWID Work with Network Interfaces
+WRKNWSALS Work with NWS Aliases
+WRKNWSD Work with Network Servers
+WRKNWSENR Work with NWS User Enrollment
+WRKNWSSSN Work with NWS Sessions
+WRKNWSSTG Work with NWS Storage Spaces
+WRKNWSSTS Work with NWS Status
+WRKOBJ Work with Objects
+WRKOBJLCK Work with Object Locks
+WRKOBJOWN Work with Objects by Owner
+WRKOBJPDM Work with Objects Using PDM
+WRKOBJPGP Work Objects by Primary Group
+WRKOPCACT Work with OptiConnect Activity
+WRKOPTDIR Work with Optical Directories
+WRKOPTF Work with Optical Files
+WRKOPTVOL Work with Optical Volumes
+WRKORDINF Work with Order Information
+WRKORDRQS Work with Order Requests
+WRKOUTQ Work with Output Queue
+WRKOUTQD Work with OUTQ Description
+WRKOVL Work with Overlays
+WRKPAGDFN Work with Page Definitions
+WRKPAGSEG Work with Page Segments
+WRKPARTPDM Work with Parts Using PDM
+WRKPCLTBLE Work with Protocol Table Entry
+WRKPFCST Work with PF Constraints
+WRKPFRCOL Work with Pfr Collection
+WRKPGM Work with Programs
+WRKPGMTBL Work with Program Tables
+WRKPNLGRP Work with Panel Groups
+WRKPRB Work with Problem
+WRKPRDINF Work with Product Information
+WRKPRJPDM Work with Projects Using PDM
+WRKPRTSTS Work with Printing Status
+WRKPSFCFG Work with PSF Configuration
+WRKQMFORM Work with Query Mgmt Forms
+WRKQMQRY Work with Query Mgmt Queries
+WRKQRY Work With Queries
+WRKQST Work with Questions
+WRKRDBDIRE Work with RDB Directory Entry
+WRKRDR Work with Readers
+WRKREGINF Work with Registration Info
+WRKRJESSN Work with RJE Session
+WRKRMTDFN Work with Remote Definitions
+WRKRPYLE Work with Reply List Entries
+WRKRTDCFG Work with RouteD Configuration
+WRKS36 Work with S/36 Configuration
+WRKS36PGMA Work with S/36 Program Attr
+WRKS36PRCA Work with S/36 Procedure Attr
+WRKS36SRCA Work with S/36 Source Attr
+WRKSBMJOB Work with Submitted Jobs
+WRKSBS Work with Subsystems
+WRKSBSD Work with Subsystem Desc
+WRKSBSJOB Work with Subsystem Jobs
+WRKSCHIDX Work with Search Indexes
+WRKSCHIDXE Work Search Index Entry
+WRKSHRPOOL Work with Shared Storage Pools
+WRKSOC Work with Sphere of Control
+WRKSPADCT Work with Spelling Aid Dict
+WRKSPLF Work with Spooled Files
+WRKSPLFA Work with Spooled File Attr
+WRKSRVPGM Work with Service Program
+WRKSRVPVD Work with Service Providers
+WRKSRVTBLE Work with Service Table Entry
+WRKSSND Work with Session Description
+WRKSYSACT Work with System Activity
+WRKSYSSTS Work with System Status
+WRKSYSVAL Work with System Value
+WRKTAPCTG Work with Tape Cartridge
+WRKTBL Work with Tables
+WRKTCPPTP Work with Point-to-Point TCPIP
+WRKTCPSTS Work with TCP/IP Network Sts
+WRKTIE Work with TIE
+WRKUSRJOB Work with User Jobs
+WRKUSRPRF Work with User Profiles
+WRKUSRTBL Work with User Tables
+WRKWTR Work with Writers

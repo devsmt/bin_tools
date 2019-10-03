@@ -1,23 +1,46 @@
-
-# questo formatter richiede php7!
-# disponibile php_beautifier
-
-# https://github.com/Shaked/php.tools
-echo "php.tools fmt:"
-php /usr/local/bin/php.tools/fmt.php --lint-before --indent_with_space=4  "$@"
-# --exclude=WrongConstructorName
-# --list
-# ShortArray
-# RemoveIncludeParentheses
-# DoubleToSingleQuote
-# SpaceBetweenMethods
-# echo "run php /usr/local/bin/php.tools/fmt.phar --selfupdate"
-
-# https://github.com/phpfmt/fmt/blob/master/fmt.phar
-# https://github.com/phpfmt/fmt/blob/51d48a2fe0c0664a837dee54b9eace6ef755055c/fmt.phar
-
-# curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-
-
-phpcs --version
-php /data/bin_tools/phpcs.phar --standard=PSR1   "$@"
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo $r = `$cmd` . "\n";
+    return $r;
+}
+// test software version
+if (strtolower(PHP_SAPI) !== 'cli') {
+    die('use as CLI. ' . PHP_SAPI . "\n");
+} else {
+    if (!defined('PHP_VERSION_ID')) {
+        die('php version not defined PHP_VERSION_ID');
+    }
+    if (PHP_VERSION_ID <= 70000) {
+        die('questo formatter richiede php7!');
+    }
+}
+// disponibile php_beautifier
+// https://github.com/Shaked/php.tools
+// echo "php.tools fmt:";
+$_1 = $argv[1];
+e('php /data/usr_local_bin/php.tools/fmt.php --lint-before --indent_with_space=4  ' . $_1); // bash $@
+// do file uses old syntax?
+$lines = shell_exec("grep \" array(\" $_1 ");
+$lines = $lines ? trim($lines) : $lines;
+if (!empty($lines)) {
+    echo $lines . "\n";
+    echo "cat $_1 | php_array_short > $_1 \n";
+    die('');
+}
+// --exclude=WrongConstructorName
+// --list
+// ShortArray
+// RemoveIncludeParentheses
+// DoubleToSingleQuote
+// SpaceBetweenMethods
+// echo "run php /usr/local/bin/php.tools/fmt.phar --selfupdate"
+// https://github.com/phpfmt/fmt/blob/master/fmt.phar
+// https://github.com/phpfmt/fmt/blob/51d48a2fe0c0664a837dee54b9eace6ef755055c/fmt.phar
+// curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+// phpcs --version
+// php /data/bin_tools/phpcs.phar --standard=PSR1   "$@"
+exit(0);

@@ -1,0 +1,3 @@
+mysql --user=$username --password=$passwd -e 'DROP DATABASE $db2;'
+mysql --user=$username --password=$passwd -e 'CREATE DATABASE $db2;'
+mysqldump --user=$username --password=$passwd $db1 | mysql --user=$username --password=$passwd $db2

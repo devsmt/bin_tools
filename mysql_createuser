@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+echo <<<__END__
+CREATE USER 'pagliari2'@'localhost' IDENTIFIED BY 'password';
+GRANT USAGE ON *.* TO 'pagliari2'@'localhost';
+GRANT ALL  ON `pagliari2`.* TO 'pagliari2'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'pagliari2'@'localhost';
+
+__END__;
+
+

@@ -1,19 +1,19 @@
 #!/usr/bin/env php
 <?php
-
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
 /*
 
 interfaccia unificata sui formatter per i vari linguaggi
 da jedit vien passato il filename, dall'estensione carica un comando adatto
  */
 
-declare (strict_types = 1);
 function e(string $cmd) {
     echo "cmd: " . $cmd . "\n";
     echo `$cmd` . "\n";
 }
-define('SIZE_KB', pow(1024, $factor = 1), false);
-define('SIZE_MB', pow(1024, $factor = 2), false); //----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
 // main
 //----------------------------------------------------------------------------
 
@@ -33,8 +33,9 @@ if (!request_is_cli()) {
         switch ($ext) {
         case 'php':
         case 'phtml':
-            format_php($file_path);
-            break; // C, C++, C++/CLI, Objective‑C, C#, and Java
+             e("/data/bin_tools/php_fmt $file_path");
+            break;
+        // C, C++, C++/CLI, Objective‑C, C#, and Java
 
 
         case 'js':
@@ -43,6 +44,8 @@ if (!request_is_cli()) {
         // prettier funziona con tutti i linguaggi web https://github.com/prettier/prettier#what-does-prettier-do
         // sudo npm install --global prettier
         case 'ts':
+            echo e("/data/bin_tools/ts_fmt $file_path ");
+            break;
         case 'jsx':
         case 'less':
         case 'css':
@@ -92,9 +95,7 @@ if (!request_is_cli()) {
 //-- actions --------------------------------------
 //
 
-function format_php($file_path) {
-    return e("/data/bin_tools/php_fmt $file_path");
-}
+
 function action_usage($ext) {
     echo "extension '$ext' unrecognized\n";
 }
@@ -104,6 +105,5 @@ function ensure_spaces($file_name) {"perl -p -i -e 's/\t/    /g'  $file_name ";
 }
 //-- utils ----------------------------------------
 
-function request_is_cli() {
-    return strtoupper(PHP_SAPI) === 'CLI';}
+
 exit(0);

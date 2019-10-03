@@ -1,68 +1,115 @@
 #!/usr/bin/php
 <?php
 declare (strict_types = 1);
-class CLI {
-    //------------------------------------------------------------------------------
-    //  colored output / CliUI
-    //------------------------------------------------------------------------------
-    // ForeGround colors
-    static $a_fg = [
-        'black' => '0;30',
-        'dark_gray' => '1;30',
-        'blue' => '0;34',
-        'light_blue' => '1;34',
-        'green' => '0;32',
-        'light_green' => '1;32',
-        'cyan' => '0;36',
-        'light_cyan' => '1;36',
-        'red' => '0;31',
-        'light_red' => '1;31',
-        'purple' => '0;35',
-        'light_purple' => '1;35',
-        'brown' => '0;33',
-        'yellow' => '1;33',
-        'light_gray' => '0;37',
-        'white' => '1;37',
-        // Bold
-        'bblack' => '1;30',
-        'bred' => '1;31',
-        'bgreen' => '1;32',
-        'byellow' => '1;33',
-        'bblue' => '1;34',
-        'bpurple' => '1;35',
-        'bcyan' => '1;36',
-        'bwhite' => '1;37',
-    ];
-    // background
-    static $a_bg = [
-        'black' => '40',
-        'red' => '41',
-        'green' => '42',
-        'yellow' => '43',
-        'blue' => '44',
-        'magenta' => '45',
-        'cyan' => '46',
-        'light_gray' => '47',
-    ];
-    // usa FG o BG
-    public static function getColoredString(string $str, string $foreground_color = 'green', string $background_color = 'black'): string{
-        $s = '';
-        // FG color
-        if (isset(self::$a_fg[$foreground_color])) {
-            $s .= "\e[" . self::$a_fg[$foreground_color] . 'm';
+require_once __DIR__ . '/Utils.php';
+// ensure the command is porperly indented
+function indent($txt, $s_evidenzia = '') {
+    // object stringify
+    if (!is_string($txt)) {
+        if (method_exists($txt, '__toString')) {
+            $txt = $txt->__toString();
+        } else {
+            echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                $txt
+            ), "</pre>\n";
+            echo implode("\n", get_class_methods($txt));
+            die(); // debug_print_backtrace()
         }
-        // BG color
-        if (isset(self::$a_bg[$background_color])) {
-            $s .= "\033[" . self::$a_bg[$background_color] . 'm';
+    }
+    $txt2 = '';
+    $a_lines = explode("\n", $txt);
+    foreach ($a_lines as $i => &$l) {
+        $l = trim($l);
+        if (empty($l)) {
+            continue;
         }
-        $s .= $str . "\033[0m";
-        return $s;
+        $l = "    " . trim($l);
+        if (!empty($s_evidenzia) && str_contains($l, $s_evidenzia)) {
+            $l = str_highlight(
+                $l,
+                $s_evidenzia,
+                $replacement = CLI::getColoredString('${0}') // '<< ${0} >>'
+            );
+        }
     }
-    // stampa stringa colorata
-    public static function printc(string $str, string $foreground_color = 'green', string $background_color = 'black'): void {
-        //echo "\n$str\n";
-        echo self::getColoredString($str, $foreground_color) . "\n";
+    $txt2 = implode("\n", array_filter($a_lines));
+    return $txt2;
+}
+function hr() {
+    echo str_repeat('-', 80) . "\n";
+}
+/*
+- Exact matches always come first. If the user types in an option exactly, other options must always go below the one matching what they typed.
+- Besides exact matches, prefix matches come first. If I type “Fr” I want “Fresno” not “San Francisco.”
+- After prefix matches, it can fall back to substring matches. Starting with substring matches would almost always be the wrong thing to do since users start typing words at the beginning not somewhere in the middle.
+- If there are no substring matches, it can optionally fall back to subsequence matching. This is only useful in some cases.
+- If there are no subsequence/substring matches, it can optionally fall back to approximate matches(fuzzy string searching, Levenshtein distance). This is rarely necessary to provide.
+- Matches should be sorted alphabetically.
+- When one option is the prefix of another, put the shortest one first.
+- The matching should probably be case insensitive unless there are two options that differ only by case. In that case (pun intended), prefer the one that more closely matches the user’s input.
+ */
+// Recursive PHP program to check // if a string is subsequence of // another string
+// A subsequence is a sequence that can be derived from another sequence by deleting some elements without changing the order of the remaining elements
+//
+// Input: str1 = "AXY", str2 = "ADXCPY"
+// Output: True (str1 is a subsequence of str2)
+//
+// Input: str1 = "AXY", str2 = "YADXCP"
+// Output: False (str1 is not a subsequence of str2)
+//
+// Input: str1 = "gksrek", str2 = "geeksforgeeks"
+// Output: True (str1 is a subsequence of str2)
+//
+// Returns true if str1[] is
+// a subsequence of str2[].
+// m is length of str1 and n
+// is length of str2
+function str_is_subsequence($str1, $str2, $m = null, $n = null) {
+    if (is_null($m)) {
+        $m = strlen($str1);
     }
+    if (is_null($n)) {
+        $n = strlen($str2);
+    }
+    // For index of str1
+    $j = 0;
+    // Traverse str2 and str1,
+    // and compare current
+    // character of str2 with
+    // first unmatched char of
+    // str1, if matched then
+    // move ahead in str1
+    for ($i = 0; $i < $n && $j < $m; $i++) {
+        if ($str1[$j] == $str2[$i]) {
+            $j++;
+        }
+    }
+    // If all characters of
+    // str1 were found in str2
+    return ($j == $m);
+}
+// TODO: espande un tempalte command con i dati passati a commandline
+function expand($command, string $json_str = ''): string {
+    if (is_string($command)) {
+        // ok
+    } elseif (is_object($command)) {
+        $command = $command->__toString();
+    } else {
+        echo '<pre>' . __FUNCTION__ . '()' . ' L:' . __LINE__ . ' F:' . __FILE__ . "\n", var_dump(
+            gettype($command)
+        ), "</pre>\n";die(); // debug_print_backtrace()
+    }
+    if (empty($json_str)) {
+        return $command;
+    } else {
+        return tmpl($command, coalesce([1], json_decode($json_str)));
+    }
+}
+//
+function tmpl($tmpl, array $get_defined_vars) {
+    return strtr($tmpl, $vars = array_map_keys($get_defined_vars, function ($k) {
+        return sprintf('{{%s}}', $k);
+    }));
 }
 /*
 collezione di comandi richiamabili da cli
@@ -93,531 +140,62 @@ class Alias extends Command {
         return sprintf("Alias @see %s", $this->cmd);
     }
 }
-$commands = [
-    'google_search' => '
-site: returns files located on a particular website or domain.
-filetype: followed (without a space) by a file extension returns files of the specified type, such as DOC, PDF, XLS and INI. Multiple file types can be searched for simultaneously by separating extensions with “|”.
-inurl: followed by a particular string returns results with that sequence of characters in the URL.
-intext: followed by the searcher’s chosen word or phrase returns files with the string anywhere in the text.
-',
-    //----------------------------------------------------------------------------
-    //  bash basics
-    //----------------------------------------------------------------------------
-    'bash_while' => new Command('while [ 1 ]; do  cmd;  done', ''),
-    'bash_for' => new Command(
-        'for i in {A..C} "label:" {1..3}; do echo $i; done
-    for file in `ls *.png`; do echo $file; done
-    ', ''),
-    'bash_allargs' => 'java com.myserver.Program "$@"',
-
-    'bash_get_PID' => "
-    pidof prog_name
-    pgrep prog_name
-    ps -eaf -o pid,cmd | awk '/regex-to-match-command-name/{ print $1 }'
-    ",
-    'bash_stop_process' => '
-# find the process ID of the child process you want to stop
-THEPID=$( bash_get_pid_ )
-# Send SIGSTOP to the child process.
-kill -SIGSTOP ${THEPID}
-#  resume the process
-kill -SIGCONT ${THEPID}
-    ',
-    'bash_io_redirect' => '
-# Redirect stdout to file
-1> filename.txt
-# Redirect and append stdout to file
-1>> filename.txt
-# Redirect stderr to file
-2> filename.txt
-# Redirect and append stderr to file
-2>> filename.txt
-# Redirect both stdout and stderr to file
-&> filename ',
-    'date_log' => new Command('>> /var/www/app/logs/module/program_`date +"%F"`.log', ''),
+//
+function alias_create($msg) {
+    return new Alias($msg);
+}
 //----------------------------------------------------------------------------
-    //  linux basic commands
-    //----------------------------------------------------------------------------
-    'grep' => new Command('
-grep -e {{PATTERN}} -f {{FILE}}
-grep -RHn --include \*.php Controller .
-ag --php Controller
-    ', ''),
-    'find' => new Command('find {{dir}} -type f -name ', ''),
-    'find_delete' => new Command('find {{dir}} -maxdepth 1 -type f -mtime +30  -name "*.log"  -delete  ', '-print for debug'),
-    'find_size' => new Command('find {{dir}} -maxdepth 1 -type f -size +500M -name "*.log" -print ', ' -exec echo {} \; '),
-    'find_exec' => new Command('find . -type f -perm 777 -exec chmod 755 {} \;'),
-    'find_locate' => new Command('locate -i "*.jpg"'),
-    'rename' => new Command("find -type f -name '*.php' | rename 's/^/_/' *", 'aggiungi un _ come prefix a tutti i files trovati'),
-    'img_resize' => new Command('convert myfigure.png -resize 200x100 myfigure.jpg', ''),
-    'imagemagick' => new Alias('img_resize'),
-    //---- compression decompression -------------------------------------------
-    /* gzip è + veloce,
-    bzip2 fa una compressione migliore del 5% */
-    'compress.zip' => new Command('zip -9 -j --junk-paths -r {{zip_file.zip}} {{folder_name}}/*.jpg ', ''),
-
-    'nice' => new Command('
-# lunch with increased  priority:
-nice -n -5 program_name
-# decreased priority:
-nice -n 5 progrm_name
-# renice
-renice -n 19 -p pid_number
-    '),
-
-    'extract.unzip' => new Command('unzip {{zip_file}} -d {{destination_folder}} ', ''),
-    'compress.bzip' => new Command('bzip2 -zkfq --best {{filename}}.bz2 '),
-    'extract.bzip' => new Command('bzip2  -dk  {{filename}}.bz2 '),
-    'compress.tar.gz' => new Command('tar  -czf /path/to/backup.tar.gz /path/to/*.pdf 2>/dev/null', ''),
-    'extract.tar.gz' => new Command('tar -xzfv archive.tar.gz', ''),
-    'compress.gzip' => new Command('cat {{file}} | gzip > file.gz', ''),
-    'extract.gunzip' => new Command('gunzip {{file}}.gz   ', ''),
-    //--------------------------------------------------------------------------
-    'dictionary' => new Command('loook word  ', 'cerca una parola nel dizionario del sistema'),
-    'user_add_group' => new Command('
-    sudo usermod -a -G www-data  {{user}}
-    # method 2
-    sudo adduser {{user}} {{group}}
-    sudo deluser {{user}} {{group}} ', 'add a new user called {{user}} to the www-data group'),
-    'sudo_wwwdata' => new Command('sudo -u www-data bin/{{script}} $param', ''),
-    'tee' => new Command('ls -la / | tee /tmp/out.log', 'duplicate output to file e STDOUT'),
-    'ubuntu_version' => new Command('lsb_release -cds', ''),
-    'hostname' => new Command('hostname -f', ''),
-    'gpg' => new Command('
-#
-# gpg --decrypt-files
-# gpg --default-recipient-self --armor --encrypt-files
-#
-gpg -c your_file.odt
-gpg your_file.odt.gpg
-echo $your_password | gpg --passphrase-fd 0 --batch --yes --no-tty your_file.gpg', ''),
-    'awk' => new Command("
-awk '{print \$1}' # field 1
-awk '{print \$2}' # field 2
-ls -lh | awk '{ print $2 }'", ''),
-    'sed' => new Command("
-    # sed 's/^/    /'
-    sed -i 's/ugly/beautiful/g' /home/usr/test/test.txt", ''),
-    'perl' => "perl -pi -e 's/\x0d/\x0a/gs'",
-    'count_lines' => new Command("wc -l", ''),
-    'crontab' => new Command(" 0 23 * * * root  /usr/local/bin/command", ''),
-    'apt' => '
-sudo apt-get install
-dpkg --list # elenca pacchetti installati
-apt-cache show
-sudo apt-get remove
-sudo apt-get remove --purge
-apt-cache search
-sudo dpkg -i zip_2.32-1_i386.deb # installa un pacchetto scaricato locale
-dpkg -L # elencare i file installati da un pacchetto
-dpkg -l | grep -i # pacchetti installati nel sistema
-dpkg -S /etc/host.conf # quale pacchetto ha installato un file
-',
-    'apt_installed' => new Command('sudo apt list --installed | grep php7.0 ', ''),
-    'apt_list' => new Command('sudo apt-cache search php7-*', ''),
-    'ufw' => new Command('sudo ufw allow 80/tcp'),
-    'cron_log' => new Command('grep -i CRON /var/log/syslog'),
-    //----------------------------------------------------------------------------
-    //  mysql commands
-    //----------------------------------------------------------------------------
-    /*
-    --skip-extended-insert  fa creare un singolo insert per ogni record, creerà dump di dimensioni maggiori ma più comodo da modificare
-    --quick   per tabelle molto grandi (per esempio 2 Gb), evita di mettere in cache i record e li scrive direttamente, richiede meno RAM.
-    tablename:   è possibile specificare quale tabella del db si vuole salvare. comoda per tabelle di grandi dimensioni.
-     */
-    'mysql_dump' => new Command( '
-    mysqldump -u user --p=$password $dbname [$tablemane]   > $backup_db_file
-    mysqldump --all-databases -uroot -p$pass > /data/mysql_dump/full-`date +%F`.sql && find /data/mysql_dump -type f -mtime +30  -exec rm -f {} \;
-    for I in `echo "show databases;" | mysql -uroot -p$pass | grep -v Database`; do mysqldump -uroot -p$pass $I > "/data/mysql_dump/$I.sql"; done
-    @see backupper script for single tables
-    '
-        ,''),
-    'mysql_dump2'=> new Command(<<<'__END__'
-function action_dump(string $password) {
-    $path =  realpath( __DIR__.'/../sql' );
-    if( false === $path ){ die( "error path:$path " ); }
-    // TODO: parse application file to get password value
-    if( empty($password)  ) {
-        die('provide password as 2 arg'.PHP_EOL);
-    }
-    echo "export schema to $path/schema.sql \n";
-    e("mysqldump -u root --password=$password lampa_backoffice --no-data > $path/schema.sql");
-    echo "export data to $path/data.sql \n";
-    e("mysqldump -u root --password=$password lampa_backoffice --no-create-info > $path/data.sql");
-    echo "less $path/schema.sql \n";
-    echo "less $path/data.sql \n";
-
-    //
-    $_mysqldump = function($flag_data, $path ) use( $user, $password, $host, $dbname ) {
-        return "mysqldump -u $user --password=$password -h $host $dbname  $flag_data 2>/dev/null > $path ";
-    };
-    e( $_mysqldump( "--no-data"         , $path_schema ) );
-    e( $_mysqldump( "--no-create-info"  , $path_data   ) );
-
+// load the dict
+//----------------------------------------------------------------------------
+$commands_linux = include __DIR__ . '/memory_dict_linux.php';
+$commands_AS400 = include __DIR__ . '/memory_dict_AS400.php';
+$commands_etc = include __DIR__ . '/memory_dict_etc.php';
+$commands_DEV = include __DIR__ . '/memory_dict_DEV.php';
+$h_args = CLI::getConsoleArgs($argv);
+$dict = strtolower(h_get($h_args, 'dict', 'all'));
+switch ($dict) {
+    case 'linux':
+        $commands = $commands_linux;
+        break;
+    case 'as400':
+        $commands = $commands_AS400;
+        break;
+    case 'etc':
+        $commands = $commands_etc;
+        break;
+    case 'dev':
+        $commands = $commands_DEV;
+        break;
+    case 'all':
+        $commands = array_merge($commands_linux, $commands_AS400, $commands_etc, $commands_DEV);
+        break;
+    default:
+        die( implode('/', [__FUNCTION__,__METHOD__,__LINE__]) .' > invalid dict '.$dict );
+        break;
 }
-__END__
-        ,''),
-    'mysql_restore'=>new Command('mysql -u user --p={{password}} {{dbname}} [$tablemane] < {{backup_db_file}}',''),
-    'mysql_create'=>new Command("
-mysql -u root -p
-CREATE DATABASE {{database}};
-SHOW DATABASES;
-# GRANT [type of permission] ON [database name].[table name] TO '[username]'@'localhost';
-GRANT ALL PRIVILEGES ON {{database}}.* TO '{{database}}@{{localhost}};
-flush privileges;
-mysql -u {{username}}  -p {{database}}
-    "),
-    //----------------------------------------------------------------------------
-    // network commands
-    //----------------------------------------------------------------------------
-    'scp_upload'=>new Command('sshpass -p "$pass" scp $l_path tmirandola@$host:$r_path',''),
-    'scp_download'=>new Command('sshpass -p "$pass" scp tmirandola@$host:$r_path $l_path',''),
-    'youtube-dl'=>new Command('
-# aggiornare sempre all ultima versione
-sudo youtube-dl -U
-youtube-dl -x --audio-format mp3   https://www.youtube.com/watch?v=3kW99COiygw
-'),
-    'ffmpeg'=>new Command('
-# mv resulting video to home
-mv Game\ of\ Thrones\ soundtrack\;\ Cellocyl\ 2014-6pDlHdcfKbo.webm ~/Desktop/GoTSoundtrack.webm
-ffmpeg -i ~/Desktop/GoTSoundtrack.webm -acodec libmp3lame -aq 4  ~/Desktop/GoTSoundtrack.mp3
-mpg123  ~/Desktop/GoTSoundtrack.mp3
-'),
-
-    'curl'=>new Command('
-        curl -I -d "method=Say.Hello" http://www.google.com
-        curl -O http://www.google.com/image.gif
-        curl http://www.google.com/image.gif -o /tmp/img.gif
-        httpstat http://localhost/project        ',''),
-
-    'wget'=>new Command('
-wget -r -l1 -P035 -nd --no-parent
-wget -t 5 -c -nH -r -k -p -N --no-parent
-wget -l 1 -v -k -p -E http://test.com/test -- mirror completo di un sito
-',''),
-
-    'nethogs'=>new Command('sudo nethogs wlan0','conoscere i processi che stanno utilizzando la nostra connessione'),
-    //  rsync -azv -e ssh --delete --progress
-    'rsync_push'=>new Command('rsync -v $cmd_dry_run --archive --cvs-exclude --compress --stats --progress --human-readable --force --delete --no-perms --no-owner --no-group $exclude  --rsh \"ssh -p22\" $local_path $user@$host:$remote_path','upload di tutta la directory (PUSH)'),
-    'rsync_pull'=>new Command('rsync -v --compress --rsh ssh user@host:/path/to/local/file.txt /path/to/remote/file.txt','remote to local (PULL)'),
-    'rsync_local'=>new Command('rsync -v --archive --compress --delete /local_path_A/ /local_path_B','sincronizza in modo efficiente directory locali'),
-    'rsync_php_pull_push'=>new Command(
-        <<<'__END__'
-// trasferimento con ssh + rsync
-// v: verbose
-// a: archive mode, copia i symlink
-// z: zipped compresssed
-function remote_syncronize($cmd_dry_run, $user, $passwd, $host, $local_path, $remote_path, $exclude) {
-    $cmd = "rsync $cmd_dry_run -vazC --stats --progress -h --force --delete $exclude  -e \"ssh -p22\" $local_path $user@$host:$remote_path";
-    echo "\n" . $cmd . "\n\n";
-    // working: rsync  -vazC --force --delete --stats -e "ssh -p22" /media/data/Volatile/www/business.lampa.it/ tmirandola@192.168.1.100:/var/zend-applications/cantini_orders/
-    // echo `$cmd`;
+// post process
+ksort($commands); //in-place sort!
+foreach ($commands as $key => $str) {
+    // ensure ther is a lowercase key for the command
+    unset($commands[$key]);
+    $commands[strtolower($key)] = $str;
 }
-// pull from remote
-function remote_download($cmd_dry_run, $user, $passwd, $host, $local_path, $remote_path, $exclude) {
-    $cmd = " rsync $cmd_dry_run -chavzP --stats   $user@$host:$remote_path $local_path";
-    echo "\n" . $cmd . "\n\n";
-    echo `$cmd`;
-}
-__END__
-        ,'sincronizza in modo efficiente directory  '),
-    'ftp_php_pull_push'=>new Command(<<<'__END__'
-function action_sync_xxx() {
-    $username = '';
-    $password = '';
-    $host     = '192.168.0.0';
-    $lcd      = realpath(__DIR__.'/..');
-    $rcd      = '/the/path';
-    return ftp_sync_dir($username, $password, $host, $lcd, $rcd);
-}
-function ftp_upload_dir($username, $password, $host, $lcd, $rcd){
-    // --delete elimina ogni file non presente
-    // --only-newer carica solo i files più recenti sul path locale
-    $cmd_options = ' --reverse --delete  --no-perms  --continue --verbose  --parallel=2 ';
-    // aggiunge opzione dryrun ammeno che non si dia il comando --go
-    $cmd_options .= init_dry_run();
-    // serve a sovrascrivere files nascosti come .htaccess
-    // set ftp:list-options -a;
-    $cmd = "lftp -c \" open ftp://$username:$password@$host; lcd $lcd; cd $rcd; mirror $cmd_options\"";
-    echo $cmd."\n";
-    echo `$cmd`;
-}
-function ftp_download_dir($username, $password, $host, $lcd, $rcd){
-    // --delete elimina ogni file non presente
-    // --only-newer carica solo i files più recenti sul path locale
-    $cmd_options = ' --delete  --no-perms  --continue --verbose  --parallel=2 ';
-    $cmd = "lftp -c \" open ftp://$username:$password@$host; lcd $lcd; cd $rcd; mirror $cmd_options\"";
-    echo $cmd."\n";
-    echo `$cmd`;
-}
-function ftp_download_files($username, $password, $host, $lcd, $rcd, array $a_file_name){
-    if( !is_dir($lcd) ){
-        die("$lcd path do not exists \n");
-    }
-    $cmd_options = ' ';
-    // aggiunge opzione dryrun ammeno che non si dia il comando --go
-    $cmd_options .= ftp_init_dry_run();
-    // get $file_name;
-    $a_file_name = array_map(function($file_name) {
-        return " get $file_name; ";
-    }, $a_file_name );
-    $cmd_file_name = implode(' ', $a_file_name );
-    // xfer:clobber   di default non sovrascrive files già esistenti
-    $cmd = "lftp -c \"set xfer:clobber on; open ftp://$username:$password@$host; lcd $lcd; cd $rcd;  $cmd_file_name  bye;\" ";
-    echo "trasferisco files \n";
-    echo $cmd . "\n";
-    echo `$cmd`;
-}
-// testa $arg_index per verificare la presenza del parametro
-function ftp_init_dry_run( ){
-    $argv = $GLOBALS['argv'];
-    foreach($argv as $param ) {
-        if( $param === '--go') {
-            echo colored_ko("attenzione, sto sovrascrivendo i files presenti localmente")."\n";
-            $cmd_dry_run = '';
-            return $cmd_dry_run;
-        }
-    }
-    echo colored_ok("sync dry run.")."\n";
-    $cmd_dry_run = '--dry-run';
-    return $cmd_dry_run;
-}
-__END__
-    ),
-    'ftp_pull'=>new Command('
-        lftp -c " open ftp://\$user:\$pass@192.168.1.31; lcd /var/www/dms_caleffi/trunk/RPG/SRCMOD/; cd /www/zend-applications/PHP_SRC/SRCMOD; mirror  --delete  --no-perms  --continue --verbose  --parallel=2 "
-    '),
-    'ftp_push'=>new Alias('ftp_upload_file'),
-    // singolo file
-    'ftp_upload_file'=>new Command('
-function ftp_upload($local_file, $username, $password, $host, $rcd = "/", $is_dry_run = false) {
-    $file_name = basename($local_file);
-    $lcd = dirname($local_file);
-    list( $r, $a_out) = e("which lftp") ;
-    if ( !$r ) {
-        $msg = sprintf(\'Errore lftp non è installato"%s" \', $r);
-        throw new \Exception($msg);
-    }
-    $r = e("lftp -c \"open ftp://$username:$password@$host; lcd $lcd; cd $rcd; put $file_name\" ");
-}
-function ftp_upload2($local_file, $username, $password, $host, $remote_dir=\'\', $is_dry_run=false) {
-    list( $r, $a_out) = e("which curl") ;
-    if ( !$r ) {
-        $msg = sprintf(\'Errore curl non è installato "%s" \', $r);
-        throw new \Exception($msg);
-    }
-    $ftp_cmd = "curl --user $username:$password --upload-file $local_file ftp://$host/$remote_dir";
-    if (!$is_dry_run) {
-        echo e($ftp_cmd) . "\n";
-    } else {
-        echo "dry run: $ftp_cmd ";
-    }
-}
-'
-    ),
-
-    'rclone'=>new Command('rclone lsl gdrive_remote:UbuntuOne/AA_invoices'),
-
-    //----------------------------------------------------------------------------
-    //  sysadmin
-    //----------------------------------------------------------------------------
-    'logrotate'=>new Command('
-sudo vi /etc/logrotate.d/appname.log
-/var/log/appname.log {
-        rotate 2
-        weekly
-        size 250k
-        compress
-} ','log rotate'),
-    'mail'=>new Command('curl http://localhost/server-status | mail -s"apache is eating memory $apache_count" devsmt@gmail.com'),
-    //----------------------------------------------------------------------------
-    //  dev specific commands
-    //----------------------------------------------------------------------------
-    // pfff tools
-    'bower'=>new Command('bower install --save $lib_name',''),
-    'npm'=>new Command('
-        npm install --save $lib_name
-        npm install --save @types/$lib_name
-    ',''),
-    'php_lint'=>new Command(' find ./tests/ -name *.php -type f -exec php -l \'{}\' \; | grep "PHP Parse error:" ',''),
-
-    'hhvm' => new Command('
-        hhvm -m server -p 8080
-        hhvm whatever.php' ),
-
-
-    'php_grep'=>new Command("sgrep -e 'array(...)' /var/www/dir/",''),
-    'ag'=>new Command('
-        ag --php -i "file_put_contents" /var/www
-        ag -G "^(.*).ts$" -i "MemCache" /var/www ',''),
-    // GIT
-    'git'=>'
-# find conflict
-grep -lr \'<<<<<<<\'
-# get someone copy
-git checkout --ours PATH/FILE
-git checkout --theirs PATH/FILE
-
-clear; git add --all --patch
-git add
-git add --all :/
-git add `git status -uall | egrep "#\tboth modified:" | cut -d: -f2`
-git branch
-git branch -v -a
-git commit --amend
-git commit --amend --no-edit
-git commit --amend --no-verify -m
-git commit --no-verify -m
-git diff
-git diff --cached
-git difftool
-git diff -w
-git fetch
-git fetch --all
-git fetch origin && git merge origin/master
-git fetch origin && git rebase origin/master
-git grep
-gitk >/dev/null 2>&1
-git log -n 1
-git merge
-git merge origin/master
-git mergetool
-git push
-git push heroku
-git push origin
-git push origin --force-with-lease
-git push origin --tags
-git quicklog-long
-git quicklog -n 20
-git show -p
-git stash
-git stash list
-git stash pop
-git stash save
-git stash save --patch
-git stash show -p
-git status
-git status -uall
-git submodule
-git submodule update --init --recursive
-git submodule sync && git submodule update --init
-git unstage
-git up
-vim `git diff --name-only --diff-filter=M`
-vim `git diff --name-only --diff-filter=U`
-'
-    ,
-    'git_log'=>new Command("git log --after=2015-05-01 --pretty=format:'%s'",''),
-    'git_remote_url'=>new Command('git config --get remote.origin.url',''),
-    'git_branch'=>new Command('git checkout -b iss53',''),
-    'git_merge'=>new Command('git merge iss53',''),
-    'git_switch_to_master'=>new Command('git checkout master',''),
-    'git_reset_file'=>new Command('git checkout --theirs $file_name',''),
-    'ctags'=>new Command('ctags -R --languages=PHP',''),
-    'composer'=>new Command('composer require predis/predis',''),
-    'redis'=>new Command(
-        'redis-cli
-set test test1
-get test
-keys user:* # le chiavi che rispondono alla regex
-del test
-    ',''),
-    'phpmd'=>new Command('phpmd  /path/to/file.php text unusedcode'),
-    'inotifywait'=>new Command(<<<'__END__'
-# available actions: ,moved_to,create
-BASE_DIR=$(cd $(dirname "$0"); pwd)/..
-inotifywait -e close_write -m $BASE_DIR/public/* |
-while read -r directory events filename; do
-  #echo "$filename change!";
-  $BASE_DIR/bin/compile file $filename
-done
-__END__
-    ),
-    'regexp'=>new Command('
-Regex quick reference
-[abc]     A single character: a, b or c
-[^abc]     Any single character but a, b, or c
-[a-z]     Any single character in the range a-z
-[a-zA-Z]     Any single character in the range a-z or A-Z
-^     Start of line
-$     End of line
-\A     Start of string
-\z     End of string
-.     Any single character
-\s     Any whitespace character
-\S     Any non-whitespace character
-\d     Any digit
-\D     Any non-digit
-\w     Any word character (letter, number, underscore)
-\W     Any non-word character
-\b     boundary: "/\bweb\b/i"  verrà riconosciuta solo "web" e non "webbing"
-(...)     Capture everything enclosed
-(a|b)     a or b
-a?     Zero or one of a
-a*     Zero or more of a
-a+     One or more of a
-a{3}     Exactly 3 of a
-a{3,}     3 or more of a
-a{3,6}     Between 3 and 6 of a
-
-options: i case insensitive m make dot match newlines x ignore whitespace in regex o perform #{...} substitutions only once
-
-^[0-9]+$ //match just ints
-  ^     ->   the start of a line.
-  [0-9] -> Matches any digit between 0 and -
-  +     -> Matches one or more instance of the preceding expression.
-  $     -> Signifies the end of the line.
-'),
-
-    'wiki_search'=>new Command(
-        '/home/taz/Dropbox/mywebsite/evidenceweb/bin/tool wiki:search wget',
-        'cerca informazioni nel wiki'),
-];
+echo "loaded ".count( $commands )." keys from dict: $dict \n";
+//----------------------------------------------------------------------------
+// actions
+//----------------------------------------------------------------------------
 function action_usage($argv) {
     return <<<__END__
 uso:
-    {$argv[0]} list => list keys
+    {$argv[0]} list  => list keys
     {$argv[0]} [key] => get a command
+    {$argv[0]} [key] --dict=[linux|as400|etc|dev|all]    => get form specific dict
     {$argv[0]} key json_data => get a command expanded for data
 il primo argomento viene utilizzato per cercare un comando nel dizionario\n\n
 __END__;
 }
-//------------------------------------------------------------------------------
-//  main
-//------------------------------------------------------------------------------
-$action = isset($argv[1]) ? $argv[1] : '';
-$action = strtolower($action);
-$json_data = isset($argv[2]) ? $argv[2] : '';
-if (empty($action)) {
-    die(action_usage($argv));
-} else {
-    if ('list' == $action) {
-
-        $k_commands = array_keys($commands);
-        sort($k_commands);
-        foreach ($k_commands as $key) {
-            echo "$key \n";
-        }
-    } elseif (isset($commands[$action])) {
-        // exact match
-        // echo "astring" | xclip  -selection clipboard
-        // shift+ins per fare paste
-        //$cmd_str = $commands[$action]->cmd;
-        //echo " echo \"$cmd_str\" | xclip -i "."\n\n";
-        echo CLI::printc(expand($commands[$action], $json_data)) . "\n";
-    } else {
-        $str_search = $action;
-        echo "searching sustr:\n";
-        foreach (array_keys($commands) as $key) {
-            if (false !== strpos($key, $str_search)) {
-                echo CLI::printc("substr: '$str_search' found in '$key' ") . "\n";
-            }
-        }
-        echo process_lev(array_keys($commands), $str_search);
-        echo "\n" .
-        "usa: memory wiki_search per cercare nel WIKI\n";
-    }
-}
+//
+//
 function process_lev(array $words, string $input): string{
     // no shortest distance found, yet
     $shortest = -1;
@@ -644,32 +222,77 @@ function process_lev(array $words, string $input): string{
     }
     if ($shortest == 0) {
         // questo caso è gestito da substr
-        return "\n" . "searching Levenshtein Exact match found: $closest\n";
+        return "searching Levenshtein Exact match found: $closest\n";
     } else {
-        return "\n" . "searching Levenshtein for '$input':  " .
-        (!empty($closest) ? "\n" . CLI::printc($closest) : 'no result') . "\n";
+        return "searching Levenshtein for '$input' in keys:\n" .
+        (
+            !empty($closest) ?
+            CLI::getColoredString($closest)
+            : CLI::getColoredString('no result', 'red')
+        ) . "\n";
     }
 }
-// TODO: espande un tempalte command con i dati passati a commandline
-function expand($command, string $json_str = ''): string {
-    if (is_string($command)) {
-        // ok
-    } elseif (is_object($command)) {
-        $command = $command->__toString();
-    } else {
-        echo '<pre>' . __FUNCTION__ . '()' . ' L:' . __LINE__ . ' F:' . __FILE__ . "\n", var_dump(
-            gettype($command)
-        ), "</pre>\n";die(); // debug_print_backtrace()
-    }
-    if (empty($json_str)) {
-        return $command;
-    } else {
-        return tmpl($command, json_decode($json_str));
-    }
-}
+//------------------------------------------------------------------------------
+//  main
+//------------------------------------------------------------------------------
+$action = isset($argv[1]) ? $argv[1] : '';
+$action = strtolower($action); // all keys tolower
 //
-function tmpl($tmpl, array $get_defined_vars) {
-    return strtr($tmpl, $vars = array_map_keys($get_defined_vars, function ($k) {
-        return sprintf('{{%s}}', $k);
-    }));
+$json_data = ''; // TODO: read json data
+if (empty($action)) {
+    die(action_usage($argv));
+} else {
+    if ('list' == $action) {
+        $k_commands = array_keys($commands);
+        sort($k_commands);
+        foreach ($k_commands as $key) {
+            echo "$key \n";
+        }
+    } elseif ('all' == $action) {
+        foreach ($commands as $key => $text) {
+            echo $key . "\n";
+            echo indent($text) . "\n";
+        }
+    } elseif (isset($commands[$action])) {
+        // exact match
+        // echo "astring" | xclip  -selection clipboard
+        // shift+ins per fare paste
+        //$cmd_str = $commands[$action]->cmd;
+        //echo " echo \"$cmd_str\" | xclip -i "."\n\n";
+        echo CLI::printc(indent(expand($commands[$action], $json_data))) . "\n";
+    } else {
+        $c = 0;
+        $str_search = $action;
+        echo "searching sustr in keys:\n";
+        foreach (array_keys($commands) as $key) {
+            if (str_contains($key, $str_search)) {
+                $c++;
+                echo CLI::printc("substr k: '$str_search' found in '$key' ") . "\n";
+            }
+        }
+        if ($c == 0) {
+            echo CLI::printc("no k substr found", 'red') . "\n";
+        }
+        hr();
+        // searching sustr in text:;
+        $txt = "searching sustr in text:\n";
+        $c = 0;
+        foreach ($commands as $key => $text) {
+            if (str_contains('' . $text, $str_search)) {
+                $txt .= CLI::printc("substr txt: '$str_search' found in key = '$key' ") . "\n";
+                $txt .= indent($text, $str_search) . "\n";
+                $c++;
+            }
+        }
+        if ($c) {
+            echo $txt;
+        } else {
+            echo CLI::printc("no substring found in txt ", 'red') . "\n";
+        }
+        hr();
+        echo process_lev(array_keys($commands), $str_search);
+        echo "\n";
+        hr();
+        echo "usa: memory wiki_search per cercare nel WIKI\n";
+    }
 }
