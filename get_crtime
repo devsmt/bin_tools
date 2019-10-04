@@ -1,4 +1,4 @@
-# ottiene la data di creazione dell file in argomento interogando i metadati del FS ext4
+# ottiene la data di creazione del file in argomento interogando i metadati del FS ext4
 # uso: get_crtime config.xml
 
 get_crtime() {

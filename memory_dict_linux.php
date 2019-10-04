@@ -432,7 +432,7 @@ __END__
     //----------------------------------------------------------------------------
     //  mysql commands
     //----------------------------------------------------------------------------
-    'mysql_create'=>"
+    'mysql_create_db'=>"
         mysql -u root -p
         CREATE DATABASE {{database}};
         SHOW DATABASES;
@@ -448,10 +448,17 @@ __END__
         mysql -u {{username}}  -p {{database}}
 ",
     'mysql_user'=>"
+        #
+        CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
+        GRANT USAGE ON *.* TO '{{username}}'@'localhost';
+        GRANT ALL  ON `{{username}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
+        FLUSH PRIVILEGES;
+        SHOW GRANTS FOR '{{username}}'@'localhost';
+        #
         # get existing users
         SELECT `user`, `host`, `authentication_string` FROM `mysql`.`user`;
         # create user
-        RANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+        GRANT ALL PRIVILEGES ON *.* TO '{{username}}'@'localhost' IDENTIFIED BY 'password';
         # inspect
         SHOW GRANTS FOR '_user_'@'localhost';
         SET PASSWORD FOR '_user_'@'localhost' = PASSWORD('xxx');
@@ -459,9 +466,9 @@ __END__
         SHOW GRANTS FOR '_user_'@'localhost';
         #
         GRANT SELECT, EXECUTE, SHOW VIEW, ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER, UPDATE, LOCK TABLES
-        ON `pagliari`.* TO 'tazio'@'localhost' WITH GRANT OPTION;
+        ON `{{database}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
         FLUSH PRIVILEGES;
-        SHOW GRANTS FOR 'tazio'@'localhost';
+        SHOW GRANTS FOR '{{username}}'@'localhost';
     ",
     'mysql_debug'=>"
         SHOW VARIABLES LIKE '%version%';
@@ -676,7 +683,7 @@ curl -Iks --location -X GET -A "x-agent" https://www.google.com
 curl -Iks --location -X GET -A "x-agent" --proxy http://127.0.0.1:16379 https://www.google.com
     --proxy [socks5://|http://] - set proxy server
 # set a session ID
-curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://agenti4.lampa.test/items/downloadcategoryxls
+curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://zzzzz.xxxxx.test/items/downloadcategoryxls
         '),
     'wget'=>('
 wget -r -l1 -P035 -nd --no-parent
@@ -1177,7 +1184,7 @@ http -p Hh --follow --max-redirects 5 --verify no --proxy http:http://127.0.0.1:
         user dennis@felsin9.de
         password XXX
         #
-        # @see /var/www/lampa_agenti_v4/bin/phpmail
+        # @see /var/www/xxxxxwwww/bin/phpmail
         ',
     'disk'=>'
         du -sh

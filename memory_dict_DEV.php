@@ -206,12 +206,12 @@ vim `git diff --name-only --diff-filter=U`
     //
     'ctags' => ('
 ctags -R --languages=PHP --php-kinds=-vj
-ctags -R --languages=PHP --php-kinds=-vj --exclude="*server/data" --exclude="*server/__lib*"  /var/www/cantini_mobile/server
+ctags -R --languages=PHP --php-kinds=-vj --exclude="*server/data" --exclude="*server/__lib*"  /var/www/xxxxxxxxx/server
 ctags -R --languages=php --php-kinds=cdfint --fields=+aimS --tag-relative=yes --totals=yes --exclude=tags --exclude="config*.php" \
        --exclude="lang/*" --exclude="install/lang/*" --exclude="vendor" --exclude="node_modules" --exclude="moodledata/*" \
        --exclude=".git/*" --extra=+q
 cd $path/../public/js && javascript-ctags
-ctags -R --append --languages=typescript /var/www/cantini_mobile/client/src/ts
+ctags -R --append --languages=typescript /var/www/xxxxxxxxx/client/src/ts
 # configure ctags
 cat ~/.ctags
 --langdef=typescript

@@ -91,11 +91,8 @@ function strip_empty_lines($code) {
     foreach ($a_lines as $i => $line) {
         $line = rtrim($line, ' ');
         if (!empty($line)) {
-            $txt .= $line.PHP_EOL;
+            $txt .= $line . PHP_EOL;
         }
     }
     return $txt;
 }
-
-
-

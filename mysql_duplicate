@@ -1,3 +1,17 @@
-mysql --user=$username --password=$passwd -e 'DROP DATABASE $db2;'
-mysql --user=$username --password=$passwd -e 'CREATE DATABASE $db2;'
-mysqldump --user=$username --password=$passwd $db1 | mysql --user=$username --password=$passwd $db2
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Common.php';
+//
+//
+$username = '';
+$passwd = '';
+$db1 = '';
+$db2 = '';
+//
+//
+e("mysql --user=$username --password=$passwd -e 'DROP DATABASE $db2;' ");
+e("mysql --user=$username --password=$passwd -e 'CREATE DATABASE $db2; ");
+e("mysqldump --user=$username --password=$passwd $db1 | mysql --user=$username --password=$passwd $db2 ");
+//
+exit(0);

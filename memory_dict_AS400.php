@@ -38,7 +38,7 @@ CPYF
 WRKOBJ *ALL/EC_CLAGE0F
 DSPOBJD OBJ(*ALL/LISTQ*) OBJTYPE(*FILE)
 // read db file / CRUD
-DSPPFM LA_DAT/FILE01F
+DSPPFM LIB1/FILE01F
 // verificare errori di compilazione
 // e quali files con percorso assoluto sono utilizzati
 WRKSPLF SELECT(*CURRENT *ALL *ALL *ALL *ALL OR*)
@@ -55,7 +55,7 @@ DSPPGM PHP_OBJ/MYPROGRAM004
 // id formato file, numero campi, lunghezza record
 DSPFD MILIB/MYFILE00L
 // commento testo dei campi
-DSPFFD FILE(LA_DAT/MATPF00F) OUTPUT(*OUTFILE) OUTFILE(QTEMP/DFF_MATPF)
+DSPFFD FILE(LIB1/MATPF00F) OUTPUT(*OUTFILE) OUTFILE(QTEMP/DFF_MATPF)
 CPYTOIMPF FROMFILE(qtemp/dff_matpf) TOSTMF(\'/www/zend-applications/MATPF00F.txt\') MBROPT(*ADD) RCDDLM(*CRLF)
 ',
 

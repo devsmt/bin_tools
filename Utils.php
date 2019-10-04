@@ -4,6 +4,7 @@ namespace {
     // CLI related routines
     //----------------------------------------------------------------------------
     class CLI {
+        //
         public static function hasFlag($flag) {
             if (isset($_SERVER['argv']) && !empty($_SERVER['argv'])) {
                 $argv = $_SERVER['argv'];
