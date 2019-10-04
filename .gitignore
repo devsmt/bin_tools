@@ -6,3 +6,7 @@ disk_clean
 /squirrel-sql-3.4.0/
 /zend/
 /symfony1.4/
+/Utils.php
+/phpstan
+/phpstan_git/
+/rpg_ng

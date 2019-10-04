@@ -1,0 +1,13 @@
+#!/usr/bin/php
+<?php
+require_once __DIR__ . '/Utils.php';
+echo "arg1 il primo numero della successione da cercare; arg2 l'ultimo numero della successione cercato\n\n";
+//
+$f = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : 1; // Sets the 'f'th term, the term from which to start listing
+$t = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : 20; //Sets the 't'th term, the term at which to stop listing
+$phi = (1 + sqrt(5)) / 2; // Sets the value of phi for use in the formula
+while ($f <= $t) {
+    $u = (pow($phi, $f) - pow(1 - $phi, $f)) / sqrt(5);
+    echo "$f = $u \n";
+    $f++;
+}
