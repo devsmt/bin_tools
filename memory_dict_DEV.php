@@ -85,7 +85,47 @@ java -jar /path/helloWorld.jar [app arguments]
         a2enmod php7.2
         systemctl restart apache2
         nano /var/www/html/phpinfo.php && links http://localhost/phpinfo.php
+        #
+        # install LAMP
+        sudo apt install apache2
+        sudo apt install mysql-server
+        sudo apt install php7.2 libapache2-mod-php7.2 php-mysql
+        # additional modules
+        sudo apt install php-cli php-curl php-json
+        #
     ',
+    // generate a standard package dir
+    'php_package' => '
+
+Install package in your project:
+composer require --dev pds/skeleton
+
+Run the validator:
+If no path is specified, the project in which pds-skeleton is installed will be used.
+vendor/bin/pds-skeleton validate [path]
+
+
+Generate a compliant package skeleton by following these steps:
+
+composer require --dev pds/skeleton
+Run the generator:
+vendor/bin/pds-skeleton generate [path]
+    ',
+    'php_standard_dirs' => '
+
+If a package has a root-level directory for => then it MUST be named:
+command-line executables                    bin/
+configuration files                         config/
+documentation files                         docs/
+PHP source code                             src/
+test code                                   tests/
+other resource files                        resources/
+web server files                            public/
+
+    ',
+
+
+
     'mysql_install' => '
         sudo apt install mysql-server php-mysql
         sudo mysql_secure_installation
@@ -96,7 +136,7 @@ java -jar /path/helloWorld.jar [app arguments]
         hhvm whatever.php'),
     'php_grep' => "sgrep -e 'array(...)' /var/www/dir/",
     'ag' => ('
-        ag --php -i "file_put_contents" /var/www*
+        ag --php -i -f "file_put_contents" /var/www*
         ag -G "^(.*).ts$" -i "MemCache" /var/www* '),
     // GIT
     'git' => '
@@ -233,8 +273,13 @@ cat ~/.ctags
         # get the latest
         composer require predis/predis
         # modifiers: https://getcomposer.org/doc/articles/versions.md
+        #
+        # get exact version:
+        composer require "swiftmailer/swiftmailer:5.4.3"
+        #
         # "get this or next release" equivalent to >=5.4 < 6.0.0, but ~5.4.3 is equivalent to >=5.4.3 <5.5.0
         composer require "swiftmailer/swiftmailer:~5.4.0"
+        #
         # "Caret Version Range" package:^1.2.3
         # similar to ~ but accept only non-breaking updates, ^1.2.3 is equivalent to >=1.2.3 <2.0.0
         #
@@ -305,5 +350,18 @@ $          -> Signifies the end of the line.
     'php_processing'=>'
         echo "test" | php /tmp/test.php
     ',
+    'docker' =>  '
+# download Apache with latest PHP on /path/to/your/php/files as the document root, visible at  localhost:8080
+# This will initialize and launch your container. -d makes it runs in the background.
+
+docker run -d --name my-php-webserver -p 8080:80 -v /path/to/your/php/files:/var/www/html/ php:apache
+
+# To stop and start it, simply run
+docker stop my-php-webserver
+docker start my-php-webserver
+
+'  ,
+
+
 ];
 return $commands;

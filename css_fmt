@@ -1,11 +1,197 @@
-csstidy \
- --compress_colors=true \
- --compress_font-weight=true \
- --discard_invalid_properties=false \
- --lowercase_s=true \
- --preserve_css=true \
- --remove_bslash=true \
- --remove_last_;=true \
- --silent=false \
- --sort_properties=true \
- --sort_selectors=false $1
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+//require_once __DIR__ . '/Common.php';
+$opt = "--preserve_css=true --remove_bslash=true --compress_colors=false ";
+$opt .= "--lowercase_s=true --timestamp=false --optimise_shorthands=1 ";
+$opt .= "--remove_last_;=false --sort_properties=false --sort_selectors=false ";
+$opt .= "--merge_selectors=0 --compress_font-weight=false --allow_html_in_templates=true ";
+$opt .= "--silent=false --case_properties=0 ";
+//
+// Define STDIN for compatibility
+$STDIN = file_get_contents('php://stdin');
+//
+if (!empty($STDIN)) {
+    /*
+    $name = sprintf('%s_%s.css', basename(__FILE__), date('Ymd_His'));
+    $file_path = tmp_file_put($name, $content = $STDIN);
+    //
+    csstidy($file_path);
+     */
+    $beautyCSS = CSSBeautifier::run($uglyCSS = $STDIN);
+    echo $beautyCSS;
+} else {
+    if (isset($argv[1])) {
+        // csstidy($argv[1]);
+        $uglyCSS = file_get_contents($argv[1]);
+        $beautyCSS = CSSBeautifier::run($uglyCSS);
+        echo $beautyCSS;
+    } else {
+        usage();
+        echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+            $argv, $STDIN
+        ), "</pre>\n";
+    }
+}
+//
+function usage() {
+    echo "provide \n";
+    echo " or a css filename as first arg \n";
+    echo " or STD IN \n";
+}
+// cmd wrapper
+function csstidy($path) {
+    $cmd = "/usr/bin/csstidy {$path}";
+    echo `$cmd`;
+}
+// write into a tmp file
+function tmp_file_put(string $name, string $content): string{
+    $DS = DIRECTORY_SEPARATOR;
+    $file_path = $DS . implode($DS, [trim(sys_get_temp_dir(), $DS), ltrim($name, $DS)]);
+    //
+    file_put_contents($file_path, $content);
+    //
+    register_shutdown_function(function () use ($file_path) {
+        unlink($file_path);
+    });
+    return $file_path;
+}
+//----------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------
+//
+//        $uglyCSS = "foo{foo:bar;}";
+//        $beautyCSS = CSSBeautifier::run($uglyCSS);
+// @see https://raw.githubusercontent.com/shopping24/css-beautifier/master/src/CSSBeautifier.php
+class CSSBeautifier {
+    const TAP = "    ";
+    private static $repair = false;
+    /**
+     * The run function will beautify your string, which include a CSS structure.
+     *
+     * @param $string
+     * @param bool $repair - switch the mode that will add semicolons if there has to be one.
+     *
+     * @return string
+     */
+    public static function run($string, $repair = true) {
+        self::$repair = $repair;
+        $taps = 0;
+        $beautifiedArray = [];
+        foreach (self::stringToArray($string) as $key => $line) {
+            $line = trim($line);
+            switch (true) {
+            case preg_match('/{/', $line):
+                $line = self::checkHealthyWhiteSpaces(self::createTaps($line, $taps), preg_match('/@/', $line));
+                $taps++;
+                break;
+            case preg_match('/}/', $line):
+                $taps--;
+                $line = self::createTaps($line, $taps);
+                break;
+            default:
+                $line = self::checkHealthyWhiteSpaces(self::createTaps($line, $taps));
+            }
+            $beautifiedArray[$key] = self::$repair ? self::checkHealthyAttribute($line) : $line;
+        }
+        return self::arrayToString($beautifiedArray)."\n\n";
+    }
+    /**
+     * Add "new Lines" after every "{;}".
+     *
+     * @param String $string
+     *
+     * @return String
+     */
+    private static function newLines($string) {
+        return preg_replace("/}/", "\n$0", preg_replace("/[{;}]/", "$0\n", $string));
+    }
+    /**
+     * Convert a string to an array.
+     * Each line will be an item in the array.
+     *
+     * @param String $string
+     *
+     * @return array
+     */
+    private static function stringToArray($string) {
+        return explode(PHP_EOL, self::newLines($string));
+    }
+    /**
+     * Convert an array to a string.
+     * Each item in the array is a new line in the string.
+     *
+     * @param array $array
+     *
+     * @return string
+     */
+    private static function arrayToString($array) {
+        $string = "";
+        foreach ($array as $key => $line) {
+            if (strlen(preg_replace("/ /", "", $line)) != 0) {
+                if ($key != 0) {
+                    $string .= "\n";
+                }
+                $string .= $line;
+            }
+        }
+        return $string;
+    }
+    /**
+     * Check the ';' in the end of a line and will add one if needed.
+     * Wrap url option contents in double quotes.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    private static function checkHealthyAttribute($string) {
+        // Add semicolon at the end of every option
+        if (preg_match("/[{;}]/", $string) == false && preg_match("/:/", $string) == true) {
+            $string .= ";";
+        }
+        // Wrap url contents in double quotes
+        $string = preg_replace('/(?:url\()((?!\"|\').+(?<!\"|\'))(?:\))/mi', 'url("$1")', $string);
+        return $string;
+    }
+    /**
+     * Check the line for a healthy structure.
+     *
+     * @param string $string
+     * @param bool $checkDoublePoints
+     *
+     * @return string
+     */
+    private static function checkHealthyWhiteSpaces($string, $checkDoublePoints = true) {
+        if (preg_match('/:/', $string) && !preg_match('/: /', $string) && $checkDoublePoints) {
+            $string = preg_replace('/:/', ': ', $string, 1);
+            if (preg_match('/(url\()/', $string)) {
+                preg_match('~(url\()(.*?)\)~', $string, $result);
+                if (isset($result[0])) {
+                    $string = str_replace($result[0], preg_replace('/ /', '', $result[0]), $string);
+                }
+            }
+        }
+        if (!preg_match('/ {/', $string)) {
+            $string = preg_replace('/{/', ' {', $string);
+        }
+        return $string;
+    }
+    /**
+     * Create the needed taps.
+     *
+     * @param string $string
+     * @param int $taps
+     *
+     * @return string
+     */
+    private static function createTaps($string, $taps) {
+        if (!preg_match('/, /', $string)) {
+            $string = str_replace(',', ', ', $string);
+        }
+        for ($i = 0; $i < $taps; $i++) {
+            $string = self::TAP . $string;
+        }
+        return $string;
+    }
+}

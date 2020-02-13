@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+// function e(string $cmd) {
+//     echo "cmd: " . $cmd . "\n";
+//     echo $r = shell_exec($cmd) . "\n";
+//     return $r;
+// }
+function extension_get($filename) {
+    preg_match('/^.*\.([a-z0-9]{3,4})$/i', $filename, $matches);
+    return h_get($matches, 1, '');
+}
+// main
+$prg_name = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+$ext = extension_get($prg_name);
+if ($argc == 1) {
+    action_usage();
+} else {
+    switch ($ext) {
+    case 'php':
+        echo `/usr/bin/php $prg_name`;
+        break;
+    default:
+        echo "ext:$ext not managed \n";
+        action_usage();
+        break;
+    }
+}
+exit(0);
+//-- actions --------------------------------------
+//
+function action_XXX() {
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+exit(0);

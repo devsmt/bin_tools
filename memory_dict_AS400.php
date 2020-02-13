@@ -55,12 +55,26 @@ DSPPGM PHP_OBJ/MYPROGRAM004
 // id formato file, numero campi, lunghezza record
 DSPFD MILIB/MYFILE00L
 // commento testo dei campi
+// su file logici, mostra i campi chiave e OMIT
 DSPFFD FILE(LIB1/MATPF00F) OUTPUT(*OUTFILE) OUTFILE(QTEMP/DFF_MATPF)
 CPYTOIMPF FROMFILE(qtemp/dff_matpf) TOSTMF(\'/www/zend-applications/MATPF00F.txt\') MBROPT(*ADD) RCDDLM(*CRLF)
 ',
 
-
     'as400_all'=>file_get_contents(__DIR__.'/as400_all.txt'),
+    'JOBD' => '
+// ottenere lista utenti, va controllato quale utente usa la connessione
+WRKUSRPRF *all
+// controlla specifico utente
+DSPUSRPRF WB_STDB2B
+
+// JOBD definition path
+Descrizione lavoro . . . . . . . . . . . . :   WB_STDJBD
+  Libreria . . . . . . . . . . . . . . . . :     WB_STDOBJ
+
+// mostra definizioni della jobd
+// per vedere LIBL, in ultima pagina, scrollare e dare invio
+DSPJOBD JOBD(WB_STDOBJ/WB_STDJBD) '
+
 ];
 
 return $commands;

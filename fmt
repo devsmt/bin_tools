@@ -39,7 +39,9 @@ if (!request_is_cli()) {
 
 
         case 'js':
-            echo e("js_fmt $file_path ");
+            $file_path_tmp = "$file_path.tmp";
+            echo e("cp $file_path  $file_path_tmp ");
+            echo e("/data/bin_tools/js_fmt --outfile=$file_path  $file_path_tmp ");
             break;
         // prettier funziona con tutti i linguaggi web https://github.com/prettier/prettier#what-does-prettier-do
         // sudo npm install --global prettier

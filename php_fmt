@@ -22,7 +22,7 @@ if (strtolower(PHP_SAPI) !== 'cli') {
 // https://github.com/Shaked/php.tools
 // echo "php.tools fmt:";
 $_1 = $argv[1];
-e('php /data/usr_local_bin/php.tools/fmt.php --lint-before --indent_with_space=4  ' . $_1); // bash $@
+e('php /data/usr_local_bin/php.tools/fmt.php --lint-before --indent_with_space=4  ' . $_1. ' 2>&1 '); // bash $@
 // do file uses old syntax?
 $lines = shell_exec("grep \" array(\" $_1 ");
 $lines = $lines ? trim($lines) : $lines;

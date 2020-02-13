@@ -1,2 +1,2 @@
-jedit /data/bin_tools/memory_dict.php &
+jedit /data/bin_tools/memory_dict_linux.php &
 jedit `which memory` &

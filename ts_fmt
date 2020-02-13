@@ -1,2 +1,2 @@
 # astyle --style=java --mode=cs --errors-to-stdout "$@"
-prettier  --write --print-width 120 --tab-width 4 --single-quote --arrow-parens always  "$@"
+/usr/local/bin/prettier  --write --print-width 160 --tab-width 4 --single-quote --arrow-parens always  "$@"

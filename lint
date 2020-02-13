@@ -1,10 +1,14 @@
 #!/usr/bin/env php
 <?php
+/*
+unified lint wrapper
+*/
 declare (strict_types = 1);
 require_once __DIR__ . '/Utils.php';
 function e(string $cmd) {
     echo "cmd: " . $cmd . "\n";
-    echo `$cmd` . "\n";
+    echo $r = `$cmd` . "\n";
+    return $r;
 }
 
 // main
@@ -37,7 +41,16 @@ if (!request_is_cli()) {
             $cmd = "/data/bin_tools/ts_lint $file_path";
             e($cmd);
             break;
+        case 'js':
+             $cmd = "/usr/local/bin/jshint $file_path";
+             $r = e($cmd);
+             $r = trim(''.$r);
+             if( empty($r ) ) {
+                 echo "OK \n";
+             }
+        break;
         default:
+            die( implode('/', [__FUNCTION__,__METHOD__,__LINE__]) .' > TODO '.$ext );
             break;
         }
     }

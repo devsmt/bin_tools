@@ -154,24 +154,24 @@ $commands_DEV = include __DIR__ . '/memory_dict_DEV.php';
 $h_args = CLI::getConsoleArgs($argv);
 $dict = strtolower(h_get($h_args, 'dict', 'all'));
 switch ($dict) {
-    case 'linux':
-        $commands = $commands_linux;
-        break;
-    case 'as400':
-        $commands = $commands_AS400;
-        break;
-    case 'etc':
-        $commands = $commands_etc;
-        break;
-    case 'dev':
-        $commands = $commands_DEV;
-        break;
-    case 'all':
-        $commands = array_merge($commands_linux, $commands_AS400, $commands_etc, $commands_DEV);
-        break;
-    default:
-        die( implode('/', [__FUNCTION__,__METHOD__,__LINE__]) .' > invalid dict '.$dict );
-        break;
+case 'linux':
+    $commands = $commands_linux;
+    break;
+case 'as400':
+    $commands = $commands_AS400;
+    break;
+case 'etc':
+    $commands = $commands_etc;
+    break;
+case 'dev':
+    $commands = $commands_DEV;
+    break;
+case 'all':
+    $commands = array_merge($commands_linux, $commands_AS400, $commands_etc, $commands_DEV);
+    break;
+default:
+    die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > invalid dict ' . $dict);
+    break;
 }
 // post process
 ksort($commands); //in-place sort!
@@ -180,7 +180,7 @@ foreach ($commands as $key => $str) {
     unset($commands[$key]);
     $commands[strtolower($key)] = $str;
 }
-echo "loaded ".count( $commands )." keys from dict: $dict \n";
+echo "loaded " . count($commands) . " keys from dict: $dict \n";
 //----------------------------------------------------------------------------
 // actions
 //----------------------------------------------------------------------------
@@ -259,7 +259,8 @@ if (empty($action)) {
         // shift+ins per fare paste
         //$cmd_str = $commands[$action]->cmd;
         //echo " echo \"$cmd_str\" | xclip -i "."\n\n";
-        echo CLI::printc(indent(expand($commands[$action], $json_data))) . "\n";
+        echo CLI::printc(sprintf('Key foud: %s', $action)) . "\n";
+        echo indent(expand($commands[$action], $json_data)) . "\n";
     } else {
         $c = 0;
         $str_search = $action;
@@ -279,7 +280,7 @@ if (empty($action)) {
         $c = 0;
         foreach ($commands as $key => $text) {
             if (str_contains('' . $text, $str_search)) {
-                $txt .= CLI::printc("substr txt: '$str_search' found in key = '$key' ") . "\n";
+                $txt .= CLI::printc("substr '$str_search' found in text for key = '$key' ") . "\n";
                 $txt .= indent($text, $str_search) . "\n";
                 $c++;
             }
