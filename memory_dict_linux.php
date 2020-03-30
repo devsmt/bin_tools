@@ -31,7 +31,7 @@ kill -SIGCONT \${THEPID}
 kill -9 \$(lsof -i :<port> | awk '{l=\$2} END {print l}')
 __END__
     ,
-    'bash_io_redirect' => '
+    'bash_io_redirect'=>'
 # Redirect stdout to file
 1> filename.txt
 # Redirect and append stdout to file
@@ -42,16 +42,16 @@ __END__
 2>> filename.txt
 # Redirect both stdout and stderr to file
 &> filename ',
-    'date_log' => ('>> /var/www/app/logs/module/program_`date +"%F"`.log'),
+    'date_log'=>('>> /var/www/app/logs/module/program_`date +"%F"`.log'),
     //----------------------------------------------------------------------------
     //  linux basic commands
     //----------------------------------------------------------------------------
-    'top' => 'top -p $(pgrep -d , apache) ',
-    'cpulimit' => '
+    'top'=>'top -p $(pgrep -d , apache) ',
+    'cpulimit'=>'
 #Limit the cpu usage of a process
 cpulimit -p pid -l 50
 ',
-    'grep' => ('
+    'grep'=>('
 grep -e {{PATTERN}} -f {{FILE}}
 # only an extension
 grep -Rn --include \*.php Controller .
@@ -79,16 +79,16 @@ find . -name "*.sql" -exec grep "whatever" {} \;
 #
 ag --php Controller
 '),
-    'parallel' => '
+    'parallel'=>'
         find . -name *.php | parallel  php_fmt
         find . -name "*jpeg" | parallel -I% --max-args 1 convert % %.png
     ',
-    'xargs' => '
+    'xargs'=>'
         ## execute commands, each line from standard input, is passed as argument o the command
         find . -name *.php | xargs gedit
     ',
-    'tee' => 'TODO',
-    'split' => '
+    'tee'=>'TODO',
+    'split'=>'
     # break / split big files into smaller files
     # n files 500MB each.
     split -b 500MB file.log
@@ -100,7 +100,7 @@ ag --php Controller
     //----------------------------------------------------------------------------
     //
     //----------------------------------------------------------------------------
-    'find' => <<<__END__
+    'find'=><<<__END__
         find {{dir}} -type f -name
         find -name *.mp3 -mtime -1 -exec cp {} /home/my_path/ \;
         # parallel
@@ -139,32 +139,31 @@ ag --php Controller
         locate {{file_name}}
         # find + print formatted
         find DMS -name "*.php" -exec printf 'require_once "%s";\n' {} +
-
 __END__
     ,
-    'find_delete' => ('#-print for debug
+    'find_delete'=>('#-print for debug
         find {{dir}} -maxdepth 1 -type f -mtime +30  -name "*.log"  -delete  '),
-    'find_size' => ('#-exec echo {} \;
+    'find_size'=>('#-exec echo {} \;
         find {{dir}} -maxdepth 1 -type f -size +500M -name "*.log" -print '),
-    'find_exec' => ('find . -type f -perm 777 -exec chmod 755 {} \;'),
-    'find_locate' => ('locate -i "*.jpg"'),
-    'rename' => "
+    'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
+    'find_locate'=>('locate -i "*.jpg"'),
+    'rename'=>"
         find -type f -name '*.php' | rename 's/^/_/' *
         for file in *.txt; do    mv '\$file' '\${file%.txt}_1.txt' done
         mmv '*.hh' '#1.php'
     ",
-    'find_duplicates' => '
+    'find_duplicates'=>'
   fdupes .
   fslint .
   find . ! -empty -type f -exec md5sum {} + | sort | uniq -w32 -dD
 ',
-    'find_locked_files' => '
+    'find_locked_files'=>'
         # Kills a process that is locking a file
         fuser -k filename
         # Show what PID is listening on specific port
         fuser -v 53/udp
     ',
-    'img_resize' => '
+    'img_resize'=>'
 convert myfigure.png -resize 200x100 myfigure.jpg
 convert -define jpeg:size=500x180 path.jpeg -auto-orient -thumbnail 250x90 -unsharp 0x.5 sample_thumb.jpeg
 # -thumbnail - It resizes the image and strips all the profile and comment data to make it smaller.
@@ -173,16 +172,16 @@ convert -define jpeg:size=500x180 path.jpeg -auto-orient -thumbnail 250x90 -unsh
 # - unsharp - We can improve the above result by sharpening the image slightly after the "-thumbnail" resize operation.
 # Specify the required thumbnail dimension after -thumbnail.
     ',
-    'img_optimize' => '
+    'img_optimize'=>'
 # optimise a JPG and make it progressive
 convert -strip -interlace Plane -quality 80 input-file.jpg output-file.jpg
 # Batch all the images in a folder like this:
 for i in source/images/backgrounds/*.jpg; do convert -strip -interlace Plane -quality 80 $i $i; done
 ',
-    'imagemagick' => alias_create('img_resize'),
-    'jpg_to_png' => 'find . -name "*.jpg" -exec mogrify -format png {} \; ',
-    'ramdisk' => alias_create('tmpfs'),
-    'tmpfs' => "
+    'imagemagick'=>alias_create('img_resize'),
+    'jpg_to_png'=>'find . -name "*.jpg" -exec mogrify -format png {} \; ',
+    'ramdisk'=>alias_create('tmpfs'),
+    'tmpfs'=>"
 free -gh
 mkdir /mnt/ramdisk
 # mount -t [TYPE] -o size=[SIZE] [FSTYPE] [MOUNTPOINT]
@@ -193,14 +192,14 @@ tmpfs  /mnt/ramdisk tmpfs   nodev,nosuid,noexec,nodiratime,size=1024M   0 0
 df -h /mnt/ramdisk
 ",
     //
-    'mount' => '
+    'mount'=>'
         @see tmpfs
         @see ftp_merge
         #My music collection sits on my home server so that I can access it from anywhere. It is mounted using SSHFS and automount in the /etc/fstab/:
         root@server:/media/media  /mnt/media  fuse.sshfs noauto,x-systemd.automount,idmap=user,IdentityFile=/root/.ssh/id_rsa,allow_other,reconnect 0 0
     ',
     //
-    'nice' => ('
+    'nice'=>('
 # lunch with increased  priority:
 nice -n -5 program_name
 # decreased priority:
@@ -208,42 +207,42 @@ nice -n 5 progrm_name
 # renice
 renice -n 19 -p pid_number
     '),
-    'ps' => '
+    'ps'=>'
         # count processes per user
         ps hax -o user | sort | uniq -c | sort -r
     ',
-    'aspell' => 'aspell --lang=it -c docs/manuale_api_rivenditori/index.md',
-    'md5file' => ' md5sum file ',
+    'aspell'=>'aspell --lang=it -c docs/manuale_api_rivenditori/index.md',
+    'md5file'=>' md5sum file ',
     // get a specific line of the file, useful for debug scripting
-    'file_get_line' => "sed '5!d' <file_path>",
+    'file_get_line'=>"sed '5!d' <file_path>",
     //---- compression decompression -------------------------------------------
     /* gzip è + veloce,
     bzip2 fa una compressione migliore del 5% */
-    'zip_compress' => '
+    'zip_compress'=>'
         zip -9 -j --junk-paths -r {{zip_file.zip}} {{folder_name}}/*.jpg
         zip -m -T # elimina dopo compressione
     ',
-    'extract_unzip' => 'unzip {{zip_file}} -d {{destination_folder}} ',
-    'zip_list' => '
+    'extract_unzip'=>'unzip {{zip_file}} -d {{destination_folder}} ',
+    'zip_list'=>'
         unzip -l files.zip
         # count compressed items
         unzip -l filename.zip | tail -1 | awk \'{ print $2 }\'
     ',
-    'zip_verify' => alias_create('zip_list'),
-    'compress_bzip' => ('bzip2 -zkfq --best {{filename}}.bz2 '),
-    'extract_bzip' => ('bzip2  -dk  {{filename}}.bz2 '),
-    'compress_targz' => ("
+    'zip_verify'=>alias_create('zip_list'),
+    'compress_bzip'=>('bzip2 -zkfq --best {{filename}}.bz2 '),
+    'extract_bzip'=>('bzip2  -dk  {{filename}}.bz2 '),
+    'compress_targz'=>("
 tar -czf /path/to/backup.tar.gz /path/to/*.pdf 2>/dev/null
 tar -czfvp /archive/full-backup-`date '+%d-%B-%Y'`.tar.gz --directory /var/mydir --exclude=dirname1  --exclude=dirname2 .
 "),
-    'extract_targz' => ('tar -xzfv archive.tar.gz'),
-    'compress_gzip' => '
+    'extract_targz'=>('tar -xzfv archive.tar.gz'),
+    'compress_gzip'=>'
         cat {{file}} | gzip > file.gz
         # -p preserve permissions
         tar -czf -pv  {{archive-name}}.tar.gz {{path_to_folder}}
         ',
-    'extract_gunzip' => ('gunzip {{file}}.gz   '),
-    'tar' => <<<__END__
+    'extract_gunzip'=>('gunzip {{file}}.gz   '),
+    'tar'=><<<__END__
 # System backup with exclude specific directories
 cd /
 # tar -czvpf /mnt/system$(date +%d%m%Y%s).tgz --directory=/ \
@@ -256,7 +255,7 @@ tar cvpf /backup/snapshot-$(date +%d%m%Y%s).tgz --directory=/ \
 __END__
     ,
     //--------------------------------------------------------
-    'secure-delete' => '
+    'secure-delete'=>'
         Secure delete with shred
         shred -vfuz -n 10 file
         shred --verbose --random-source=/dev/urandom -n 1 /dev/sda
@@ -275,7 +274,7 @@ __END__
     //----------------------------------------------------------------------------
     // start a process at boot
     // process manager. Ubuntu 16.04 and later ship with Systemd.
-    'autostart' => '
+    'autostart'=>'
 Create a new file called /etc/systemd/system/my-fathom-site.service with the following contents. Replace $USER with your actual username.
 [Unit]
 Description=Starts the fathom server
@@ -297,8 +296,8 @@ You should now be able to manually start your Fathom web server by issuing the f
 systemctl start my-fathom-site
     ',
     //--------------------------------------------------------------------------
-    'dictionary' => ('loook word  #cerca una parola nel dizionario del sistema'),
-    'user_groups' => '
+    'dictionary'=>('loook word  #cerca una parola nel dizionario del sistema'),
+    'user_groups'=>'
 # create new user
     sudo useradd -G  {{group}}  {{user}}
     sudo passwd {{user}}
@@ -336,14 +335,14 @@ sudo chmod -R u=+rwx,g=+rwx,o=+r ./dir
 # Note that this applies only to newly-created files
 sudo find ./dir -type d -exec chmod g+s {} \;
 ',
-    'sudo_wwwdata' => ('sudo -u www-data bin/{{script}} $param'),
-    'tee' => ('
+    'sudo_wwwdata'=>('sudo -u www-data bin/{{script}} $param'),
+    'tee'=>('
         #duplicate output to file e STDOUT
         ls -la / | tee /tmp/out.log'),
-    'ubuntu_version' => ('lsb_release -cds'),
-    'hostname' => ('hostname -f'),
-    'open_ports' => alias_create('ports_open'),
-    'ports_open' => <<<__END__
+    'ubuntu_version'=>('lsb_release -cds'),
+    'hostname'=>('hostname -f'),
+    'open_ports'=>alias_create('ports_open'),
+    'ports_open'=><<<__END__
         sudo netstat -lptu
         sudo netstat -lntp # quali software occupano le porte
         # Graph # of connections for each hosts
@@ -356,7 +355,7 @@ sudo find ./dir -type d -exec chmod g+s {} \;
         awk '{ printf("%s\t%s\t",$2,$1) ; for (i = 0; i < $1; i++) {printf("*")}; print "" }'
 __END__
     ,
-    'gpg' => ('
+    'gpg'=>('
 #
 # gpg --decrypt-files
 # gpg --default-recipient-self --armor --encrypt-files
@@ -364,7 +363,7 @@ __END__
 gpg -c your_file.odt
 gpg your_file.odt.gpg
 echo $your_password | gpg --passphrase-fd 0 --batch --yes --no-tty your_file.gpg'),
-    'awk' => ("
+    'awk'=>("
 awk '{print \$1}' # field 1
 awk '{print \$2}' # field 2
 ls -lh | awk '{ print $2 }'
@@ -372,7 +371,7 @@ ls -lh | awk '{ print $2 }'
 cut -f 1
 echo 'someletters_12345_moreleters.ext' | cut -d'_' -f 2 # explode by _ and take 2
 "),
-    'sed' => "
+    'sed'=>"
         # sed 's/^/    /'
         sed -i 's/ugly/beautiful/g' /home/usr/test/test.txt
         # To print a specific line from a file
@@ -383,9 +382,9 @@ echo 'someletters_12345_moreleters.ext' | cut -d'_' -f 2 # explode by _ and take
         # Remove a range of lines from a file
         sed -i <file> -re '<start>,<end>d'
     ",
-    'perl' => "perl -pi -e 's/\x0d/\x0a/gs' ",
-    'count_lines' => ("wc -l"),
-    'apt' => '
+    'perl'=>"perl -pi -e 's/\x0d/\x0a/gs' ",
+    'count_lines'=>("wc -l"),
+    'apt'=>'
 sudo apt-get install
 apt list --installed # elenca pacchetti installati
 sudo apt search php7.2 # elenca pacchetti disponibili
@@ -414,10 +413,10 @@ sudo apt update && sudo apt upgrade -y && sudo apt-get autoremove
 # synaptic bug
 xhost +si:localuser:root && sudo synaptic
 ',
-    'apt_installed' => ('sudo apt list --installed | grep php7.0 '),
-    'apt_list' => ('sudo apt-cache search php7-*'),
-    'firewall' => '@see ufw || iptables ',
-    'ufw' => ('
+    'apt_installed'=>('sudo apt list --installed | grep php7.0 '),
+    'apt_list'=>('sudo apt-cache search php7-*'),
+    'firewall'=>'@see ufw || iptables ',
+    'ufw'=>('
 sudo ufw app list
 sudo ufw allow 80/tcp
 sudo ufw enable
@@ -432,23 +431,23 @@ sudo ufw allow proto tcp to 0.0.0.0/0 port 80
 sudo ufw allow from 202.54.1.5/29 to any port 22
 # A differenza del comando iptables, le modifiche effettuate con il comando ufw sono persistenti e non è quindi necessario dare altri comandi per memorizzarle in via definitiva.
 '),
-    'iptables' => '
+    'iptables'=>'
     sudo iptables -L
     ',
-    'crontab' =>
+    'crontab'=>
     "
 0 23 * * * root  /usr/local/bin/command   # specifi howr
 */10 * * * user  /path/to/script          # every ten min
 @reboot     root      duplicati-server --webservice-interface=any &
 ",
-    'cron_log' => ('grep -i CRON /var/log/syslog'),
-    'at' => ('
+    'cron_log'=>('grep -i CRON /var/log/syslog'),
+    'at'=>('
         sudo echo "reboot" | sudo at -m 13:10 today
         echo "ping -c 4 www.google.com" | at -m now + 1 minute
     '),
-    'cpu_info' => ('sudo lshw | grep -i cpu'),
-    'ram_usage' => "free -gh",
-    'strace' =>  <<<__END__
+    'cpu_info'=>('sudo lshw | grep -i cpu'),
+    'ram_usage'=>"free -gh",
+    'strace'=><<<__END__
 Track child process
 strace -f -p $(pidof glusterfsd)
 Track process after 30 seconds
@@ -460,11 +459,11 @@ strace -f -e trace=bind nc -l 80
 Track the open request of a network port (show TCP/UDP)
 strace -f -e trace=network nc -lu 80
 __END__
-,
+    ,
     //----------------------------------------------------------------------------
     //  mysql commands
     //----------------------------------------------------------------------------
-    'mysql_create_db' => "
+    'mysql_create_db'=>"
         mysql -u root -p
         CREATE DATABASE {{database}};
         SHOW DATABASES;
@@ -481,14 +480,12 @@ __END__
         #
         mysql -u {{username}}  -p {{database}}
 ",
-    'mysql_user' => "
+    'mysql_user'=>"
         #
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
         # may need to relax password validation plugin
         # mysql> SHOW VARIABLES LIKE 'validate_password_policy';
         # mysql> SET GLOBAL validate_password_policy = 1;
-
-
         GRANT USAGE ON *.* TO '{{username}}'@'localhost';
         GRANT ALL  ON `{{db_name}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
         FLUSH PRIVILEGES;
@@ -509,12 +506,12 @@ __END__
         FLUSH PRIVILEGES;
         SHOW GRANTS FOR '{{username}}'@'localhost';
     ",
-    'mysql_debug' => "
+    'mysql_debug'=>"
         SHOW VARIABLES LIKE '%version%';
         SHOW TABLE STATUS FROM supportpal LIKE 'email_log';
         SHOW CREATE TABLE xxxx
     ",
-      'mysql_dump' =>  '
+    'mysql_dump'=>'
           mysqldump -u user --p=$password $dbname [$tablemane]   > $backup_db_file
           mysqldump --all-databases -uroot -p$pass > /data/mysql_dump/full-`date +%F`.sql && find /data/mysql_dump -type f -mtime +30  -exec rm -f {} \;
           for I in `echo "show databases;" | mysql -uroot -p$pass | grep -v Database`; do mysqldump -uroot -p$pass $I > "/data/mysql_dump/$I.sql"; done
@@ -524,8 +521,8 @@ __END__
           tablename:   è possibile specificare quale tabella del db si vuole salvare. comoda per tabelle di grandi dimensioni.
           # spezzare tabelle grandi
           mysqldump  db table --where="1 limit 100, 1000"
-      ' ,
-    'mysql_dump2' =>  <<<'__END__'
+      ',
+    'mysql_dump2'=><<<'__END__'
         function action_dump($dbname, string $password) {
             $path =  realpath( __DIR__.\'/../sql\' );
             if( false === $path ){ die( "error path:$path " ); }
@@ -566,15 +563,15 @@ __END__
                 break;
         }
 __END__
-,
-    'mysql_restore' => <<<__END__
+    ,
+    'mysql_restore'=><<<__END__
         mysql -u user --p={{password}} {{dbname}} [\$tablemane] < {{backup_db_file}}
         # monitor long restores
         watch -n 5 'echo "show processlist;" | mysql -uuser -ppassword';
 __END__
-,
+    ,
     // dump +restore di database grandi
-    'mysql_big_dump_restore'  => <<<'__END__'
+    'mysql_big_dump_restore'=><<<'__END__'
     ## mydumper
     mydumper \
         --database=DB_NAME \
@@ -605,14 +602,14 @@ __END__
     ## InnoDB is owfully slow, try
     innodb_flush_log_at_trx_commit = 2
 __END__
-,
-    'mysql_explain' => 'EXPLAIN SELECT * FROM table where x=1 ',
-    'mysql_import' =>  '
+    ,
+    'mysql_explain'=>'EXPLAIN SELECT * FROM table where x=1 ',
+    'mysql_import'=>'
         DROP TABLE IF EXISTS `_dbname`.`_table_name`;
         CREATE TABLE `_dbname`.`_table_name` LIKE `_dbname_source`.`_table_name`;
         INSERT INTO `_dbname`.`_table_name` SELECT * FROM `_dbname_source`.`_table_name`;
     ',
-    'mysql_compare_case_sensitive' => "
+    'mysql_compare_case_sensitive'=>"
         // mysql is not case sensitive by default, try changing the language collation to binary
         // cant use indexes
         // this returns 0 (false)
@@ -624,10 +621,10 @@ __END__
         // can use index
         WHERE `column` = BINARY 'value'
     ",
-    'mysql_tuning' => '
+    'mysql_tuning'=>'
         mysqltuner ## program to detect various misconfigurations
     ',
-    'mysql_optimize' => '
+    'mysql_optimize'=>'
         ## list the size of every table in every database, largest first:
         SELECT
              table_schema as `Database`,
@@ -640,8 +637,8 @@ __END__
         ## To optimize all tables on your server in all databases you can use e.g. commandline command:
         mysqlcheck --all-databases --optimize --skip-write-binlog
     ',
-    'adminer' => alias_create('mysql_adminer'),
-    'mysql_adminer' => '
+    'adminer'=>alias_create('mysql_adminer'),
+    'mysql_adminer'=>'
     cd /var/www/html
     sudo wget "http://www.adminer.org/latest.php" -O /var/www/html/adminer__version.php
     # put IP checking and denying on the program for security @see ip_check_  _is_secure_IP()
@@ -652,14 +649,14 @@ __END__
     require __DIR__. "/adminer_auth.php";
     ',
     //--------------------------------------------------------------------------
-    'repeat' => 'watch -n1 ls -lt #repeat the command every 1 sec ',
-    'watch' => alias_create('repeat'),
+    'repeat'=>'watch -n1 ls -lt #repeat the command every 1 sec ',
+    'watch'=>alias_create('repeat'),
     //----------------------------------------------------------------------------
     // network commands
     //----------------------------------------------------------------------------
-    'scp_upload' => ('sshpass -p "_pass" scp -o  StrictHostKeyChecking=no _l_path tmirandola@_host:_r_path'),
-    'scp_download' => ('sshpass -p "_pass" scp -o  StrictHostKeyChecking=no tmirandola@_host:_r_path _l_path'),
-    'ssh' => '
+    'scp_upload'=>('sshpass -p "_pass" scp -o  StrictHostKeyChecking=no _l_path tmirandola@_host:_r_path'),
+    'scp_download'=>('sshpass -p "_pass" scp -o  StrictHostKeyChecking=no tmirandola@_host:_r_path _l_path'),
+    'ssh'=>'
 # Supported escape sequences:
 ~.  - terminate connection (and any multiplexed sessions)
 ~B  - send a BREAK to the remote system
@@ -674,11 +671,11 @@ __END__
 ssh user@host cat /path/to/remotefile | diff /path/to/localfile -
     ',
     //
-    'ssh_rpc' => "
+    'ssh_rpc'=>"
             ssh user@host '( cat ~/myscript.sh )'
             ssh user@host 'ls -l; ps -aux; whoami'
     ",
-    'tcpdump' => <<<__END__
+    'tcpdump'=><<<__END__
 #Filter incoming (on interface) traffic (specific ip:port)
 tcpdump -ne -i eth0 -Q in host 192.168.252.1 and port 443
 -n - don't convert addresses (-nn will not resolve hostnames or ports)
@@ -716,7 +713,7 @@ Top hosts by packets
 tcpdump -ei enp0s25 -nnn -t -c 200 | cut -f 1,2,3,4 -d '.' | sort | uniq -c | sort -nr | head -n 20
 __END__
     ,
-    'ngrep' => <<<__END__
+    'ngrep'=><<<__END__
 ngrep -d eth0 "www.google.com" port 443
 -d [iface|any] - set interface
 [domain] - set hostname
@@ -737,12 +734,12 @@ ngrep -l -q -d eth0 -i "User-Agent: curl*"
 -i - case-insensitive search
 __END__
     ,
-    'mp3' => '
+    'mp3'=>'
         mpg123 --loop=3 *.mp3
         totem *.mp3
         mpv *.mp3
     ',
-    'curl' => ('
+    'curl'=>('
         curl -I -d "method=Say.Hello" http://www.google.com
         curl -O http://www.google.com/image.gif
         curl http://www.google.com/image.gif -o /tmp/img.gif
@@ -769,23 +766,23 @@ curl -Iks --location -X GET -A "x-agent" --proxy http://127.0.0.1:16379 https://
 # set a session ID
 curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://zzzzz.xxxxx.test/items/downloadcategoryxls
         '),
-    'wget' => ('
+    'wget'=>('
 wget -r -l1 -P035 -nd --no-parent
 wget -t 5 -c -nH -r -k -p -N --no-parent
 wget -l 1 -v -k -p -E http://test.com/test -- mirror completo di un sito
 '),
-    'nethogs' => ('
+    'nethogs'=>('
         # conoscere i processi che stanno utilizzando la nostra connessione
         sudo nethogs wlan0'),
     //----------------------------------------
     //  rsync -azv -e ssh --delete --progress
-    'rsync_push' => ('
+    'rsync_push'=>('
         #upload di tutta la directory (PUSH)
         rsync -v $cmd_dry_run --archive --cvs-exclude --compress --stats --progress --human-readable --force --delete --no-perms --no-owner --no-group $exclude  --rsh \"ssh -p22\" $local_path $user@$host:$remote_path'),
-    'rsync_pull' => ('
+    'rsync_pull'=>('
         # remote to local (PULL)
         rsync -v --compress --rsh ssh user@host:/path/to/local/file.txt /path/to/remote/file.txt'),
-    'rsync_base' => '
+    'rsync_base'=>'
 rsync options source destination
 common options:
     -v : verbose
@@ -794,12 +791,12 @@ common options:
     -z : compress file data
     -h : human-readable, output numbers in a human-readable format
 ',
-    'rsync_local' => ('
+    'rsync_local'=>('
 # sincronizza in modo efficiente directory locali
 rsync -a -v /home /backup
 rsync -v --archive --compress --delete /local_path_A/ /local_path_B'),
     //
-    'rsync_pull_push_php' => <<<'__END__'
+    'rsync_pull_push_php'=><<<'__END__'
 // sincronizza in modo efficiente directory
 //
 // trasferimento con ssh + rsync
@@ -848,8 +845,9 @@ function remote_download( $user, $passwd, $host, $local_path, $remote_path, $exc
     // echo `$cmd`;
 }
 function rsync_pull($user, $passwd, $host, $local_path, $remote_path, $exclude) { }
-__END__ ,
-    'openssl' => <<<'__END__'
+__END__
+    ,
+    'openssl'=><<<'__END__'
  openssl
 Testing connection to remote host
 echo | openssl s_client -connect google.com:443 -showcerts
@@ -947,7 +945,7 @@ __END__
     //----------------------------------------------------------------------------
     // FTP
     //----------------------------------------------------------------------------
-    'ftp_session' => '
+    'ftp_session'=>'
     ftp user@ftpdomain.com
     lcd /path
     rcd /path
@@ -957,7 +955,7 @@ __END__
     mput *.xls # upload multi
     exit
     ',
-    'ftp_php_pull_push' => <<<'__END__'
+    'ftp_php_pull_push'=><<<'__END__'
 function action_sync_xxx() {
     $username = '';
     $password = '';
@@ -1022,12 +1020,12 @@ function ftp_init_dry_run( ){
 }
 __END__
     ,
-    'ftp_pull' => ('
+    'ftp_pull'=>('
         lftp -c " open ftp://\$user:\$pass@192.168.1.31; lcd /var/www/dms_caleffi/trunk/RPG/SRCMOD/; cd /www/zend-applications/PHP_SRC/SRCMOD; mirror  --delete  --no-perms  --continue --verbose  --parallel=2 "
     '),
-    'ftp_push' => alias_create('ftp_upload_file'),
+    'ftp_push'=>alias_create('ftp_upload_file'),
     // singolo file
-    'ftp_upload_file' => ('
+    'ftp_upload_file'=>('
 function ftp_upload($local_file, $username, $password, $host, $rcd = "/", $is_dry_run = false) {
     $file_name = basename($local_file);
     $lcd = dirname($local_file);
@@ -1053,7 +1051,7 @@ function ftp_upload2($local_file, $username, $password, $host, $remote_dir=\'\',
 }
 '
     ),
-    'ftp_upload_dir' => <<<'__END__'
+    'ftp_upload_dir'=><<<'__END__'
 #!/bin/bash
 HOST='mysite.com'
 USER='myuser'
@@ -1069,11 +1067,11 @@ bye
 "
 __END__
     ,
-    'ftp_merge' => '
+    'ftp_merge'=>'
          curlftpfs  caleffigroup:xxxx@www.caleffigroup.it/website /mnt/ftp/
          meld /var/www/dms_investor_relations/ /mnt/ftp/
          sudo umount  ',
-    'rclone' => ('
+    'rclone'=>('
         rclone lsl gdrive_remote:UbuntuOne/AA_invoices
         rclone lsl gdrive_remote:/tmp
         rclone copy /local/path remote:path
@@ -1085,14 +1083,14 @@ __END__
         ## To copy a local directory to a drive directory called backup
         rclone copy /home/source remote:backup
     '),
-    'mime' => '
+    'mime'=>'
         sudo apt-get install mpack
         munpack -f mime-attachments-file    ',
-    'csv' => '
+    'csv'=>'
 csvgrep -e iso-8859-1 -c 1 -m "de" worldcitiespop | csvgrep -c 5 -r "\d+"
   | csvsort -r -c 5 -l | csvcut -c 1,2,4,6 | head -n 11 | csvlook
 ',
-    'dns' => <<<'__END__'
+    'dns'=><<<'__END__'
 dig caleffigroup.it
 #
 Check DNS and HTTP trace with headers for specific domains
@@ -1134,7 +1132,7 @@ dig -x 172.217.16.14 +short
 __END__
     ,
     // find pc on a network
-    'nmap' => '
+    'nmap'=>'
 nmap -sP 192.168.1.*
 # or more comonly
 nmap -sn 192.168.1.0/24
@@ -1163,7 +1161,7 @@ nmap -p 1-65535 -sV -sS -T4 192.168.0.0/24
 # scan and pass output to Nikto
 nmap -p80,443 192.168.0.0/24 -oG - | nikto.pl -h -
     ',
-    'namap_pentest' => <<<'__END__'
+    'namap_pentest'=><<<'__END__'
 Recon specific ip:service with Nmap NSE scripts stack
 # Set variables:
 _hosts="192.168.250.10"
@@ -1209,7 +1207,7 @@ _nmap_nse_scripts_args="dns-brute.domain=${_hosts},http-cross-domain-policy.doma
 nmap --script="$_nmap_nse_scripts" --script-args="$_nmap_nse_scripts_args" -p "$_ports" "$_hosts"
 __END__
     ,
-    'lsof' => <<<__END__
+    'lsof'=><<<__END__
 #Show process that use internet connection at the moment
 lsof -P -i -n
 #Show process that use specific port number
@@ -1233,7 +1231,7 @@ sort -n -u | tail | column -t
 __END__
     ,
     //
-    'httpie' => '
+    'httpie'=>'
 http -p Hh https://www.google.com
 -p - print request and response headers
 H - request headers
@@ -1248,7 +1246,7 @@ http -p Hh --follow --max-redirects 5 --verify no --proxy http:http://127.0.0.1:
 --proxy [http:] - set proxy server
 ',
     //
-    'vpn' => <<<__END__
+    'vpn'=><<<__END__
     /home/taz/Dropbox/etc/VPN_DMS.ovpn
     # import an open VPN conf
     sudo nmcli connection import type openvpn file /path/to/your.ovpn
@@ -1257,21 +1255,19 @@ http -p Hh --follow --max-redirects 5 --verify no --proxy http:http://127.0.0.1:
     # info
     nmcli
     nmcli connection show DMS | grep ipv4
-
-
     # le connessioni mportate da Gnome NetworkManager
 sudo gedit /etc/NetworkManager/system-connections/DMS
-__END__,
-
+__END__
+    ,
     //----------------------------------------------------------------------------
     //  sysadmin
     //----------------------------------------------------------------------------
     # remove executable bit from all files in the current directory
-    'chmod' => 'chmod -R -x+X *',
-    'path' => "
+    'chmod'=>'chmod -R -x+X *',
+    'path'=>"
     echo \$PATH | tr : '\\n' | sort
     ",
-    'logrotate' => ('
+    'logrotate'=>('
         sudo vi /etc/logrotate.d/appname.log
         /var/log/appname.log {
                 rotate 2
@@ -1279,7 +1275,7 @@ __END__,
                 size 250k
                 compress
         } '),
-    'mail' => '
+    'mail'=>'
         curl http://localhost/server-status | mail -s"apache is eating memory $apache_count" devsmt@gmail.com
         # To send emails I use msmtp, to configure:
         account default
@@ -1293,18 +1289,13 @@ __END__,
         #
         # @see /var/www/xxxxxwwww/bin/phpmail
         ',
-    'disk' => '
+    'disk'=>'
         du -sh
         df -h
         # controllo rapido
         sudo smartctl -t short /dev/sda
         #temperatura disco
         sudo hddtemp /dev/sda
-        # show the first 20 biggest dirs from .
-        du | \
-        sort -r -n | \
-        awk \'{split("K M G",v); s=1; while($1>1024){$1/=1024; s++} print int($1)" "v[s]"\t"$2}\' | \
-        head -n 20
         # mysql space
         sudo du -h /var/lib/mysql/
         # monitor disks I/O read/writes
@@ -1314,7 +1305,12 @@ __END__,
         fuser -v -m <file>
         # for htop,  F2 (Setup) > Select columns > Select RBYTES WBYTES > F10 (Done)
         ',
-    'diff' => '
+    //'";
+    # show the first 20 biggest dirs from .
+    ## du | \
+    ## sort -r -n | \
+    // awk  {split("K M G",v); s=1; while(\$1>1024){\$1/=1024; s++} print int(\$1)" "v[s]"\t"\$2}  | \ head -n 20
+    'diff'=>'
         md5deep -r -l . | sort | md5sum
         find -s $dir1 -type f -exec md5sum {} \; | sort | md5sum
         diff -qr $dir1 $dir2
@@ -1323,7 +1319,7 @@ __END__,
         ',
     //
     // apache related maintanance
-    'apache' => '
+    'apache'=>'
         goaccess -f /var/log/apache2/other_vhosts_access.log -a > /tmp/report.html
         #
         # report text only
@@ -1337,8 +1333,8 @@ visitors /var/log/apache/access.log.*
 # compressed logs
 zcat access.log.*.gz | visitors -
 ',
-    'swap' => 'smem',
-    'tail' => '
+    'swap'=>'smem',
+    'tail'=>'
 # Annotate tail -f with timestamps
 tail -f file | while read ; do echo "$(date +%T.%N) $REPLY" ; done
 # Analyse an Apache access log for the most common IP addresses
@@ -1346,10 +1342,10 @@ tail -10000 access_log | awk \'{print $1}\' | sort | uniq -c | sort -n | tail
 # Analyse web server log and show only 5xx http codes
 tail -n 100 -f /path/to/logfile | grep "HTTP/[1-2].[0-1]\" [5]"
 ',
-    'pwdx' =>
+    'pwdx'=>
     'Show current working directory of a process
             pwdx <pid>  ',
-    'jobs' => '
+    'jobs'=>'
         jobs       # Lists all jobs
         bg %n      # Places the current or specified job in the background, where n is the job ID
         fg %n      # Brings the current or specified job into the foreground, where n is the job ID
