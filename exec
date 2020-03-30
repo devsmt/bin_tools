@@ -8,21 +8,27 @@ require_once __DIR__ . '/Utils.php';
 //     return $r;
 // }
 function extension_get($filename) {
-    preg_match('/^.*\.([a-z0-9]{3,4})$/i', $filename, $matches);
+    preg_match('/^.*\.([a-z0-9]{2,4})$/i', $filename, $matches);
     return h_get($matches, 1, '');
 }
 // main
-$prg_name = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
-$ext = extension_get($prg_name);
+$script_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+$ext = extension_get($script_path);
 if ($argc == 1) {
     action_usage();
 } else {
     switch ($ext) {
+    case '':
+        echo "cant match ext of $script_path" . "\n";
+        break;
     case 'php':
-        echo `/usr/bin/php $prg_name`;
+        echo `/usr/bin/php $script_path`;
+        break;
+    case 'py':
+        echo `/usr/bin/python $script_path`;
         break;
     default:
-        echo "ext:$ext not managed \n";
+        echo "ext:'$ext' not managed \n";
         action_usage();
         break;
     }

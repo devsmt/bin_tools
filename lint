@@ -2,7 +2,7 @@
 <?php
 /*
 unified lint wrapper
-*/
+ */
 declare (strict_types = 1);
 require_once __DIR__ . '/Utils.php';
 function e(string $cmd) {
@@ -31,7 +31,6 @@ if (!request_is_cli()) {
             $ext = 'php';
         }
 
-
         switch ($ext) {
         case 'php':
             $cmd = "php -l $file_path";
@@ -42,15 +41,16 @@ if (!request_is_cli()) {
             e($cmd);
             break;
         case 'js':
-             $cmd = "/usr/local/bin/jshint $file_path";
-             $r = e($cmd);
-             $r = trim(''.$r);
-             if( empty($r ) ) {
-                 echo "OK \n";
-             }
-        break;
+            // eslint may be a newer alternative
+            $cmd = "/usr/local/bin/jshint $file_path";
+            $r = e($cmd);
+            $r = trim('' . $r);
+            if (empty($r)) {
+                echo "OK \n";
+            }
+            break;
         default:
-            die( implode('/', [__FUNCTION__,__METHOD__,__LINE__]) .' > TODO '.$ext );
+            die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > TODO ' . $ext);
             break;
         }
     }
@@ -68,6 +68,5 @@ actions:
 \n";
 }
 //-- utils ----------------------------------------
-
 
 exit(0);

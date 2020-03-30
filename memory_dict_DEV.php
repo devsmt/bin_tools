@@ -71,6 +71,7 @@ java -jar /path/helloWorld.jar [app arguments]
     'npm' => ('
         npm install --save $lib_name
         npm install --save @types/$lib_name
+        npm install -q pack_name # global bin
     '),
     'php_install' => '
         sudo add-apt-repository -y ppa:ondrej/php
@@ -123,12 +124,11 @@ other resource files                        resources/
 web server files                            public/
 
     ',
-
-
-
     'mysql_install' => '
         sudo apt install mysql-server php-mysql
         sudo mysql_secure_installation
+        # use MEDIUM password validation
+        sudo mysql -u root -p # I had to use "sudo" since is new installation
     ',
     'php_lint' => (' find ./tests/ -name *.php -type f -exec php -l \'{}\' \; | grep "PHP Parse error:" '),
     'hhvm' => ('
@@ -283,7 +283,18 @@ cat ~/.ctags
         # "Caret Version Range" package:^1.2.3
         # similar to ~ but accept only non-breaking updates, ^1.2.3 is equivalent to >=1.2.3 <2.0.0
         #
-        # "1.3.*" means the biggest available on the 1.3 series
+        # "1..*" means the biggest available on the 1.3 series
+        #
+        # global tools, requires setting  ~/.bashrc  export PATH=~/.composer/vendor/bin:$PATH
+        # or export PATH="$(composer config -g home)/vendor/bin:$PATH"
+        composer global require vimeo/psalm
+        composer global require phpunit/phpunit
+        composer global require phpunit/dbunit
+        composer global require sebastian/phpcpd
+        composer global require phploc/phploc
+        composer global require phpmd/phpmd
+        composer global require squizlabs/php_codesniffer
+        composer global update
     '),
     'redis' => (
         'redis-cli
@@ -351,6 +362,9 @@ $          -> Signifies the end of the line.
         echo "test" | php /tmp/test.php
     ',
     'docker' =>  '
+        # get the image from registry
+        docker pull php
+
 # download Apache with latest PHP on /path/to/your/php/files as the document root, visible at  localhost:8080
 # This will initialize and launch your container. -d makes it runs in the background.
 
@@ -360,6 +374,21 @@ docker run -d --name my-php-webserver -p 8080:80 -v /path/to/your/php/files:/var
 docker stop my-php-webserver
 docker start my-php-webserver
 
+# Create a new file named Dockerfile in the root folder of project and then put the following contents:
+FROM php:7.0-apache   # which image should be used as base of the new image
+COPY /etc/php/php.ini /usr/local/etc/php/ # upload php.ini file to our image
+COPY . /var/www/html/ # copy file projects to VM
+EXPOSE 80
+# build a VM from definition above
+docker build -t <Image name> .
+# list builded VM
+docker images
+# run the new VM, flag -d tells that the container should run as background job
+docker run -p 80:80 -d <Image name>
+# check container CPU usage
+docker ps
+# check VM logs
+docker logs <Container id>
 '  ,
 
 
