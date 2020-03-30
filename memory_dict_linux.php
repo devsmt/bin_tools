@@ -484,8 +484,13 @@ __END__
     'mysql_user' => "
         #
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
+        # may need to relax password validation plugin
+        # mysql> SHOW VARIABLES LIKE 'validate_password_policy';
+        # mysql> SET GLOBAL validate_password_policy = 1;
+
+
         GRANT USAGE ON *.* TO '{{username}}'@'localhost';
-        GRANT ALL  ON `{{username}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
+        GRANT ALL  ON `{{db_name}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
         FLUSH PRIVILEGES;
         SHOW GRANTS FOR '{{username}}'@'localhost';
         #
@@ -639,7 +644,7 @@ __END__
     'mysql_adminer' => '
     cd /var/www/html
     sudo wget "http://www.adminer.org/latest.php" -O /var/www/html/adminer__version.php
-    # put IP checking and denying on the program for security @see _is_secure_IP()
+    # put IP checking and denying on the program for security @see ip_check_  _is_secure_IP()
     # or php HTTP basic auth @see auth_
     sudo echo "your secure php code here" > adminer_auth.php
     # put into the file
