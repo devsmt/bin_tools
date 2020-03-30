@@ -87,6 +87,11 @@ if (!request_is_cli()) {
             $cmd = "/usr/bin/sqlformat -r $file_path -o $file_path";
             echo `$cmd`.PHP_EOL;
             break;
+        case 'go':
+            $cmd = "gofmt -w -s  $file_path ";
+            echo $cmd ."\n";
+            echo `$cmd`.PHP_EOL;
+            break;
         default:
             action_usage($ext);
             break;

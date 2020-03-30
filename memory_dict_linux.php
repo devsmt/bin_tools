@@ -1089,6 +1089,7 @@ csvgrep -e iso-8859-1 -c 1 -m "de" worldcitiespop | csvgrep -c 5 -r "\d+"
 ',
     'dns' => <<<'__END__'
 dig caleffigroup.it
+#
 Check DNS and HTTP trace with headers for specific domains
 ### Set domains and external dns servers.
 _domain_list=(google.com) ; _dns_list=("8.8.8.8" "1.1.1.1")
@@ -1109,6 +1110,7 @@ for _domain in "${_domain_list[@]}" ; do
   done
 done
 unset _domain_list _dns_list
+#
 # Resolves the domain name (using external dns server)
 host google.com 9.9.9.9
 # Checks the domain administrator (SOA record)
@@ -1240,6 +1242,22 @@ http -p Hh --follow --max-redirects 5 --verify no https://www.google.com
 http -p Hh --follow --max-redirects 5 --verify no --proxy http:http://127.0.0.1:16379 https://www.google.com
 --proxy [http:] - set proxy server
 ',
+    //
+    'vpn' => <<<__END__
+    /home/taz/Dropbox/etc/VPN_DMS.ovpn
+    # import an open VPN conf
+    sudo nmcli connection import type openvpn file /path/to/your.ovpn
+    # up
+    nmcli connection up DMS
+    # info
+    nmcli
+    nmcli connection show DMS | grep ipv4
+
+
+    # le connessioni mportate da Gnome NetworkManager
+sudo gedit /etc/NetworkManager/system-connections/DMS
+__END__,
+
     //----------------------------------------------------------------------------
     //  sysadmin
     //----------------------------------------------------------------------------

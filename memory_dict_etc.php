@@ -31,7 +31,7 @@ inurl: followed by a particular string returns results with that sequence of cha
 intext: followed by the searcher’s chosen word or phrase returns files with the string anywhere in the text.
 ',
     'joel_test' => '
-Joel Test
+    Joel Test
     - Source control
     - One-step build / deploy
     - Daily builds
@@ -45,5 +45,13 @@ Joel Test
     - Code screening / competent coders
     - users or random individuals are used to test software products
 ',
+    //
+    // S3 - simple Storage system
+    'AWS' => '
+        mysqldump -u root -p --host=localhost --opt --skip-lock-tables --single-transaction \
+        --verbose --hex-blob --routines --triggers --all-databases |
+        gzip -9 | s3cmd put - s3://s3-bucket/db-server-name.sql.gz
+',
+
 ];
 return $commands;

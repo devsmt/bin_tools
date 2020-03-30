@@ -351,6 +351,9 @@ $          -> Signifies the end of the line.
         echo "test" | php /tmp/test.php
     ',
     'docker' =>  '
+        # get the image from registry
+        docker pull php
+
 # download Apache with latest PHP on /path/to/your/php/files as the document root, visible at  localhost:8080
 # This will initialize and launch your container. -d makes it runs in the background.
 
@@ -360,6 +363,21 @@ docker run -d --name my-php-webserver -p 8080:80 -v /path/to/your/php/files:/var
 docker stop my-php-webserver
 docker start my-php-webserver
 
+# Create a new file named Dockerfile in the root folder of project and then put the following contents:
+FROM php:7.0-apache   # which image should be used as base of the new image
+COPY /etc/php/php.ini /usr/local/etc/php/ # upload php.ini file to our image
+COPY . /var/www/html/ # copy file projects to VM
+EXPOSE 80
+# build a VM from definition above
+docker build -t <Image name> .
+# list builded VM
+docker images
+# run the new VM, flag -d tells that the container should run as background job
+docker run -p 80:80 -d <Image name>
+# check container CPU usage
+docker ps
+# check VM logs
+docker logs <Container id>
 '  ,
 
 
