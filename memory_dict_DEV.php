@@ -69,9 +69,9 @@ java -jar /path/helloWorld.jar [app arguments]
     // pfff tools
     'bower' => ('bower install --save $lib_name'),
     'npm' => ('
+        sudo npm install -g typescript # global install
         npm install --save $lib_name
         npm install --save @types/$lib_name
-        npm install -q pack_name # global bin
     '),
     'php_install' => '
         sudo add-apt-repository -y ppa:ondrej/php

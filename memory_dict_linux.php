@@ -211,6 +211,8 @@ renice -n 19 -p pid_number
     'ps' => '
         # count processes per user
         ps hax -o user | sort | uniq -c | sort -r
+        # java ps specific
+        jps
     ',
     'aspell' => 'aspell --lang=it -c docs/manuale_api_rivenditori/index.md',
     'md5file' => ' md5sum file ',
@@ -482,12 +484,14 @@ __END__
         mysql -u {{username}}  -p {{database}}
 ",
     'mysql_user' => "
-        #
+        # basic:
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
+        GRANT ALL PRIVILEGES ON {{database_name}}.* TO '{{username}}'@'localhost';
+        # TEST: mysql -u newuser -p
+
         # may need to relax password validation plugin
         # mysql> SHOW VARIABLES LIKE 'validate_password_policy';
         # mysql> SET GLOBAL validate_password_policy = 1;
-
 
         GRANT USAGE ON *.* TO '{{username}}'@'localhost';
         GRANT ALL  ON `{{db_name}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
@@ -768,6 +772,8 @@ curl -Iks --location -X GET -A "x-agent" --proxy http://127.0.0.1:16379 https://
     --proxy [socks5://|http://] - set proxy server
 # set a session ID
 curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://zzzzz.xxxxx.test/items/downloadcategoryxls
+# scrap a web page and convert to markdown
+curl --silent http://www.taziomirandola.it | pandoc --from html --to textile -o /tmp/tm.md
         '),
     'wget' => ('
 wget -r -l1 -P035 -nd --no-parent

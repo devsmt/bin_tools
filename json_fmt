@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # sudo apt-get install python-demjson
 #/usr/bin/jsonlint-py  --format  $@
 # cat "/var/www/lampa_agenti_v3/var/cache_mobile/w/categorie_*-*_2016_44.txt" | jq

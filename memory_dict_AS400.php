@@ -73,7 +73,12 @@ Descrizione lavoro . . . . . . . . . . . . :   WB_STDJBD
 
 // mostra definizioni della jobd
 // per vedere LIBL, in ultima pagina, scrollare e dare invio
-DSPJOBD JOBD(WB_STDOBJ/WB_STDJBD) '
+DSPJOBD JOBD(WB_STDOBJ/WB_STDJBD) ',
+
+//
+    'as400_errors'  => '
+@see  /home/taz/Dropbox/RPGLE/etc_man/RPGIV_%25status_Error_Codes.html
+@see file:///home/taz/Dropbox/RPGLE/DB2_error_codes.html ',
 
 ];
 

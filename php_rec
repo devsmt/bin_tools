@@ -1,14 +1,12 @@
 #!/usr/bin/env php
 <?php
 
-
-
-function generate_rec($vars){
-    if( empty($vars) ) {
+function generate_rec($vars) {
+    if (empty($vars)) {
         return '';
     }
     $s_members = generate_prop_def($vars);
-    $init_members = generate_prop_init($vars); 
+    $init_members = generate_prop_init($vars);
     $code = <<<'__END__'
 
 // mantiene i valori in un Record, valida i valori passati
@@ -26,7 +24,7 @@ class {name}ValRec {
             if( isset( $values[$n] ) ){
                 $this->{$n} = $values[$n];
             }
-        }*/ 
+        }*/
         {{init_members}}
         $this->validate();
     }
@@ -44,30 +42,29 @@ class {name}ValRec {
     }
 }
 __END__;
-    $code = str_template($code, ['s_members' => $s_members, 'init_members'=>$init_members ]);
-    return $code."\n\n\n";
+    $code = str_template($code, ['s_members' => $s_members, 'init_members' => $init_members]);
+    return $code . "\n\n\n";
 }
 
-function generate_prop_def($vars){
-    $t = str_repeat(' ',4);
-    $vars2 = array_map(function($v) use($t) {
-        return $t.'protected $'.$v.';';
+function generate_prop_def($vars) {
+    $t = str_repeat(' ', 4);
+    $vars2 = array_map(function ($v) use ($t) {
+        return $t . 'protected $' . $v . ';';
     }, $vars);
-    $s = implode("\n", $vars2 );
+    $s = implode("\n", $vars2);
     return $s;
 }
 
 function generate_prop_init($vars) {
-    $t = str_repeat(' ',8);
-    $vars2 = array_map(function($v) use($t) {
-        return $t.' if( isset($values["'.$v.'"]) ) $this->'.$v.' = $values["'.$v.'"];';
+    $t = str_repeat(' ', 8);
+    $vars2 = array_map(function ($v) use ($t) {
+        return $t . ' if( isset($values["' . $v . '"]) ) $this->' . $v . ' = $values["' . $v . '"];';
     }, $vars);
-    $s = implode("\n", $vars2 );
-    return "\n".$s;
+    $s = implode("\n", $vars2);
+    return "\n" . $s;
 }
 
-
-function action_usage(){
+function action_usage() {
     return $html = <<<__END__
     specifica lista di proprietà da generare
     {$_SERVER['argv'][0]} aa bb cc
@@ -82,36 +79,33 @@ __END__;
 //
 // data una stringa interpola i valori passati in this->binds nei segnaposto
 // espressi con la sintassi {{nome_var}}
-function str_template($str_template, $a_binds, $default_sub='__') {
+function str_template($str_template, $a_binds, $default_sub = '__') {
     $substitute = function ($buffer, $name, $val) {
-        $reg = sprintf('{{%s}}', $name );
+        $reg = sprintf('{{%s}}', $name);
         $reg = preg_quote($reg, '/');
-        return preg_replace('/'.$reg.'/i', $val, $buffer);
+        return preg_replace('/' . $reg . '/i', $val, $buffer);
     };
-    $cleanUnusedVars = function ($buffer) use($default_sub) {
-        return preg_replace('/\{\{[a-zA-Z0-9_]*\}\}/i', $default_sub, $buffer );
+    $cleanUnusedVars = function ($buffer) use ($default_sub) {
+        return preg_replace('/\{\{[a-zA-Z0-9_]*\}\}/i', $default_sub, $buffer);
     };
     $buffer = $str_template;
     foreach ($a_binds as $name => $val) {
-        $buffer = $substitute($buffer,$name, $val);
+        $buffer = $substitute($buffer, $name, $val);
     }
     $buffer = $cleanUnusedVars($buffer);
     return $buffer;
 }
-
-
 
 //----------------------------------------------------------------------------
 //  main
 //----------------------------------------------------------------------------
 
 $vars = $_SERVER['argv'];
-unset( $vars[0] );
-if( empty($vars) ) {
+unset($vars[0]);
+if (empty($vars)) {
     echo action_usage();
 } else {
     $code = generate_rec($vars);
     echo $code;
 
 }
-
