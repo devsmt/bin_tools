@@ -33,6 +33,7 @@ if (!request_is_cli()) {
 
         switch ($ext) {
         case 'php':
+        case 'phtml':
             $cmd = "php -l $file_path";
             e($cmd);
             break;
