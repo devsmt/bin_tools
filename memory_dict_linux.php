@@ -138,8 +138,10 @@ ag --php Controller
         find / \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \;
         locate {{file_name}}
         # find + print formatted
-        find DMS -name "*.php" -exec printf 'require_once "%s";\n' {} +
-
+        find /path -name "*.php" -exec printf 'require_once "%s";\n' {} +
+        # find and move to new path
+        find /path -name 'test*' -exec mv -t /path_to {} +
+        # find .git repo on the disc @see find_locate
 __END__
     ,
     'find_delete' => ('#-print for debug
@@ -147,7 +149,10 @@ __END__
     'find_size' => ('#-exec echo {} \;
         find {{dir}} -maxdepth 1 -type f -size +500M -name "*.log" -print '),
     'find_exec' => ('find . -type f -perm 777 -exec chmod 755 {} \;'),
-    'find_locate' => ('locate -i "*.jpg"'),
+    'find_locate' => '
+        locate -i "*.jpg"
+        locate "*/.git"
+    ',
     'rename' => "
         find -type f -name '*.php' | rename 's/^/_/' *
         for file in *.txt; do    mv '\$file' '\${file%.txt}_1.txt' done
