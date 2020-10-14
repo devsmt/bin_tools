@@ -52,6 +52,8 @@ __END__
 cpulimit -p pid -l 50
 ',
     'grep'=>('
+# Search all text files
+grep "word*" *.txt
 grep -e {{PATTERN}} -f {{FILE}}
 # only an extension
 grep -Rn --include \*.php Controller .
@@ -71,12 +73,18 @@ grep -vE \'(error|critical|warning)\' filename
 grep -v ^[[:space:]]*# filename
 # Show data from file without comments and new lines
 egrep -v \'#|^$\' filename
+# match multiple strings
+grep "word1\|word2\|word3" /path/to/file
+grep -e string1 -e string2 *.txt
+# print do not match given pattern
+grep -v "bar\|foo" /path/to/file
+egrep -v "pattern1|pattern2" /path/to/file
 #
 echo $f | pcregrep -o1 -Ei \'[0-9]+_([a-z]+)_[0-9a-z]*\'
 # parallel search
 find . -name "*.php" -exec grep \$i {} \;
 find . -name "*.sql" -exec grep "whatever" {} \;
-#
+# php specific
 ag --php Controller
 '),
     'parallel'=>'
@@ -158,7 +166,7 @@ __END__
         locate -i "*.jpg"
         locate "*/.git"
     ',
-    'rename' => "
+    'rename' => "",
 
     'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
     'find_locate'=>('locate -i "*.jpg"'),
@@ -497,13 +505,8 @@ __END__
         #
         mysql -u {{username}}  -p {{database}}
 ",
-<<<<<<< HEAD
     'mysql_user' => "
         # basic:
-=======
-    'mysql_user'=>"
-        #
->>>>>>> b4c1cf8e53eaacda9d1c7529a36c7e3b5fdbaa1f
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
         GRANT ALL PRIVILEGES ON {{database_name}}.* TO '{{username}}'@'localhost';
         # TEST: mysql -u newuser -p
@@ -511,10 +514,7 @@ __END__
         # may need to relax password validation plugin
         # mysql> SHOW VARIABLES LIKE 'validate_password_policy';
         # mysql> SET GLOBAL validate_password_policy = 1;
-<<<<<<< HEAD
 
-=======
->>>>>>> b4c1cf8e53eaacda9d1c7529a36c7e3b5fdbaa1f
         GRANT USAGE ON *.* TO '{{username}}'@'localhost';
         GRANT ALL  ON `{{db_name}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
         FLUSH PRIVILEGES;
