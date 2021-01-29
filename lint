@@ -33,8 +33,25 @@ if (!request_is_cli()) {
 
         switch ($ext) {
         case 'php':
-            $cmd = "php -l $file_path";
-            e($cmd);
+            // testare che un programma sia installato
+            $_check_bin = function ($binary) {
+                $r = `which $binary`;
+                if ('' == trim(strval($r))) {
+                    echo ("--- $binary is not installed!\n");
+                    return false;
+                }
+                return true;
+            };
+            $a_v = ['php', 'php8.0', 'php7.4', 'php7.2', /*'php7.1',*/'php5.6'];
+            foreach ($a_v as $binary) {
+                if ($_check_bin($binary)) {
+                    $cmd = "$binary -l $file_path";
+                    $r = e($cmd);
+                    if (!str_contains($r, 'No syntax errors detected in')) {
+                        break;
+                    }
+                }
+            }
             break;
         case 'ts':
             $cmd = "/data/bin_tools/ts_lint $file_path";
