@@ -652,6 +652,13 @@ __END__
     ",
     'mysql_tuning'=>'
         mysqltuner ## program to detect various misconfigurations
+
+cat /etc/mysql/mysql.cnf | grep innodb_buffer_pool_size
+innodb_buffer_pool_size = 15G # (adjust value here, 50%-70% of total RAM)
+che si vede anche da sql:
+SELECT @@innodb_buffer_pool_size;
+
+
     ',
     'mysql_optimize'=>'
         ## list the size of every table in every database, largest first:

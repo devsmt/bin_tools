@@ -998,7 +998,8 @@ if(php_sapi_name() !== "cli") {
 }
 
 if(isset($argv[1])) {
-    $sql = $argv[1];
+    $file = $argv[1];
+    $sql = file_get_contents($file);
 }
 else {
     $sql = stream_get_contents(fopen("php://stdin", "r"));

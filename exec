@@ -27,6 +27,10 @@ if ($argc == 1) {
     case 'py':
         echo `/usr/bin/python $script_path`;
         break;
+    case 'js'
+        echo `/usr/bin/node $script_path`;
+        break;
+
     default:
         echo "ext:'$ext' not managed \n";
         action_usage();

@@ -140,6 +140,14 @@ if (!empty($md_r)) {
     // echo 'PHPMD' . "\n";
     // echo $md_r . "\n";
 }
+if (true) {
+    echo "Migration Notes:\n";
+    // php migration helper
+    $loc_r = e("php phpmig.phar " . $_q($_1));
+    $loc_r = trim($loc_r);
+    echo $loc_r . "\n";
+}
+
 if ($phploc = false) {
     $loc_r = e("phploc " . $_q($_1) . "  ", false);
     $loc_r = trim($loc_r);

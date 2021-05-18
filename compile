@@ -1,5 +1,64 @@
+#!/usr/bin/env php
 <?php
 declare(strict_types=1);//php7.0+, will throw a catchable exception if call typehints and returns do not match declaration
+/*
+// TODO: typescript
+*/
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo $r = `$cmd` . "\n";
+    return $r;
+}
 
+// main
+$file_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
 
+if (empty($file_path)) {
+    die('no file to lint.');
+}
 
+if (!request_is_cli()) {
+    die("usa questo comando da cli.");
+} else {
+    set_time_limit(0);
+    if ($argc == 1) {
+        action_usage();
+    } else {
+
+        $ext = pathinfo($file_path, PATHINFO_EXTENSION); // se script cli, prova php
+        if (empty($ext) || $file_path == $ext) {
+            $ext = 'php';
+        }
+
+        switch ($ext) {
+        case 'php':
+            // nothing to do ?
+            break;
+        case 'ts':
+            $cmd = "tsc $file_path";
+            e($cmd);
+            break;
+        case 'js':
+        default:
+            die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > TODO ' . $ext);
+            break;
+        }
+    }
+    exit(0);
+}
+//-- actions --------------------------------------
+//
+function action_XXX() {
+
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+//-- utils ----------------------------------------
+
+exit(0);

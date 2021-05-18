@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+// require_once __DIR__ . '/Common.php';
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+// @see error_
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo $r = shell_exec($cmd) . "\n";
+    return $r;
+}
+/**
+ * @return mixed
+ * @param mixed $def
+ */
+function h_get(array $h,  $k, $def = false) {
+    return isset($h[$k]) ? $h[$k] : $def;
+}
+// main su argv[1]
+function main() {
+    global $argc;
+    $_1 = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+    $_2 = h_get($_SERVER['argv'], 2, '.');
+    set_time_limit(0);
+    if ($argc == 1) {
+        action_usage();
+    } else {
+        if (!empty($_1)) {
+            $r= e("find  $_2 -name \"$_1\" -type f");
+        } else {
+            echo "\$1 was not given";
+        }
+        /**
+        switch($action) {
+        case 'XXX':
+        action_XXX();
+        break;
+        default:
+        action_usage();
+        break;
+        }
+         */
+    }
+    exit(0);
+}
+main();
+//-- actions --------------------------------------
+//
+function action_XXX() {
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+exit(0);

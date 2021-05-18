@@ -59,12 +59,25 @@ if (!request_is_cli()) {
             break;
         case 'js':
             // eslint may be a newer alternative
-            $cmd = "/usr/local/bin/jshint $file_path";
+            $cmd = "/usr/local/bin/jshint -c '/data/bin_tools/jslint.rc' $file_path";
+            // altro linter da provare
+            // /home/taz/.cargo/bin/rslint_cli
             $r = e($cmd);
             $r = trim('' . $r);
             if (empty($r)) {
                 echo "OK \n";
             }
+            break;
+        case 'yml':
+            echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                $file_path
+            ), "</pre>\n";
+
+            $data = yaml_parse_file($file_path);
+            echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                $data
+            ), "</pre>\n";
+
             break;
         default:
             die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > TODO ' . $ext);
