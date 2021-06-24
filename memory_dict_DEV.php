@@ -95,6 +95,11 @@ java -jar /path/helloWorld.jar [app arguments]
         sudo apt install php-cli php-curl php-json
         #
     ',
+    'php_man' => '
+pear install doc.php.net/pman
+pear upgrade doc.php.net/pman
+pman strlen
+    ',
     // generate a standard package dir
     'php_package' => '
 Install package in your project:

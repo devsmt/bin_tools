@@ -6,6 +6,11 @@ $commands = [
     //  bash basics
     //----------------------------------------------------------------------------
     'ls_dir' => 'find . -maxdepth 1 -type d | sort',
+    'ls_sort' => '
+        exa -l
+        ls -lhS # by size
+        ls -lht # by time
+    ',
     'bash_while' => ('while [ 1 ]; do  cmd;  done'),
     'bash_for' => ('
     for i in {A..C} "label:" {1..3}; do echo $i; done
