@@ -166,12 +166,12 @@ __END__
     'find_size'=>('#-exec echo {} \;
         find {{dir}} -maxdepth 1 -type f -size +500M -name "*.log" -print '),
 
-    'find_exec' => ('find . -type f -perm 777 -exec chmod 755 {} \;'),
-    'find_locate' => '
+    'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
+    'find_locate'=>'
         locate -i "*.jpg"
         locate "*/.git"
     ',
-    'rename' => "",
+    'rename'=>"",
 
     'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
     'find_locate'=>('locate -i "*.jpg"'),
@@ -263,6 +263,7 @@ renice -n 19 -p pid_number
     'extract_bzip'=>('bzip2  -dk  {{filename}}.bz2 '),
     'compress_targz'=>("
 tar -czf /path/to/backup.tar.gz /path/to/*.pdf 2>/dev/null
+tar --create --gzip -C \$dir --remove-files --file {\$archive_name}.tar.gz  \$dir/tmp/*.sql
 tar -czfvp /archive/full-backup-`date '+%d-%B-%Y'`.tar.gz --directory /var/mydir --exclude=dirname1  --exclude=dirname2 .
 "),
     'extract_targz'=>('tar -xzfv archive.tar.gz'),
@@ -470,6 +471,12 @@ sudo ufw allow from 202.54.1.5/29 to any port 22
 */10 * * * user  /path/to/script          # every ten min
 @reboot     root      duplicati-server --webservice-interface=any &
 ",
+    'crontab_users'=>'
+    # crontabs degli utenti
+        sudo -u www-data crontab -l
+        sudo -u www-data crontab -e
+        sudo crontab -e -u www-data
+    ',
     'cron_log'=>('grep -i CRON /var/log/syslog'),
     'at'=>('
         sudo echo "reboot" | sudo at -m 13:10 today
@@ -510,7 +517,7 @@ __END__
         #
         mysql -u {{username}}  -p {{database}}
 ",
-    'mysql_user' => "
+    'mysql_user'=>"
         # basic:
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
         GRANT ALL PRIVILEGES ON {{database_name}}.* TO '{{username}}'@'localhost';
@@ -808,6 +815,10 @@ curl -Iks --location -X GET -A "x-agent" --proxy http://127.0.0.1:16379 https://
 curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://zzzzz.xxxxx.test/items/downloadcategoryxls
 # scrap a web page and convert to markdown
 curl --silent http://www.taziomirandola.it | pandoc --from html --to textile -o /tmp/tm.md
+
+## web scraping:
+    curl -s https://www.rust-lang.org/ | htmlq \'#get-help\'
+
         '),
     'wget'=>('
 wget -r -l1 -P035 -nd --no-parent

@@ -27,7 +27,7 @@ if ($argc == 1) {
     case 'py':
         echo `/usr/bin/python $script_path`;
         break;
-    case 'js'
+    case 'js':
         echo `/usr/bin/node $script_path`;
         break;
 

@@ -72,6 +72,7 @@ java -jar /path/helloWorld.jar [app arguments]
         sudo npm install -g typescript # global install
         npm install --save $lib_name
         npm install --save @types/$lib_name
+        npm install --save @types/react @types/react-dom @types/styled-components
     '),
     'php_install' => '
         sudo add-apt-repository -y ppa:ondrej/php
