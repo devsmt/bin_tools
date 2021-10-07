@@ -1,2 +1,3 @@
-jedit /data/bin_tools/memory_dict_linux.php &
+#!/usr/bin/env bash
+jedit -newview /data/bin_tools/memory_dict_linux.php &
 jedit `which memory` &

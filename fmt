@@ -88,6 +88,9 @@ if (!request_is_cli()) {
             echo `$cmd`.PHP_EOL;
             break;
         case 'go':
+            // Goimports removes unreferenced imports for you. What’s even better it tries to automatically find and add missing ones.
+            // TODO: run
+            // goimports main.go
             $cmd = "gofmt -w -s  $file_path ";
             echo $cmd ."\n";
             echo `$cmd`.PHP_EOL;

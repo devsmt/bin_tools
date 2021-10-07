@@ -1,4 +1,8 @@
+#!/usr/bin/env php
 <?php
+declare(strict_types=1);
+require_once __DIR__ . '/common.php';
+
 // check target directory
 //  foreach php file
 //      minimize with php -w or php_strip_whitespace()

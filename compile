@@ -1,8 +1,9 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);//php7.0+, will throw a catchable exception if call typehints and returns do not match declaration
 /*
-unified lint wrapper
- */
+// TODO: typescript
+*/
 declare (strict_types = 1);
 require_once __DIR__ . '/Utils.php';
 function e(string $cmd) {
@@ -33,23 +34,13 @@ if (!request_is_cli()) {
 
         switch ($ext) {
         case 'php':
-        case 'phtml':
-            $cmd = "php -l $file_path";
-            e($cmd);
+            // nothing to do ?
             break;
         case 'ts':
-            $cmd = "/data/bin_tools/ts_lint $file_path";
+            $cmd = "tsc $file_path";
             e($cmd);
             break;
         case 'js':
-            // eslint may be a newer alternative
-            $cmd = "/usr/local/bin/jshint $file_path";
-            $r = e($cmd);
-            $r = trim('' . $r);
-            if (empty($r)) {
-                echo "OK \n";
-            }
-            break;
         default:
             die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > TODO ' . $ext);
             break;

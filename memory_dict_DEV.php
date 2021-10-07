@@ -69,9 +69,10 @@ java -jar /path/helloWorld.jar [app arguments]
     // pfff tools
     'bower' => ('bower install --save $lib_name'),
     'npm' => ('
+        sudo npm install -g typescript # global install
         npm install --save $lib_name
         npm install --save @types/$lib_name
-        npm install -q pack_name # global bin
+        npm install --save @types/react @types/react-dom @types/styled-components
     '),
     'php_install' => '
         sudo add-apt-repository -y ppa:ondrej/php
@@ -95,25 +96,24 @@ java -jar /path/helloWorld.jar [app arguments]
         sudo apt install php-cli php-curl php-json
         #
     ',
+    'php_man' => '
+pear install doc.php.net/pman
+pear upgrade doc.php.net/pman
+pman strlen
+    ',
     // generate a standard package dir
     'php_package' => '
-
 Install package in your project:
 composer require --dev pds/skeleton
-
 Run the validator:
 If no path is specified, the project in which pds-skeleton is installed will be used.
 vendor/bin/pds-skeleton validate [path]
-
-
 Generate a compliant package skeleton by following these steps:
-
 composer require --dev pds/skeleton
 Run the generator:
 vendor/bin/pds-skeleton generate [path]
     ',
     'php_standard_dirs' => '
-
 If a package has a root-level directory for => then it MUST be named:
 command-line executables                    bin/
 configuration files                         config/
@@ -122,8 +122,12 @@ PHP source code                             src/
 test code                                   tests/
 other resource files                        resources/
 web server files                            public/
-
     ',
+    'php_unit' => '
+    wget --no-check-certificate https://phar.phpunit.de/phpunit.phar
+    chmod +x phpunit.phar
+    ./phpunit.phar markdown/markdown_test.php
+',
     'mysql_install' => '
         sudo apt install mysql-server php-mysql
         sudo mysql_secure_installation
@@ -137,114 +141,239 @@ web server files                            public/
     'php_grep' => "sgrep -e 'array(...)' /var/www/dir/",
     'ag' => ('
         ag --php -i -f "file_put_contents" /var/www*
-        ag -G "^(.*).ts$" -i "MemCache" /var/www* '),
-    // GIT
-    'git' => '
-# where is located?
-# where the repo is stored?
-git remote show origin
-# find conflict
-grep -lr \'<<<<<<<\'
-# get someone copy
-git checkout --ours PATH/FILE
-git checkout --theirs PATH/FILE
-# "Your local changes to the following files would be overwritten by merge:"
-git checkout HEAD^ file/to/overwrite && git pull
-# delete all local changes
-git reset --hard && git pull
-# delete local changes to a single file
-git reset {{file}} && git checkout {{file}}
-# git add variants
-clear; git add --all --patch
-git add
-git add --all :/
-git add -u # add all modified
-git add `git status -uall | egrep "#\tboth modified:" | cut -d: -f2`
-git branch
-git branch -v -a
-# add all already in index
-git commit -m"merge v4" -a
-# commit all modified files
-for file in `git status  | grep modified | awk \'{print $2}\'`; do git commit -m "correzioni" $file; done
-# change last commit
-git commit --amend
-git commit --amend --no-edit
-git commit --amend --no-verify -m
-# skip verify hooks
-git commit --no-verify -m
-git diff
-git diff --cached
-git difftool
-git diff -w
-#
-git fetch
-git fetch --all
-git fetch origin && git merge origin/master
-git fetch origin && git rebase origin/master
-git grep
-gitk >/dev/null 2>&1
-git merge
-git merge origin/master
-git mergetool
-#
-git push
-git push origin
-git push origin --force-with-lease
-git push origin --tags
-#
-git quicklog-long
-git quicklog -n 20
-git show -p
-# to save local tests
-git stash save --keep-index
-git stash drop
-#
-git stash
-git stash list
-git stash pop
-git stash save
-git stash save --patch
-git stash show -p
-#
-git status
-git status -uall
-#
-git submodule
-git submodule update --init --recursive
-git submodule sync && git submodule update --init
-#
-git unstage
-git up
-# get version from git
-git rev-list HEAD --count
-vim `git diff --name-only --diff-filter=M`
-vim `git diff --name-only --diff-filter=U`
-'
-    ,
-    'git_log' => ("
-        git log -n 1
+        ag -G "^(.*).ts$" -i "MemCache" /var/www*
+        ag -G "^(.*).js\$"  "var Select " /home/taz/Dropbox/
+        '),
+    //----------------------------------------------------------------------------
+    //  // GIT
+    //----------------------------------------------------------------------------
+    'git_status' => '
+        git status
+        git status -uall
+        # See what the last commit changed
+        git show -p
+        # list unstaged files
+        git diff --name-only --diff-filter=M`
+        # list conficting files
+        git diff --name-only --diff-filter=U
+    ',
+    'git_commit' => '
+        # add all already in index
+        git commit -m"merge v4" -a
+        # commit all modified files
+        for file in `git status  | grep modified | awk \'{print $2}\'`; do git commit -m "correzioni" _file_; done
+        # change last commit
+        git commit --amend
+        git commit --amend --no-edit
+        git commit --amend --no-verify -m
+        # undo last commit
+        git reset --soft HEAD^
+    ',
+    'git_undo' => '
+        # undo last file change
+        git checkout -- file.php
+        # go back and look at an old commit
+        git checkout [SHA1]
+        # delete all local changes
+        git reset --hard && git pull
+        # delete local changes to a single file
+        git reset {{file}} && git checkout {{file}}
+        #
+        git checkout --theirs $file_name
+        #ATTENZIONE: will drop all your local changes and commits
+        # git fetch origin
+        # git reset --hard origin/master
+    ',
+    'git_pull_dryrun' => '
+        git fetch origin
+        # see change files
+        git diff --name-only origin/master
+        # see diff line by line
+        git diff origin/master directory_foo/file_bar.m
+    ',
+    'git_revert' => 'git_undo ',
+    'git_NLG_workflow' => '
+        #
+        # @see https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+        git branch # where are you? should be develop
+        #
+        # merge & push su CERT
+        git checkout cert
+        git merge develop # su cert applica develop
+        git push
+        # merge & push su PROD
+        git checkout master
+        git merge develop # su master applica develop
+        git push
+        # come back to develop!
+        git checkout develop
+        git branch
+    ',
+    'git_NLG_hotfix' => 'git_branching',
+    'git_branching' => '
+        # create a new branch named "feature_x" and switch to it using
+        git checkout -b feature_x # crea nuovo branch dalla branch e situazione corrente
+        # switch back to master
+        git checkout master
+        # and delete the branch again
+        git branch -d feature_x
+        # a branch is not available to others unless you push the branch to your remote repository
+        git push origin <branch>
+        git branch -v -a # mostra anche branch remoti
+        # ottiene tutti i commit/branche remoti
+        git fetch
+        git fetch --all
+        @see git_merge_hotfix
+    ',
+    'git_merge_hotfix' => '
+        #
+        # hotfix workflow
+        #
+        git checkout hotfix-name
+        commit + push
+        # come back to develop! + merge hotfix
+        git checkout develop
+        git branch
+        git merge hotfix-name
+        commit + push
+        ## merge prod of HOTFIX
+        git checkout master
+        git pull
+        git merge hotfix-schedulerAutoEmail
+        git commit
+        git push
+        # come back to develop!
+        git checkout develop && git branch
+    ',
+    'git_branch_new' => '
+        checkout master
+        git checkout -b iss53 # crea branch da master
+        ',
+    'git_merge' => '
+        git checkout cert
+        git pull
+        git merge develop
+        git push
+        # torna su develop
+        git checkout develop
+        git branch
+        # applica a dev una correzione
+        checkout dev
+        git branch # should be dev
+        git merge iss53 # su dev applica iss53
+        #
+        git merge --abort # undo/elimina l ultimo merge
+     ',
+    'git_log' => <<<__END__
+        # vedere storia del progetto, cosa è stato committato
+        git log -n 10 # only last n commits
+        git log -n 2 -p # inspect, mostra diff sui files committati
+        git log -n1 --name-only # mostra files dell'ultimo commit
+        git log --stat
         git log --after=2015-05-01 --pretty=format:'%s'
-        git log --oneline --decorate --graph --all
-    "),
-    'git_remote_url' => ('git config --get remote.origin.url'),
-    'git_branch' => ('git checkout -b iss53'),
-    'git_merge' => ('git merge iss53'),
-    'git_switch_to_master' => ('git checkout master'),
-    'git_reset_file' => ('git checkout --theirs $file_name'),
+        git log --oneline --decorate --graph --all # as tree, DAG-like
+        # search specif commit
+        git log --author="" # by author
+        git log --grep=""
+        #
+        # visione storia comit DAG-like in CLI
+        git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white) - %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+__END__,
+    'git_remote_url'=>'
+        git config --get remote.origin.url
+        # where the repo is stored?
+        git remote show origin
+    ',
+    'git_config'=>"
+        # cahe my password 10h
+        git config --global credential.helper 'cache --timeout=300'
+        git config user.email 'email'
+        git config user.name 'user'
+        git config color.ui true
+        git config format.pretty oneline
+    ",
+    'git_add'=>'
+        # git add variants
+        git add
+        git add --all :/
+        git add -u # add all modified
+        git add `git status -uall | egrep "#\tboth modified:" | cut -d: -f2`',
+    'git_diff'=>'
+        #
+        git diff [file]
+        git diff [SHA1] [SHA1] # between 2 commits
+        git diff --cached
+        git difftool
+        git diff -w
+    ',
+    'git_conflict'=>'
+        # find conflict
+        grep -lr \'<<<<<<<\'
+        # get someone copy
+        git checkout --ours PATH/FILE
+        git checkout --theirs PATH/FILE
+        # "Your local changes to the following files would be overwritten by merge:"
+        git checkout HEAD^ file/to/overwrite && git pull
+    ',
+    'git_submodules'=>'
+        #
+        git submodule
+        git submodule update --init --recursive
+        git submodule sync && git submodule update --init
+        ',
+    'git_stash'=>'
+        # to save local tests
+        git stash save --keep-index
+        git stash drop
+        #
+        git stash
+        git stash list
+        git stash pop
+        git stash save
+        git stash save --patch
+        git stash show -p
+    ',
+    'git_as_svn'=>'
+        svn command           git command
+        svn checkout url      git clone url
+        svn update            git pull
+        svn diff              git diff
+        svn status            git status
+        svn revert path       git checkout path
+        svn add file          git add file
+        svn rm file           git rm file
+        svn mv file           git mv file
+        svn commit            git commit file; git push
+        svn log               git log
+        ',
+    'git_version_number'=>'
+        # get version from git
+        git rev-list HEAD --count
+    ',
+    'git_tag'=>'git tag 1.0.0 1b2e1d63ff',
+    'github_pull_request'=>"
+        Fork it ( https://github.com/*/*/fork )
+        Create your feature branch (git checkout -b my-new-feature)
+        Commit your changes (git commit -am 'Add some feature')
+        Push to the branch (git push origin my-new-feature)
+        Create a new Pull Request   in web UI   ",
+    'git_etc'=><<<__END__
+__END__
+    ,
+    //----------------------------------------------------------------------------
     //
-    //
-    //
-    'svn_get' => 'svn cat -r 175 mydir/myfile > mydir/myfile',
-    'svn_ignore' => '
+    //----------------------------------------------------------------------------
+    'svn_get'=>'svn cat -r 175 mydir/myfile > mydir/myfile',
+    'svn_ignore'=>'
         Add the directory, while ignoring all of the files it contains:
         svn add -N [directory]
         cd [directory]
         svn propset svn:ignore "*.*" .
         then Commit
     ',
-    'svn_file_version' => 'svn info --show-item revision  file_path',
+    'svn_file_version'=>'svn info --show-item revision  file_path',
     //
-    'ctags' => ('
+    'ctags'=>('
 ctags -R --languages=PHP --php-kinds=-vj
 ctags -R --languages=PHP --php-kinds=-vj --exclude="*server/data" --exclude="*server/__lib*"  /var/www/xxxxxxxxx/server
 ctags -R --languages=php --php-kinds=cdfint --fields=+aimS --tag-relative=yes --totals=yes --exclude=tags --exclude="config*.php" \
@@ -269,7 +398,7 @@ cat ~/.ctags
 --regex-Basic=/$x/x/x/e/ TODO: gestisce let _log = (step:string, V:Backbone.View ) => {
 --regex-typescript=/^[ \t]*let[ \t]+([a-zA-Z0-9_]+)[ \t]+=[ \t]+\(/\1/f,functions/
 '),
-    'composer' => ('
+    'composer'=>('
         # get the latest
         composer require predis/predis
         # modifiers: https://getcomposer.org/doc/articles/versions.md
@@ -296,15 +425,15 @@ cat ~/.ctags
         composer global require squizlabs/php_codesniffer
         composer global update
     '),
-    'redis' => (
+    'redis'=>(
         'redis-cli
 set test test1
 get test
 keys user:* # le chiavi che rispondono alla regex
 del test
     '),
-    'phpmd' => ('phpmd  /path/to/file.php text unusedcode'),
-    'inotifywait' => <<<'__END__'
+    'phpmd'=>('phpmd  /path/to/file.php text unusedcode'),
+    'inotifywait'=><<<'__END__'
 # available actions: ,moved_to,create
 BASE_DIR=$(cd $(dirname "$0"); pwd)/..
 inotifywait -e close_write -m $BASE_DIR/public/* |
@@ -361,24 +490,23 @@ $          -> Signifies the end of the line.
     'php_processing'=>'
         echo "test" | php /tmp/test.php
     ',
-    'docker' =>  '
-        # get the image from registry
-        docker pull php
-
+    'docker'=>'
+# get the image from registry
+docker pull php
+docker pull redis:3.0.0
 # download Apache with latest PHP on /path/to/your/php/files as the document root, visible at  localhost:8080
-# This will initialize and launch your container. -d makes it runs in the background.
-
+# This will initialize and launch your container.
+# -d makes it runs in the background.
 docker run -d --name my-php-webserver -p 8080:80 -v /path/to/your/php/files:/var/www/html/ php:apache
-
+docker logs b4ec9
+# start+login into a bash session
+docker run -it ubuntu /bin/bash
+// CTRL + P + Q  # put container in back ground
+# login into shell of a running contrainer
+docker attach 113e7c31aae9
 # To stop and start it, simply run
 docker stop my-php-webserver
 docker start my-php-webserver
-
-# Create a new file named Dockerfile in the root folder of project and then put the following contents:
-FROM php:7.0-apache   # which image should be used as base of the new image
-COPY /etc/php/php.ini /usr/local/etc/php/ # upload php.ini file to our image
-COPY . /var/www/html/ # copy file projects to VM
-EXPOSE 80
 # build a VM from definition above
 docker build -t <Image name> .
 # list builded VM
@@ -387,10 +515,69 @@ docker images
 docker run -p 80:80 -d <Image name>
 # check container CPU usage
 docker ps
+docker ps -a #mostra anche img non attivi
 # check VM logs
 docker logs <Container id>
-'  ,
-
-
+#
+docker top 33
+docker ps
+# delete a container
+docker rm 113e7c
+# -v data volume, condividere filesize tra container (mountpoint /logs) e OS host (/var/data_volume/logs)
+docker run -it -v /var/data_volume/logs:/logs ubuntu /bin/bash
+#
+#
+docker run -d httpd:2.4 # non espone la porta del container
+docker run -d -p 8088:80 httpd:2.4  # espone porta locale 8088 sul container 80
+docker-machine ip # ottiene Ip container, a cui puntare il browser, quindi http://192.168.99.100:8088
+@see dockerfile
+',
+    'dockerfile'=>'
+# Create a new file named Dockerfile in the root folder of project and then put the following contents:
+FROM php:7.0-apache   # which image should be used as base of the new image
+COPY /etc/php/php.ini /usr/local/etc/php/ # upload php.ini file to our image
+COPY . /var/www/html/ # copy file projects to VM
+EXPOSE 80
+#
+#ENV <chiave>=<valore>
+# to get the value, of key FTP_HOME,is $FTP_HOME
+#
+# exec a command at boot
+RUN <comando> <parametro1> ... <parametroN>
+# spostare file e directory at boot
+ADD <src> <dest>
+#eseguire un comando all’interno del container non appena questo si è avviato, restituendo il risultato all host console
+ENTRYPOINT <comando> <parametro_1> ... <parametro_n>
+ENTRYPOINT ["ls"] # esempio
+# cmd è uguale ma può essere sovrascritto avviando la macchina dall host
+CMD <comando> <parametro_1> ... <parametro_n>
+# sposta il cwd al boot
+WORKDIR /path1/path2
+------------------------------
+EXPOSE
+Grazie a questa istruzione è possibile dichiarare su quali porte il container resterà in ascolto. Tale istruzione non apre direttamente le porte specificate, ma grazie ad essa Docker saprà, in fase di avvio dell’immagine, che sarà necessario effettuarne il forwarding. La sintassi è molto semplice:
+EXPOSE <porta_1> [<porta_n>]
+Copy
+È possibile inserire più porte semplicemente aggiungendo uno spazio. Una volta effettuato il build del container, all’avvio dello stesso potremo utilizzare il parametro -P in modo da esporre le porte dichiarate nell’attributo EXPOSE su delle porte casuali. Il tag -P (maiuscolo) si comporta in maniera del tutto simile al tag -p (minuscolo), con l’unica differenza che nell’ultimo caso eravamo noi a dover scegliere sia la porta del container che quella dell’host.
+Una volta avviato il container, per sapere su quale porta è stata mappata la porta esposta nel Dockerfile, abbiamo a disposizione l’istruzione docker port <porta esposta> <nome del container | id del container>. Se nel dockerfile abbiamo esposto la porta 4444 e il nostro container si chiama htmlit, il comando sarà:
+docker port 4444 htmlit
+------------------------------
+VOLUME ["/www"]
+# Quando avvieremo il nostro container, potremo specificare a quale path locale far corrispondere il path /www definito nel container
+# partendo dal Dockerfile, genererà l’immagine
+docker build
+',
+    'docker_build'=>'
+## dockerfile
+FROM httpd:2.4
+LABEL Author="xxx vvv"
+EXPOSE 80
+COPY ./src/ /usr/local/apache2/htdocs/
+docker build -t esempio_1:v1 .
+# il . che rappresenta il contesto di build. Questo è un concetto fondamentale in quanto, come già anticipato, darà un senso ai path relativi
+docker run -d --name esempio_1 -p 8088:80 esempio_1
+# usa per vedere dove è installata esattamente
+docker-machine ip
+',
 ];
 return $commands;

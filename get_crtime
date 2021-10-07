@@ -1,6 +1,8 @@
+#!/usr/bin/env bash
+#
 # ottiene la data di creazione del file in argomento interogando i metadati del FS ext4
 # uso: get_crtime config.xml
-
+#
 get_crtime() {
     for target in "${@}"; do
         inode=$(ls -di "${target}" | cut -d ' ' -f 1)

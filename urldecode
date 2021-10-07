@@ -1,0 +1,4 @@
+#!/usr/bin/php
+<?php
+$url = $argv[1];
+echo urldecode( $url )."\n";

@@ -6,6 +6,11 @@ $commands = [
     //  bash basics
     //----------------------------------------------------------------------------
     'ls_dir' => 'find . -maxdepth 1 -type d | sort',
+    'ls_sort' => '
+        exa -l
+        ls -lhS # by size
+        ls -lht # by time
+    ',
     'bash_while' => ('while [ 1 ]; do  cmd;  done'),
     'bash_for' => ('
     for i in {A..C} "label:" {1..3}; do echo $i; done
@@ -52,6 +57,8 @@ __END__
 cpulimit -p pid -l 50
 ',
     'grep'=>('
+# Search all text files
+grep "word*" *.txt
 grep -e {{PATTERN}} -f {{FILE}}
 # only an extension
 grep -Rn --include \*.php Controller .
@@ -71,12 +78,18 @@ grep -vE \'(error|critical|warning)\' filename
 grep -v ^[[:space:]]*# filename
 # Show data from file without comments and new lines
 egrep -v \'#|^$\' filename
+# match multiple strings
+grep "word1\|word2\|word3" /path/to/file
+grep -e string1 -e string2 *.txt
+# print do not match given pattern
+grep -v "bar\|foo" /path/to/file
+egrep -v "pattern1|pattern2" /path/to/file
 #
 echo $f | pcregrep -o1 -Ei \'[0-9]+_([a-z]+)_[0-9a-z]*\'
 # parallel search
 find . -name "*.php" -exec grep \$i {} \;
 find . -name "*.sql" -exec grep "whatever" {} \;
-#
+# php specific
 ag --php Controller
 '),
     'parallel'=>'
@@ -138,13 +151,28 @@ ag --php Controller
         find / \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \;
         locate {{file_name}}
         # find + print formatted
+
+        find /path -name "*.php" -exec printf 'require_once "%s";\n' {} +
+        # find and move to new path
+        find /path -name 'test*' -exec mv -t /path_to {} +
+        # find .git repo on the disc @see find_locate
+
         find DMS -name "*.php" -exec printf 'require_once "%s";\n' {} +
+
 __END__
     ,
     'find_delete'=>('#-print for debug
         find {{dir}} -maxdepth 1 -type f -mtime +30  -name "*.log"  -delete  '),
     'find_size'=>('#-exec echo {} \;
         find {{dir}} -maxdepth 1 -type f -size +500M -name "*.log" -print '),
+
+    'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
+    'find_locate'=>'
+        locate -i "*.jpg"
+        locate "*/.git"
+    ',
+    'rename'=>"",
+
     'find_exec'=>('find . -type f -perm 777 -exec chmod 755 {} \;'),
     'find_locate'=>('locate -i "*.jpg"'),
     'rename'=>"
@@ -210,6 +238,8 @@ renice -n 19 -p pid_number
     'ps'=>'
         # count processes per user
         ps hax -o user | sort | uniq -c | sort -r
+        # java ps specific
+        jps
     ',
     'aspell'=>'aspell --lang=it -c docs/manuale_api_rivenditori/index.md',
     'md5file'=>' md5sum file ',
@@ -233,6 +263,7 @@ renice -n 19 -p pid_number
     'extract_bzip'=>('bzip2  -dk  {{filename}}.bz2 '),
     'compress_targz'=>("
 tar -czf /path/to/backup.tar.gz /path/to/*.pdf 2>/dev/null
+tar --create --gzip -C \$dir --remove-files --file {\$archive_name}.tar.gz  \$dir/tmp/*.sql
 tar -czfvp /archive/full-backup-`date '+%d-%B-%Y'`.tar.gz --directory /var/mydir --exclude=dirname1  --exclude=dirname2 .
 "),
     'extract_targz'=>('tar -xzfv archive.tar.gz'),
@@ -440,6 +471,12 @@ sudo ufw allow from 202.54.1.5/29 to any port 22
 */10 * * * user  /path/to/script          # every ten min
 @reboot     root      duplicati-server --webservice-interface=any &
 ",
+    'crontab_users'=>'
+    # crontabs degli utenti
+        sudo -u www-data crontab -l
+        sudo -u www-data crontab -e
+        sudo crontab -e -u www-data
+    ',
     'cron_log'=>('grep -i CRON /var/log/syslog'),
     'at'=>('
         sudo echo "reboot" | sudo at -m 13:10 today
@@ -481,11 +518,15 @@ __END__
         mysql -u {{username}}  -p {{database}}
 ",
     'mysql_user'=>"
-        #
+        # basic:
         CREATE USER '{{username}}'@'localhost' IDENTIFIED BY 'password';
+        GRANT ALL PRIVILEGES ON {{database_name}}.* TO '{{username}}'@'localhost';
+        # TEST: mysql -u newuser -p
+
         # may need to relax password validation plugin
         # mysql> SHOW VARIABLES LIKE 'validate_password_policy';
         # mysql> SET GLOBAL validate_password_policy = 1;
+
         GRANT USAGE ON *.* TO '{{username}}'@'localhost';
         GRANT ALL  ON `{{db_name}}`.* TO '{{username}}'@'localhost' WITH GRANT OPTION;
         FLUSH PRIVILEGES;
@@ -623,6 +664,13 @@ __END__
     ",
     'mysql_tuning'=>'
         mysqltuner ## program to detect various misconfigurations
+
+cat /etc/mysql/mysql.cnf | grep innodb_buffer_pool_size
+innodb_buffer_pool_size = 15G # (adjust value here, 50%-70% of total RAM)
+che si vede anche da sql:
+SELECT @@innodb_buffer_pool_size;
+
+
     ',
     'mysql_optimize'=>'
         ## list the size of every table in every database, largest first:
@@ -765,6 +813,12 @@ curl -Iks --location -X GET -A "x-agent" --proxy http://127.0.0.1:16379 https://
     --proxy [socks5://|http://] - set proxy server
 # set a session ID
 curl -I -H \'Cookie: PHPSESSID=u2vl43aruqgrqck38jq72t3ov8\' http://zzzzz.xxxxx.test/items/downloadcategoryxls
+# scrap a web page and convert to markdown
+curl --silent http://www.taziomirandola.it | pandoc --from html --to textile -o /tmp/tm.md
+
+## web scraping:
+    curl -s https://www.rust-lang.org/ | htmlq \'#get-help\'
+
         '),
     'wget'=>('
 wget -r -l1 -P035 -nd --no-parent
