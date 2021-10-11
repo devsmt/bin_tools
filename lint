@@ -1,0 +1,103 @@
+#!/usr/bin/env php
+<?php
+/*
+unified lint wrapper
+ */
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo $r = `$cmd` . "\n";
+    return $r;
+}
+
+// main
+$file_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+
+if (empty($file_path)) {
+    die('no file to lint.');
+}
+
+if (!request_is_cli()) {
+    die("usa questo comando da cli.");
+} else {
+    set_time_limit(0);
+    if ($argc == 1) {
+        action_usage();
+    } else {
+
+        $ext = pathinfo($file_path, PATHINFO_EXTENSION); // se script cli, prova php
+        if (empty($ext) || $file_path == $ext) {
+            $ext = 'php';
+        }
+
+        switch ($ext) {
+        case 'php':
+        case 'phtml':
+            // testare che un programma sia installato
+            $_check_bin = function ($binary) {
+                $r = `which $binary`;
+                if ('' == trim(strval($r))) {
+                    echo ("--- $binary is not installed!\n");
+                    return false;
+                }
+                return true;
+            };
+            $a_v = ['php', 'php8.0', 'php7.4', 'php7.2', /*'php7.1',*/'php5.6'];
+            foreach ($a_v as $binary) {
+                if ($_check_bin($binary)) {
+                    $cmd = "$binary -l $file_path";
+                    $r = e($cmd);
+                    if (!str_contains($r, 'No syntax errors detected in')) {
+                        break;
+                    }
+                }
+            }
+            break;
+        case 'ts':
+            $cmd = "/data/bin_tools/ts_lint $file_path";
+            e($cmd);
+            break;
+        case 'js':
+            // eslint may be a newer alternative
+            $cmd = "/usr/local/bin/jshint -c '/data/bin_tools/jslint.rc' $file_path";
+            // altro linter da provare
+            // /home/taz/.cargo/bin/rslint_cli
+            $r = e($cmd);
+            $r = trim('' . $r);
+            if (empty($r)) {
+                echo "OK \n";
+            }
+            break;
+        case 'yml':
+            echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                $file_path
+            ), "</pre>\n";
+
+            $data = yaml_parse_file($file_path);
+            echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                $data
+            ), "</pre>\n";
+
+            break;
+        default:
+            die(implode('/', [__FUNCTION__, __METHOD__, __LINE__]) . ' > TODO ' . $ext);
+            break;
+        }
+    }
+    exit(0);
+}
+//-- actions --------------------------------------
+//
+function action_XXX() {
+
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+//-- utils ----------------------------------------
+
+exit(0);
