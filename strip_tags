@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/Utils.php';
+//
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+//
+//
+$text = h_get($_SERVER['argv'], 1, '');
+if (empty($text)) {
+    $text = stream_get_contents(STDIN);
+} else {
+    $text = file_get_contents($text);
+    if (false === $text) {
+        // handle file not found
+    }
+}
+echo strip_tags($text);
+exit(0);

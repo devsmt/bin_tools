@@ -1,0 +1,482 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+// require_once __DIR__ . '/Common.php';
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+ini_set('html_errors', '1');
+error_reporting(-1); // E_ALL Report all PHP errors / E_ALL & ~E_NOTICE =>Report all errors except E_NOTICE
+ini_set('display_errors', '1'); // PROD shoul only log, not displaying achitecture informations
+//
+function main() {
+    $_1 = h_get($_SERVER['argv'], 1, '');
+    set_time_limit(0);
+    if (empty($_1)) {
+        $str_content = file_get_contents('php://stdin');
+        action_translate($str_content);
+    } elseif ($_1 == 'payload') {
+        // genera html di test
+        echo $html = <<<__END__
+<h1>Hello WorldÆØÅ!</h1>
+<b éonload='cacchissima'>bb</b>
+<i °schif>iii</i>
+<script>cacca</script>
+<img src=\"http://url\">
+<!-- commento -->
+<script cacca2>
+    // </script>
+    <script cacca3>document.title = 'Javascript Injection!';
+</script >
+<<a>script>alert('ciao');<</a>/script>
+<\0script>@@</s\0cript>
+
+<style type="text/css">robaccia CSS</style>
+<link rel=stylesheet href="/css/main.min.css" type="text/css">
+
+<iframe src="url"></iframe>
+
+__END__;
+    } elseif ($_1 == 'strip_tags') {
+
+
+
+
+
+        $text = file_get_contents('php://stdin');
+        /*
+        // $text=html2textile::onli_ascii($text);
+        do {
+            $l = strlen($text);
+            $text = strip_tags($text, $allowed = '');
+            $l2 = strlen($text);
+        } while ($l != $l2);
+        // this is not safe for arbitrary, malicious user imput
+        // - run recursively to catch <<a>script>alert('pwnd');<</a>/script>
+        // - using tag allowed is not safe at all
+        // use it only for trusted, internal html to be convert to text
+        */
+
+
+        // Remove all HTML tags and all characters with ASCII value > 127, from a string:
+        $_sanitize_html = function($str){
+          return filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+        };
+
+        $text= $_sanitize_html( $text );
+
+
+        // XSS vectors
+        // $tags = ['script', 'style', 'iframe', 'link'];
+
+        echo $text;
+    } else {
+        action_usage();
+    }
+    exit(0);
+}
+main();
+//-- actions --------------------------------------
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [payload|strip_tags] [param1]
+actions:
+    payload = genera un html malevolo
+    strip_tags = test funzione strip tags rispetto a html pericoloso
+\n";
+}
+/**
+ * ottieni una chiave di hash o un defualt
+ * ritorna stringa o altro tipo
+ * if $k is array
+ * return the first of $keys found or default
+ * @return mixed
+ * @param string|int $k
+ * @param mixed $def
+ * @psalm-suppress RedundantConditionGivenDocblockType
+ * @psalm-suppress DocblockTypeContradiction
+ */
+function h_get(array $h, $k, $def = '') {
+    // se $h == null
+    if (empty($h)) {
+        return $def;
+    }
+    if (is_null($k)) {
+        return null;
+        // boolean, double, integer, or string types are scalar. Array, object, and resource are not
+    } elseif (is_string($k) || is_int($k)) {
+        return array_key_exists($k, $h) ? $h[$k] : $def;
+    } elseif (is_array($k)) {
+        foreach ($k as $key) {
+            if (array_key_exists($key, $h)) {
+                return $h[$key];
+            }
+        }
+        return $def;
+    } else {
+        $msg = sprintf('Errore %s ', 'unsopported key type ' . gettype($k));
+        throw new \Exception($msg);
+    }
+}
+//
+function action_translate($str_content) {
+    $html = stripslashes($str_content);
+    $html2textile = new html2textile;
+    $textile = $html2textile->convert($html);
+    echo $textile;
+}
+// -------------------------------------------------------------
+// convert html to textile
+// -------------------------------------------------------------
+class html2textile {
+    function convert(string $text): string{
+        $text = self::onli_ascii($text);
+        // remove br
+        $text = preg_replace("/<br[ \/]*>\s*/", "\n", $text);
+        $text = htmlspecialchars_decode($text); // toglie special chars ch epotrebbero far fallire le funzioni di riconoscimento tags
+        // no scripts at all
+        // $text = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $text);
+        // script tag arrows is that they can have more than one variant
+        // ex. (< = &lt; = &amp;lt;) & ( > = &gt; = &amp;gt;)
+        // so:
+        $pattern = '/(script(.*?)(?:\/|&#47;|&#x0002F;)script)/ius';
+        $text = (preg_replace($pattern, '', $text) ?? $text);
+        // alla fine, toglie caratteri superflui
+        $text = preg_replace('#<(\s*?)>#is', '', $text); // toglie caratteri eventualmente rimasti
+        //
+        // cleaning arbitrary HTML with only a regex is impossible,
+        // it's sometimes appropriate to use them for parsing a limited, known set of HTML
+        // reduce html complexity to what could be converted
+        do {
+            $l = strlen($text);
+            $text = strip_tags($text, $allowed = '<h1><h2><h3><h4><h5><h6><p><ol><ul><li><i><b><em>'
+                . '<strong><span><a><table><tr><td><u><del><sup><sub><blockquote><center><code><img>');
+            $l2 = strlen($text);
+        } while ($l != $l2);
+        //
+        //riscrive in lowercase i tag
+        $text = preg_replace_callback("/(<\/?)(\w+)([^>]*>)/i", function (array $matches): string {
+            if (!isset($matches[3])) {
+                echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+                    $matches
+                ), "</pre>\n";
+            }
+            return $matches[1] . strtolower($matches[2]) . $matches[3];
+        }, $text);
+        // normalize spaces
+        $text = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $text);
+        $text = stripslashes($text);
+        // process images
+        $text = preg_replace_callback("/\t*<(img)\s*([^>]*)>/Usi", [$this, 'process_tag'], $text);
+        //
+        // process textile valid tags
+        $oktags = ['p', 'ol', 'ul', 'li', 'i', 'b', 'em', 'strong', 'span', 'a', 'h[1-6]',
+            'table', 'tr', 'td', 'u', 'del', 'sup', 'sub', 'blockquote',
+            'center', 'code'];
+        foreach ($oktags as $tag) {
+            $text = preg_replace_callback("/\t*<(" . $tag . ")\s*([^>]*)>(.*)<\/\\1>/Usi",
+                [$this, 'process_tag'],
+                $text);
+        }
+        $text = self::convert_glyphs($text);
+        $text = $this->convert_lists($text);
+        $text = preg_replace('/^\t* *p\. /m', '', $text);
+        $text = str_replace(["#\\", "/#"], [">", "<"], strip_tags($this->decode_high($text), '<pre>'));
+        $text = trim($text);
+        return $text;
+    }
+    // ispeziona una str per trovare caratteri che diano problemi in output
+    // elimina \0 che potrebbero far fallire al strip_tags
+    static function onli_ascii(string $str): string{
+        $r = '';
+        $a_in = str_split($str);
+        foreach ($a_in as $c) {
+            // ascii alpha to int
+            $i = ord($c);
+            // 0-32 128-254 non stampabili
+            // 33-127 stampabili
+            if ($i===10 || ($i >= 32 && $i <= 127) ) {
+                $r .= $c; // solo caratteri visibili e innocui
+            } else {
+                // $r .= sprintf('@%s@', $i);// char che possono dare problemi
+            }
+        }
+        return $r;
+    }
+    //
+    static function convert_glyphs(string $text): string{
+        $glyphs = array(
+            '’' => '\'', # single closing
+            '‘' => '\'', # single opening
+            '”' => '"', # double closing
+            '“' => '"', # double opening
+            '—' => '--', # em dash
+            '–' => ' - ', # en dash
+            '×' => 'x', # dimension sign
+            '™' => '(TM)', # trademark
+            '®' => '(R)', # registered
+            '©' => '(C)', # copyright
+            '…' => '...', # ellipsis
+        );
+        foreach ($glyphs as $f => $r) {
+            $text = str_replace($f, $r, $text);
+        }
+        return $text;
+    }
+    static function convert_lists(string $text): string{
+        $list = false;
+        $text =
+        preg_split("/(<.*>)/U", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        foreach ($text as $line) {
+            if ($list == false && preg_match('/<ol /', $line)) {
+                $line = "";
+                $list = "o";
+            } else if (preg_match('/<\/ol/', $line)) {
+                $line = "";
+                $list = false;
+            } else if ($list == false && preg_match('/<ul/', $line)) {
+                $line = "";
+                $list = "u";
+            } else if (preg_match('/<\/ul/', $line)) {
+                $line = "";
+                $list = false;
+            } else if ($list == 'o') {
+                $line = preg_replace('/<li.*>/U', '# ', $line);
+            } else if ($list == 'u') {
+                $line = preg_replace('/<li .*>/U', '* ', $line);
+            }
+            $glyph_out[] = $line;
+        }
+        return $text = implode('', $glyph_out);
+    }
+    function process_tag(array $matches): string {
+        // eventually malformed input
+        if (!isset($matches[3])) {
+            $matches[3] = '';
+        }
+        list($all, $tag, $atts, $content) = $matches;
+        $a = self::attributes_to_dict($atts);
+        $phr = [
+            'em' => '_',
+            'i' => '__',
+            'b' => '**',
+            'strong' => '*',
+            'cite' => '??',
+            'del' => '-',
+            'ins' => '+',
+            'u' => '+',
+            'sup' => '^',
+            'sub' => '~',
+            'span' => '%',
+            'code' => '@',
+        ];
+        $blk = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        if (isset($phr[$tag])) {
+            return $phr[$tag] . self::convert_attributes($a) . $content . $phr[$tag];
+        } elseif ($tag == 'blockquote') {
+            return 'bq.' . self::convert_attributes($a) . ' ' . $content;
+        } elseif ($tag == 'center') {
+            return 'p=.' . self::convert_attributes($a) . ' ' . $content;
+        } elseif (in_array($tag, $blk)) {
+            return $tag . self::convert_attributes($a) . '. ' . $content;
+        } elseif ($tag == 'a') {
+            $t = $this->filter_attributes($a, ['href', 'title']);
+            $out = '"' . $content;
+            if (isset($t['title'])) {
+                $_l = preg_replace(["/\(/", "/\)/"], ["[", "]"], $t['title']);
+                $out .= ' (' . $_l . ')';
+            }
+            $out .= '":' . $t['href'];
+            return $out;
+        } elseif ($tag == 'img') {
+            $t = $this->filter_attributes($a, ['src', 'alt']);
+            $out = '!' . ($t['src']);
+            if ((isset($t['alt']))) {
+                $_alt = preg_replace(array("/\(/", "/\)/"), array("[", "]"), $t['alt']);
+                $out .= '(' . $_alt . ')';
+            }
+            $out .= '!';
+            return $out;
+        } else {
+            return $all;
+        }
+    }
+    // -------------------------------------------------------------
+    static function filter_attributes(array $atts, array $ok): array{
+        $out = [];
+        foreach ($atts as $a) {
+            if (in_array($a['name'], $ok)) {
+                if ($a['att'] != '') {
+                    $out[$a['name']] = $a['att'];
+                }
+            }
+        }
+        #        dump($out);
+        return $out;
+    }
+    // converte attributi in textile
+    static function convert_attributes(array $a): string{
+        $out = '';
+        foreach ($a as $t) {
+            $out .= ($t['name'] == 'class') ? '(=' . $t['att'] . ')' : '';
+            $out .= ($t['name'] == 'id') ? '[=' . $t['att'] . ']' : '';
+            $out .= ($t['name'] == 'style') ? '{=' . $t['att'] . '}' : '';
+            $out .= ($t['name'] == 'cite') ? ':' . $t['att'] : '';
+            if ($t['name'] == 'align') {
+                if ($t['att'] == "left") {
+                    $out .= '/#';
+                } elseif ($t['att'] == "right") {
+                    $out .= '#\\';
+                } elseif ($t['att'] == "center") {
+                    $out .= '=';
+                } elseif ($t['att'] == "justify") {
+                    $out .= '/##\\';
+                }
+            }
+        }
+        return $out;
+    }
+    // returns attributes as an array
+    static function attributes_to_dict(string $attr): array{
+        $arr = [];
+        $atnm = '';
+        $mode = 0;
+        while (strlen($attr) != 0) {
+            $ok = 0;
+            switch ($mode) {
+            case 0: // name
+                if (preg_match('/^([a-z]+)/i', $attr, $match)) {
+                    $atnm = $match[1];
+                    $ok = $mode = 1;
+                    $attr = preg_replace('/^[a-z]+/i', '', $attr);
+                }
+                break;
+            case 1: // =
+                if (preg_match('/^\s*=\s*/', $attr)) {
+                    $ok = 1;
+                    $mode = 2;
+                    $attr = preg_replace('/^\s*=\s*/', '', $attr);
+                    break;
+                }
+                if (preg_match('/^\s+/', $attr)) {
+                    $ok = 1;
+                    $mode = 0;
+                    $arr[] =
+                    array('name' => $atnm, 'whole' => $atnm, 'att' => $atnm);
+                    $attr = preg_replace('/^\s+/', '', $attr);
+                }
+                break;
+            case 2: // value
+                if (preg_match('/^("[^"]*")(\s+|$)/', $attr, $match)) {
+                    $arr[] = array('name' => $atnm, 'whole' => $atnm . '=' . $match[1],
+                        'att' => str_replace('"', '', $match[1]));
+                    $ok = 1;
+                    $mode = 0;
+                    $attr = preg_replace('/^"[^"]*"(\s+|$)/', '',
+                        $attr);
+                    break;
+                }
+                if (preg_match("/^('[^']*')(\s+|$)/", $attr, $match)) {
+                    $arr[] = array('name' => $atnm, 'whole' => $atnm . '=' . $match[1],
+                        'att' => str_replace("'", '', $match[1]));
+                    $ok = 1;
+                    $mode = 0;
+                    $attr = preg_replace("/^'[^']*'(\s+|$)/", '',
+                        $attr);
+                    break;
+                }
+                if (preg_match("/^(\w+)(\s+|$)/", $attr, $match)) {
+                    $arr[] =
+                    array('name' => $atnm, 'whole' => $atnm . '="' . $match[1] . '"',
+                        'att' => $match[1]);
+                    $ok = 1;
+                    $mode = 0;
+                    $attr = preg_replace("/^\w+(\s+|$)/", '', $attr);
+                }
+                break;
+            }
+            if ($ok == 0) {
+                $attr = preg_replace('/^\S*\s*/', '', $attr);
+                $mode = 0;
+            }
+        }
+        if ($mode == 1) {
+            $arr[] = ['name' => $atnm, 'whole' => $atnm . '="' . $atnm . '"', 'att' => $atnm];
+        }
+        return $arr;
+    }
+    //
+    static function decode_high(string $text): string{
+        $f = 0xffff;
+        $cmap = [
+            160, 255, 0, $f,
+            402, 402, 0, $f,
+            913, 929, 0, $f,
+            931, 937, 0, $f,
+            945, 969, 0, $f,
+            977, 978, 0, $f,
+            982, 982, 0, $f,
+            8226, 8226, 0, $f,
+            8230, 8230, 0, $f,
+            8242, 8243, 0, $f,
+            8254, 8254, 0, $f,
+            8260, 8260, 0, $f,
+            8465, 8465, 0, $f,
+            8472, 8472, 0, $f,
+            8476, 8476, 0, $f,
+            8482, 8482, 0, $f,
+            8501, 8501, 0, $f,
+            8592, 8596, 0, $f,
+            8629, 8629, 0, $f,
+            8656, 8660, 0, $f,
+            8704, 8704, 0, $f,
+            8706, 8707, 0, $f,
+            8709, 8709, 0, $f,
+            8711, 8713, 0, $f,
+            8715, 8715, 0, $f,
+            8719, 8719, 0, $f,
+            8721, 8722, 0, $f,
+            8727, 8727, 0, $f,
+            8730, 8730, 0, $f,
+            8733, 8734, 0, $f,
+            8736, 8736, 0, $f,
+            8743, 8747, 0, $f,
+            8756, 8756, 0, $f,
+            8764, 8764, 0, $f,
+            8773, 8773, 0, $f,
+            8776, 8776, 0, $f,
+            8800, 8801, 0, $f,
+            8804, 8805, 0, $f,
+            8834, 8836, 0, $f,
+            8838, 8839, 0, $f,
+            8853, 8853, 0, $f,
+            8855, 8855, 0, $f,
+            8869, 8869, 0, $f,
+            8901, 8901, 0, $f,
+            8968, 8971, 0, $f,
+            9001, 9002, 0, $f,
+            9674, 9674, 0, $f,
+            9824, 9824, 0, $f,
+            9827, 9827, 0, $f,
+            9829, 9830, 0, $f,
+            338, 339, 0, $f,
+            352, 353, 0, $f,
+            376, 376, 0, $f,
+            710, 710, 0, $f,
+            732, 732, 0, $f,
+            8194, 8195, 0, $f,
+            8201, 8201, 0, $f,
+            8204, 8207, 0, $f,
+            8211, 8212, 0, $f,
+            8216, 8218, 0, $f,
+            8218, 8218, 0, $f,
+            8220, 8222, 0, $f,
+            8224, 8225, 0, $f,
+            8240, 8240, 0, $f,
+            8249, 8250, 0, $f,
+            8364, 8364, 0, $f,
+        ];
+        return mb_decode_numericentity($text, $cmap, "UTF-8");
+    }
+}
