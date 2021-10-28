@@ -2,15 +2,32 @@
 <?php
 declare (strict_types = 1);
 require_once __DIR__ . '/Utils.php';
-// function e(string $cmd) {
-//     echo "cmd: " . $cmd . "\n";
-//     echo $r = shell_exec($cmd) . "\n";
-//     return $r;
-// }
-function extension_get($filename) {
-    preg_match('/^.*\.([a-z0-9]{2,4})$/i', $filename, $matches);
-    return h_get($matches, 1, '');
+if( !function_exists('e') ){
+    function e(string $cmd) {
+        echo "cmd: " . $cmd . "\n";
+        echo $r = shell_exec($cmd) . "\n";
+        return $r;
+    }
 }
+//
+function extension_get(string $filename): string{
+    preg_match('/^.*\.([a-z0-9]{2,4})$/i', $filename, $matches);
+    $ext = h_get($matches, 1, '');
+    $ext = strtolower($ext);
+    return $ext;
+}
+//
+function extension_replace(string $filename, string $new_extension): string {
+    $f_char = substr( $filename, 0,1 );
+
+    if(  '.' === $f_char ){
+        die( implode('/', [__FUNCTION__,__METHOD__,__LINE__]) .' > extension shuld not begin with . char ');
+    }
+    return preg_replace('/\..+$/i', '.' . $new_extension, $filename);
+}
+// $ext = stringtolower(pathinfo($file_path, PATHINFO_EXTENSION));// usa sempre il lowercase per evitare che sfuggano a successivo confronto x via del case
+// $name = pathinfo($file_path, PATHINFO_FILENAME);// nome file senza estensione es. xxx.txt=>'xxx'
+// string based:   $ext = strtolower(end( explode('.', $path) ));
 // main
 $script_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
 $ext = extension_get($script_path);
@@ -30,7 +47,11 @@ if ($argc == 1) {
     case 'js':
         echo `/usr/bin/node $script_path`;
         break;
-
+    case 'ts':
+        $script_path2 = extension_replace($script_path, 'js');
+        $dir = dirname($script_path);
+        echo e("cd $dir && tsc $script_path && node $script_path2");
+        break;
     default:
         echo "ext:'$ext' not managed \n";
         action_usage();
