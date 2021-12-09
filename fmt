@@ -46,6 +46,7 @@ if (!request_is_cli()) {
         // prettier funziona con tutti i linguaggi web https://github.com/prettier/prettier#what-does-prettier-do
         // sudo npm install --global prettier
         case 'ts':
+            // @see `deno fmt`
             echo e("/data/bin_tools/ts_fmt $file_path ");
             break;
         case 'jsx':
