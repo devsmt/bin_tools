@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+// USAGE:
+// cat .tags | php_lines 'strtoupper($l)'
+
+
+
+// read std input to be used in a pipe, like cat file | php_lines
+// foreach lines exec the parameter 1, the php code, as a closure function(string $line, int $line_num):string {return $str}
+// print returned string
+//----------------------------------------------------------------------------
+//  error
+//----------------------------------------------------------------------------
+ini_set('html_errors', '0');
+ini_set('display_errors', '1'); // PROD shoul only log, not displaying achitecture informations
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+//----------------------------------------------------------------------------
+//  main
+//----------------------------------------------------------------------------
+require_once '/data/bin_priv/lib/__init__.php';
+//
+// the one liner to be executed
+$func = $_1 = h_get($_SERVER['argv'], 1, '');
+// code formatting
+if (empty($func)) {
+    die('ERROR: provide a one liner as first param');
+}
+// autowrapping code in a clojure
+$str_begin = substr($func, 0, strlen('function'));
+if ($str_begin != 'function') {
+    $func = 'function(string $line, int $line_num): string { '
+    // add convinenece/shortcut vars
+    .'$l=$line;$n=$line_num; '
+    // assicuriamoci che ci sia istruzione "return"
+     . (substr($func, 0, strlen('return')) != 'return' ? 'return ' : ' ')
+    . $func
+    // assicura che sia correttamente formattato
+    . ($last_char = substr($func, -1) != ';' ? ';' : ' ')
+    . '};';
+}
+//------
+// echo "evaluating:" . $func . "\n";
+eval('$__the_func=' . $func);
+//
+// a unix-style command line filter
+$fp = fopen("php://stdin", "r") or die("can't read stdin");
+$line_num = 1;
+while (!feof($fp)) {
+    $line = fgets($fp);
+    if ($line) {
+        $line2 = $__the_func($line, $line_num);
+        // may use call_user_func(  $callback,   ...$args): mixed
+        echo $line2;
+    }
+    $line_num++;
+}
+fclose($fp);
