@@ -4,8 +4,6 @@ declare (strict_types = 1);
 // USAGE:
 // cat .tags | php_lines 'strtoupper($l)'
 
-
-
 // read std input to be used in a pipe, like cat file | php_lines
 // foreach lines exec the parameter 1, the php code, as a closure function(string $line, int $line_num):string {return $str}
 // print returned string
@@ -25,26 +23,41 @@ require_once '/data/bin_priv/lib/__init__.php';
 //
 // the one liner to be executed
 $func = $_1 = h_get($_SERVER['argv'], 1, '');
+$sum_func = $_1 = h_get($_SERVER['argv'], 2, null);
 // code formatting
 if (empty($func)) {
     die('ERROR: provide a one liner as first param');
 }
+
+// global state
+$S = [];
+
 // autowrapping code in a clojure
 $str_begin = substr($func, 0, strlen('function'));
 if ($str_begin != 'function') {
-    $func = 'function(string $line, int $line_num): string { '
+    $func = 'function(string $line, int $line_num) use(&$S): string { '
     // add convinenece/shortcut vars
-    .'$l=$line;$n=$line_num; '
+     . '$l=$line;$n=$line_num; '
     // assicuriamoci che ci sia istruzione "return"
-     . (substr($func, 0, strlen('return')) != 'return' ? 'return ' : ' ')
+     . (!str_contains($func, 'return') ? 'return ' : ' ')
     . $func
     // assicura che sia correttamente formattato
-    . ($last_char = substr($func, -1) != ';' ? ';' : ' ')
+     . ($last_char = substr($func, -1) != ';' ? ';' : ' ')
     . '};';
 }
 //------
 // echo "evaluating:" . $func . "\n";
-eval('$__the_func=' . $func);
+try {
+    eval($code = '$__the_func=' . $func);
+} catch (Throwable $e) {
+    $fmt = 'EVAL error: %s' . "\n"
+    . 'Code: %s' . "\n"
+    . 'file:%s line:%s ' . "\n"
+    ;
+    $msg_full = sprintf($fmt, $e->getMessage(), $code, $e->getFile(), $e->getLine());
+    die($msg_full);
+}
+
 //
 // a unix-style command line filter
 $fp = fopen("php://stdin", "r") or die("can't read stdin");
@@ -59,3 +72,19 @@ while (!feof($fp)) {
     $line_num++;
 }
 fclose($fp);
+//----------------------------------------------------------------------------
+// exec the sum func
+//----------------------------------------------------------------------------
+if (!empty($sum_func)) {
+    try {
+        eval($code = '$__the_sum_func=' . $sum_func);
+    } catch (Throwable $e) {
+        $fmt = 'EVAL error: %s' . "\n"
+        . 'Code: %s' . "\n"
+        . 'file:%s line:%s ' . "\n"
+        ;
+        $msg_full = sprintf($fmt, $e->getMessage(), $code, $e->getFile(), $e->getLine());
+        die($msg_full);
+    }
+    echo $__the_sum_func($S);
+}

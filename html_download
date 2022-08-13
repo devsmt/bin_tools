@@ -1,0 +1,65 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/lib/__init__.php';
+
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+
+function e(string $cmd) {
+    echo "cmd: " . $cmd . "\n";
+    echo $r = shell_exec($cmd) . "\n";
+    return $r;
+}
+
+/** comment */
+function calc_name(string $name): string{
+    $name = preg_replace($regex = '/[^a-z0-9\-]/i', '_', $name);
+    return $name;
+}
+
+// main su argv[1]
+function main() {
+    $url = h_get($_SERVER['argv'], 1, '');
+    $filename = calc_name($url);
+    // --silent
+    // $cmd = "monolith -I --no-audio --no-fonts --no-frames --no-js --no-video $url  -o /tmp/{$filename}.html  ";
+    // $cmd = "monolith -I $url  -o /tmp/{$filename}.html";
+    $cmd = "curl -L -s $url  --output /tmp/{$filename}.html ";
+    e($cmd);
+    $file_path = "/tmp/{$filename}.html";
+
+    //
+    // e("tidy  -indent  --indent-spaces 2  -quiet  --tidy-mark no  $file_path -o $file_path.clean");
+
+    // usa pandoc per tradurre l'ahtml formatato in formato mediawiki, poi dal formato MW ricompila un html semplificato
+    // questo processo preserva le immagini embedde con url:data()
+    e("pandoc -f html -t mediawiki -o $file_path.mw  +RTS -K7770000000 -RTS $file_path ");
+    e("cat $file_path.mw | strip_tags > $file_path.stripped ");
+    //
+    e("cat $file_path | pandoc --from html --to textile -o $file_path.textile ");
+    e("cat $file_path.textile | strip_tags > $file_path.textile.stripped ");
+    // convert back
+    // e("pandoc -thtml $file_path.mw");
+    // e("pandoc -fmediawiki -thtml -o $file_path.2.html  $file_path.mw");
+
+}
+
+main();
+//-- actions --------------------------------------
+//
+function action_XXX() {
+
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+//-- utils ----------------------------------------
+
+exit(0);

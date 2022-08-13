@@ -1,10 +1,17 @@
-#!/usr/bin/env bash
+#!/usr/bin/php
+<?php
 # sudo apt-get install python-demjson
 #/usr/bin/jsonlint-py  --format  $@
 # cat "/var/www/lampa_agenti_v3/var/cache_mobile/w/categorie_*-*_2016_44.txt" | jq
 
 # sudo apt install yajl
-echo "use json_reformat < $1 > file.json";
+if (!empty($argv[1])) {
+    $a = json_decode($argv[1]);
+    $json = json_encode($a, JSON_PRETTY_PRINT);
+    echo $json . "\n";
+}
+
+echo "use json_reformat < \$1 > file.json";
 echo "\n";
 
 # #!/usr/bin/env node

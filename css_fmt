@@ -1,5 +1,11 @@
 #!/usr/bin/env php
 <?php
+/*** @see
+npm install -g cssbeautify-cli
+*/
+
+
+
 declare (strict_types = 1);
 //require_once __DIR__ . '/Common.php';
 $opt = "--preserve_css=true --remove_bslash=true --compress_colors=false ";
@@ -8,10 +14,11 @@ $opt .= "--remove_last_;=false --sort_properties=false --sort_selectors=false ";
 $opt .= "--merge_selectors=0 --compress_font-weight=false --allow_html_in_templates=true ";
 $opt .= "--silent=false --case_properties=0 ";
 //
-// Define STDIN for compatibility
-$STDIN = file_get_contents('php://stdin');
+
 //
-if (!empty($STDIN)) {
+if (isset($argv[1]) && strtolower($argv[1]) == 'stdin' ) {
+    // Define STDIN for compatibility
+    $STDIN = file_get_contents('php://stdin');
     /*
     $name = sprintf('%s_%s.css', basename(__FILE__), date('Ymd_His'));
     $file_path = tmp_file_put($name, $content = $STDIN);
@@ -22,15 +29,20 @@ if (!empty($STDIN)) {
     echo $beautyCSS;
 } else {
     if (isset($argv[1])) {
+        $is_present = file_exists( $path = $argv[1] );
+        if( !$is_present ){
+            die( "$path should be a valid file path \n");
+        }
+
         // csstidy($argv[1]);
         $uglyCSS = file_get_contents($argv[1]);
         $beautyCSS = CSSBeautifier::run($uglyCSS);
         echo $beautyCSS;
     } else {
         usage();
-        echo sprintf("<pre>%s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
-            $argv, $STDIN
-        ), "</pre>\n";
+        echo sprintf(" %s() L:%s F:%s\n", __FUNCTION__, __LINE__, __FILE__), var_dump(
+            $argv
+        ), " \n";
     }
 }
 //

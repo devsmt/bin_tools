@@ -44,6 +44,7 @@ avdmanager delete avd -n emulator_name
     # plug, accept device
     adb devices
 ',
+    'jedit_line' => 'jedit file.php +line:10',
     //----------------------------------------------------------------------------
     //  java
     //----------------------------------------------------------------------------
@@ -126,8 +127,39 @@ web server files                            public/
     'php_unit' => '
     wget --no-check-certificate https://phar.phpunit.de/phpunit.phar
     chmod +x phpunit.phar
-    ./phpunit.phar markdown/markdown_test.php
+
+echo "<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
+final class MyTest extends TestCase {
+    public function testCanBeUsedAsString(): void {
+        $this->assertEquals( $given, $exp );
+    }
+} " > my_test.php
+
+    ./phpunit.phar my_test.php
 ',
+    'phan' => '
+cd /path/to/project-to-analyze
+# --init-level can be anywhere from 1 (strictest) to 5 (least strict)
+path/to/phan --init --init-level=5
+phan --progress-bar -o analysis.txt
+    ',
+
+    'psalm' => '
+composer require --dev vimeo/psalm
+./vendor/bin/psalm --init
+# psalm.xml
+    <projectFiles>
+        <file name="./__psalm_init.php" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+    </issueHandlers>
+',
+
     'mysql_install' => '
         sudo apt install mysql-server php-mysql
         sudo mysql_secure_installation
@@ -279,6 +311,12 @@ web server files                            public/
         # visione storia comit DAG-like in CLI
         git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white) - %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 __END__,
+    // ultimi files committed
+    'git_last_files' => '
+        # last files commited
+        git diff --name-only HEAD HEAD~1
+    ',
+
     'git_remote_url'=>'
         git config --get remote.origin.url
         # where the repo is stored?
