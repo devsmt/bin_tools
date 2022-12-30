@@ -6,6 +6,17 @@ require_once __DIR__ . '/Utils.php';
 
 interfaccia unificata sui formatter per i vari linguaggi
 da jedit vien passato il filename, dall'estensione carica un comando adatto
+
+@see: rome js
+sudo npm install -g rome
+
+Code formatting: Prettier, dprint
+Linting: ESLint, Stylelint
+Test runner: Vitest, Jest, AVA
+Transpilers: Babel, SWC, TypeScript
+Bundlers: webpack, esbuild, Vite, SWC, Rollup, Parcel
+
+
  */
 
 function e(string $cmd) {
@@ -37,9 +48,18 @@ if (!request_is_cli()) {
             break;
         // C, C++, C++/CLI, Objective‑C, C#, and Java
 
-
+        /*
+        rome:
+        # Create a configuration (optional)
+        /usr/bin/npx rome init
+        # Format
+        /usr/bin/npx rome format <files>
+        # Or, lint:
+        /usr/bin/npx rome check <files>
+        */
         case 'js':
             $file_path_tmp = "$file_path.tmp";
+            echo "EXPERIMENTAL: /usr/bin/npx rome format $file_path \n";
             echo e("cp $file_path  $file_path_tmp ");
             echo e("/data/bin_tools/js_fmt --outfile=$file_path  $file_path_tmp ");
             break;
@@ -47,6 +67,7 @@ if (!request_is_cli()) {
         // sudo npm install --global prettier
         case 'ts':
             // @see `deno fmt`
+            echo "EXPERIMENTAL: /usr/bin/npx rome format $file_path \n";
             echo e("/data/bin_tools/ts_fmt $file_path ");
             break;
         case 'jsx':
@@ -81,7 +102,7 @@ if (!request_is_cli()) {
                 echo $json_2 . PHP_EOL;
             } else {
                 $h_b_s = human_filesize($bytes);
-                echo "TODO use /usr/bin/json_reformat $bytes $h_b_s " . PHP_EOL;
+                echo "TODO use /usr/bin/json_reformat $bytes B, $h_b_s is too big " . PHP_EOL;
             }
             break;
         case 'sql':

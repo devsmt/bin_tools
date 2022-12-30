@@ -17,7 +17,8 @@ function indent($txt, $s_evidenzia = '') {
         }
     }
     $txt2 = '';
-    $a_lines = explode("\n", $txt);
+    $txt = str_remove_empty_lines($txt);
+    $a_lines = explode("\n", trim($txt));
     foreach ($a_lines as $i => &$l) {
         $l = trim($l);
         if (empty($l)) {
@@ -34,6 +35,14 @@ function indent($txt, $s_evidenzia = '') {
     }
     $txt2 = implode("\n", array_filter($a_lines));
     return $txt2;
+}
+function str_remove_empty_lines(string $string): string{
+    $lines = explode("\n", str_replace(array("\r\n", "\r"), "\n", $string));
+    $lines = array_map('trim', $lines);
+    $lines = array_filter($lines, function ($value) {
+        return $value !== '';
+    });
+    return implode("\n", $lines);
 }
 function hr() {
     echo str_repeat('-', 80) . "\n";
@@ -191,7 +200,7 @@ uso:
     {$argv[0]} [key] => get a command
     {$argv[0]} [key] --dict=[linux|as400|etc|dev|all]    => get form specific dict
     {$argv[0]} key json_data => get a command expanded for data
-il primo argomento viene utilizzato per cercare un comando nel dizionario\n\n
+il primo argomento viene utilizzato per cercare un comando nel dizionario \n\n
 __END__;
 }
 //
@@ -250,9 +259,11 @@ if (empty($action)) {
         }
     } elseif ('all' == $action) {
         foreach ($commands as $key => $text) {
-            echo $key . "\n";
+            echo CLI::printc($key) . "\n";
             echo indent($text) . "\n";
         }
+    } elseif (in_array($action, ['usage', 'use'])) {
+        die(action_usage($argv));
     } elseif (isset($commands[$action])) {
         // exact match
         // echo "astring" | xclip  -selection clipboard
@@ -294,6 +305,16 @@ if (empty($action)) {
         echo process_lev(array_keys($commands), $str_search);
         echo "\n";
         hr();
-        echo "usa: memory wiki_search per cercare nel WIKI\n";
+        echo "usa:\n";
+        echo indent("wiki_search $str_search") . " \n";
+        echo "per cercare nel WIKI    \n";
+        hr();
+        //
+        $tldr_o = `tldr $str_search`;
+        if (!empty($tldr_o)) {
+            echo "TLDR entry for $str_search:" . "\n";
+            echo $tldr_o;
+            echo "" . "\n";
+        }
     }
 }

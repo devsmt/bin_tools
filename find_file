@@ -30,7 +30,7 @@ function main() {
         action_usage();
     } else {
         if (!empty($_1)) {
-            $r= e("find  $_2 -name \"$_1\" -type f");
+            $r= e("find  $_2 -iname \"$_1\" -type f");
         } else {
             echo "\$1 was not given";
         }

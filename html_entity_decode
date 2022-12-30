@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);//php7.0+, will throw a catchable exception if call typehints and returns do not match declaration
+
+require_once __DIR__ . '/lib/__init__.php';
+
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+
+
+/*
+// read in the file, a line at a time
+while( !feof(STDIN) ) {
+    $line = trim(fgets(STDIN));
+}
+*/
+$str_content = file_get_contents('php://stdin');
+
+
+echo html_entity_decode( $str_content );
+
+
+exit(0);

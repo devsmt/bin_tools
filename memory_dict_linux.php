@@ -824,6 +824,17 @@ curl --silent http://www.taziomirandola.it | pandoc --from html --to textile -o 
 wget -r -l1 -P035 -nd --no-parent
 wget -t 5 -c -nH -r -k -p -N --no-parent
 wget -l 1 -v -k -p -E http://test.com/test -- mirror completo di un sito
+
+-- mirror completo di un sito
+wget \
+   --recursive \
+   --no-clobber \
+   --page-requisites \
+   --html-extension \
+   --convert-links \
+   --restrict-file-names=windows \
+   --domains www.example.com \
+   --no-parent   <url>
 '),
     'nethogs'=>('
         # conoscere i processi che stanno utilizzando la nostra connessione

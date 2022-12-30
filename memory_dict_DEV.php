@@ -2,38 +2,45 @@
 declare (strict_types = 1);
 // keys myst be lowercase
 $commands = [
+    'ab' => '
+        ab -n 1000 -c 10 -k -H "Accept-Encoding: gzip, deflate" http://yourprj.test/
+
+        # to perform 1000 requests, 10 at a time (which approximately simulates 10 concurrent users getting 100 pages each - over the length of the test).
+        # -n 1000 is the number of requests to make.
+        # -c 10 tells AB to do 10 requests at a time, instead of 1 request at a time, to better simulate concurrent visitors (vs. sequential visitors).
+        # -k sends the KeepAlive header, which asks the web server to not shut down the connection after each request is done, but to instead keep reusing it.
+        # also sending the extra header Accept-Encoding: gzip, deflate because mod_deflate is almost always used ',
     //---------------------------------------------------------------------------
     // android
     //---------------------------------------------------------------------------
     'cordova' => '
-    cordova create myApp org.apache.cordova.myApp myApp
-    cordova plugin add cordova-plugin-camera
-    cordova platform add android
-    cordova platform update android@6.2.2
-    cordova plugin add cordova-plugin-camera --nosave
-    cordova platform add android --nosave
-    cordova requirements android
-    cordova build android --verbose
-    cordova clean android
-    cordova run android
-    # for release
-    cordova build android --release -- --keystore="..\android.keystore" --storePassword=android --alias=mykey
-    cordova config ls
-',
+        cordova create myApp org.apache.cordova.myApp myApp
+        cordova plugin add cordova-plugin-camera
+        cordova platform add android
+        cordova platform update android@6.2.2
+        cordova plugin add cordova-plugin-camera --nosave
+        cordova platform add android --nosave
+        cordova requirements android
+        cordova build android --verbose
+        cordova clean android
+        cordova run android
+        # for release
+        cordova build android --release -- --keystore="..\android.keystore" --storePassword=android --alias=mykey
+        cordova config ls ',
     'android_avd' => '
-# scarica una immagine avd
-sdkmanager --list
-sdkmanager --update
-# download a system image
-# for testing
-sdkmanager "system-images;android-24;default;x86_64"
-# for deploy to playstore
-sdkmanager "system-images;android-27;google_apis_playstore;x86"
-# install a system on a vistual device AVD
-avdmanager create avd -n emulator_name -k "system-images;android-24;default;x86_64" -g "default"
-avdmanager list avd
-avdmanager delete avd -n emulator_name
-',
+        # scarica una immagine avd
+        sdkmanager --list
+        sdkmanager --update
+        # download a system image
+        # for testing
+        sdkmanager "system-images;android-24;default;x86_64"
+        # for deploy to playstore
+        sdkmanager "system-images;android-27;google_apis_playstore;x86"
+        # install a system on a vistual device AVD
+        avdmanager create avd -n emulator_name -k "system-images;android-24;default;x86_64" -g "default"
+        avdmanager list avd
+        avdmanager delete avd -n emulator_name
+        ',
     //
     'android_adb' => '
     # tablet > settings > search USB > revoca autorizzazioni debug USB
@@ -42,27 +49,26 @@ avdmanager delete avd -n emulator_name
     sudo service udev restart
     killall adb
     # plug, accept device
-    adb devices
-',
+    adb devices ',
     'jedit_line' => 'jedit file.php +line:10',
     //----------------------------------------------------------------------------
     //  java
     //----------------------------------------------------------------------------
     'java' => '
-# set the classpath
-java -classpath ".:/mylib/*"  org.mypackage.HelloWorld
-java -classpath /home/user/myprogram org.mypackage.HelloWorld
-# set multiple classpath
-java -cp /path/to/folder;/path/lib/supportLib.jar org.mypackage.HelloWorld
-# set the CP with a variable
-set CLASSPATH=/path/myprogram
-java org.mypackage.HelloWorld
-# using a jar+manifest
-Main-Class: org.mypackage.HelloWorld
-Class-Path: lib/supportLib.jar
-# invocation
-java -jar /path/helloWorld.jar [app arguments]
-# @see https://en.wikipedia.org/wiki/Classpath_(Java)
+        # set the classpath
+        java -classpath ".:/mylib/*"  org.mypackage.HelloWorld
+        java -classpath /home/user/myprogram org.mypackage.HelloWorld
+        # set multiple classpath
+        java -cp /path/to/folder;/path/lib/supportLib.jar org.mypackage.HelloWorld
+        # set the CP with a variable
+        set CLASSPATH=/path/myprogram
+        java org.mypackage.HelloWorld
+        # using a jar+manifest
+        Main-Class: org.mypackage.HelloWorld
+        Class-Path: lib/supportLib.jar
+        # invocation
+        java -jar /path/helloWorld.jar [app arguments]
+        # @see https://en.wikipedia.org/wiki/Classpath_(Java)
     ',
     //----------------------------------------------------------------------------
     //  dev specific commands
@@ -98,32 +104,32 @@ java -jar /path/helloWorld.jar [app arguments]
         #
     ',
     'php_man' => '
-pear install doc.php.net/pman
-pear upgrade doc.php.net/pman
-pman strlen
-    ',
+        pear install doc.php.net/pman
+        pear upgrade doc.php.net/pman
+        pman strlen ',
     // generate a standard package dir
     'php_package' => '
-Install package in your project:
-composer require --dev pds/skeleton
-Run the validator:
-If no path is specified, the project in which pds-skeleton is installed will be used.
-vendor/bin/pds-skeleton validate [path]
-Generate a compliant package skeleton by following these steps:
-composer require --dev pds/skeleton
-Run the generator:
-vendor/bin/pds-skeleton generate [path]
+        Install package in your project:
+        composer require --dev pds/skeleton
+        Run the validator:
+        If no path is specified, the project in which pds-skeleton is installed will be used.
+        vendor/bin/pds-skeleton validate [path]
+        Generate a compliant package skeleton by following these steps:
+        composer require --dev pds/skeleton
+        Run the generator:
+        vendor/bin/pds-skeleton generate [path]
     ',
     'php_standard_dirs' => '
-If a package has a root-level directory for => then it MUST be named:
-command-line executables                    bin/
-configuration files                         config/
-documentation files                         docs/
-PHP source code                             src/
-test code                                   tests/
-other resource files                        resources/
-web server files                            public/
+        If a package has a root-level directory for => then it MUST be named:
+        command-line executables                    bin/
+        configuration files                         config/
+        documentation files                         docs/
+        PHP source code                             src/
+        test code                                   tests/
+        other resource files                        resources/
+        web server files                            public/
     ',
+    'phpunit' => 'php_unit',
     'php_unit' => '
     wget --no-check-certificate https://phar.phpunit.de/phpunit.phar
     chmod +x phpunit.phar
@@ -136,13 +142,27 @@ final class MyTest extends TestCase {
     }
 } " > my_test.php
 
-    ./phpunit.phar my_test.php
+./phpunit.phar my_test.php
+
+--- newer ---------------------------------------------------------
+
+# composer require --dev phpunit/phpunit
+file test/Unit/CartTest.php
+<?php
+namespace Unit;
+use PHPUnit\Framework\TestCase;
+class CartTest extends TestCase{
+    public function testAddItemToCart() {
+        $this->assertEquals( $given, $exp );
+    }
+}
+# vendor/bin/phpunit
 ',
     'phan' => '
-cd /path/to/project-to-analyze
-# --init-level can be anywhere from 1 (strictest) to 5 (least strict)
-path/to/phan --init --init-level=5
-phan --progress-bar -o analysis.txt
+        cd /path/to/project-to-analyze
+        # --init-level can be anywhere from 1 (strictest) to 5 (least strict)
+        path/to/phan --init --init-level=5
+        phan --progress-bar -o analysis.txt
     ',
 
     'psalm' => '
@@ -312,7 +332,7 @@ composer require --dev vimeo/psalm
         git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white) - %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 __END__,
     // ultimi files committed
-    'git_last_files' => '
+    'git_last_files'=>'
         # last files commited
         git diff --name-only HEAD HEAD~1
     ',
@@ -617,5 +637,33 @@ docker run -d --name esempio_1 -p 8088:80 esempio_1
 # usa per vedere dove è installata esattamente
 docker-machine ip
 ',
+    //----------------------------------------------------------------------------
+    //
+    //----------------------------------------------------------------------------
+    'laravel'=>'
+composer create-project laravel/laravel app_name
+## composer create-project laravel/laravel:^8.0 Laravel
+
+
+cd app_name
+php artisan serve
+chromium  http://localhost:8000
+
+composer require laravel/breeze --dev
+php artisan breeze:install vue ## or react
+npm run dev  ## hot module replacement
+## configure the database in /.env
+php artisan migrate
+
+# crea l’infrastruttura PHP per gestire la login.
+php artisan make:auth
+php artisan migrate
+',
+'laravel_test' => '
+    php artisan make:test MyTest   # integration test
+    php artisan make:test MyTest   --unit
+',
+    'symfony'=>'composer create-project symfony/framework-standard-edition symfony',
+
 ];
 return $commands;

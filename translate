@@ -1,0 +1,22 @@
+#!/usr/bin/php
+<?php
+/*
+traduce una stringa con Google Translate
+
+usare un argomento o come filtro
+ */
+require_once __DIR__ . '/lib/__init__.php'; // never allow user input like include $_GET['file'];
+//
+$txt = isset($argv[1]) ? $argv[1] : stream_get_contents(fopen('php://stdin', 'r'));
+//
+$txt = escapeshellarg($txt);
+// source: https://github.com/soimort/translate-shell
+$cmd = '/data/bin_tools/_trans -source it -target en -brief "' . $txt . '"';
+$res = `$cmd`;
+// toglie ' prima e dopo la traduzione
+$res = trim($res );
+$res = trim($res, "'");
+$res = ltrim($res, "'");
+$res = rtrim($res, "'");
+//
+echo $res;

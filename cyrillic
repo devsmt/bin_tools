@@ -1,0 +1,92 @@
+#!/usr/bin/env php
+<?php
+declare (strict_types = 1);
+require_once __DIR__ . '/lib/__init__.php';
+
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+//
+ini_set('html_errors', '0');
+error_reporting(-1); // E_ALL Report all PHP errors / E_ALL & ~E_NOTICE =>Report all errors except E_NOTICE
+ini_set('display_errors', '1'); // PROD shoul only log, not displaying achitecture informations
+//----------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------
+
+/**
+ * @param $string
+ *
+ * @return string only cyrillic letter
+ */
+function to_cyrillic(string $string): string{
+    return strtr($string, [
+        'a' => 'а', 'b' => 'б', 'v' => 'в', 'g' => 'г', 'd' => 'д', 'e' => 'е', 'yo' => 'ё',
+        'j' => 'ж', 'z' => 'з', 'ii' => 'и', 'ji' => 'й', 'k' => 'к',
+        'l' => 'л', 'm' => 'м', 'n' => 'н', 'o' => 'о', 'p' => 'п', 'r' => 'р', 's' => 'с', 't' => 'т',
+        'y' => 'у', 'f' => 'ф', 'h' => 'х', 'c' => 'ц',
+        'ch' => 'ч', 'sh' => 'ш', 'sch' => 'щ', 'ie' => 'ы', 'u' => 'у', 'ya' => 'я', 'A' => 'А', 'B' => 'Б',
+        'V' => 'В', 'G' => 'Г', 'D' => 'Д', 'E' => 'Е', 'Yo' => 'Ё', 'J' => 'Ж', 'Z' => 'З', 'I' => 'И', 'Ji' => 'Й',
+        'K' => 'К', 'L' => 'Л', 'M' => 'М',
+        'N' => 'Н', 'O' => 'О', 'P' => 'П',
+        'R' => 'Р', 'S' => 'С', 'T' => 'Т', 'Y' => 'Ю', 'F' => 'Ф', 'H' => 'Х', 'C' => 'Ц', 'Ch' => 'Ч', 'Sh' => 'Ш',
+        'Sch' => 'Щ', 'Ie' => 'Ы', 'U' => 'У', 'Ya' => 'Я', "'" => 'ь', "_'" => 'Ь', "''" => 'ъ', "_''" => 'Ъ',
+        'yi' => 'ї', 'ge' => 'ґ',
+        'ye' => 'є',
+        'Yi' => 'Ї',
+        'II' => 'І',
+        'Ge' => 'Ґ',
+        'YE' => 'Є',
+    ] );
+}
+
+/**
+ * @param $string
+ *
+ * @return string only latin letter
+function to_latin($string): string{
+$gost = [
+"а" => "a", "б" => "b", "в" => "v", "г" => "g", "д" => "d",
+"е" => "e", "ё" => "yo", "ж" => "j", "з" => "z", "и" => "ii",
+"й" => "ji", "к" => "k", "л" => "l", "м" => "m", "н" => "n",
+"о" => "o", "п" => "p", "р" => "r", "с" => "s", "т" => "t",
+"у" => "y", "ф" => "f", "х" => "h", "ц" => "c", "ч" => "ch",
+"ш" => "sh", "щ" => "sch", "ы" => "ie", "э" => "e", "ю" => "u",
+"я" => "ya",
+"А" => "A", "Б" => "B", "В" => "V", "Г" => "G", "Д" => "D",
+"Е" => "E", "Ё" => "Yo", "Ж" => "J", "З" => "Z", "И" => "I",
+"Й" => "Ji", "К" => "K", "Л" => "L", "М" => "M", "Н" => "N",
+"О" => "O", "П" => "P", "Р" => "R", "С" => "S", "Т" => "T",
+"У" => "Y", "Ф" => "F", "Х" => "H", "Ц" => "C", "Ч" => "Ch",
+"Ш" => "Sh", "Щ" => "Sch", "Ы" => "Ie", "Э" => "E", "Ю" => "U",
+"Я" => "Ya",
+"ь" => "'", "Ь" => "_'", "ъ" => "''", "Ъ" => "_''",
+"ї" => "yi",
+"і" => "ii",
+"ґ" => "ge",
+"є" => "ye",
+"Ї" => "Yi",
+"І" => "II",
+"Ґ" => "Ge",
+"Є" => "YE",
+];
+return strtr($string, $gost);
+}
+ */
+
+// main su argv[1]
+function main() {
+    global $argv;
+    $text = isset($argv[1]) ? $argv[1] : stream_get_contents(fopen('php://stdin', 'r'));
+
+    // $_1 = h_get($_SERVER['argv'], 1, '');
+
+    echo to_cyrillic($text) . "\n";
+    exit(0);
+}
+
+
+
+main();

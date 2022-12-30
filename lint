@@ -2,6 +2,14 @@
 <?php
 /*
 unified lint wrapper
+
+
+Code formatting: Prettier, dprint
+Linting: ESLint, Stylelint
+Test runner: Vitest, Jest, AVA
+Transpilers: Babel, SWC, TypeScript
+Bundlers: webpack, esbuild, Vite, SWC, Rollup, Parcel
+
  */
 declare (strict_types = 1);
 require_once __DIR__ . '/Utils.php';
@@ -17,7 +25,15 @@ $file_path = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr na
 if (empty($file_path)) {
     die('no file to lint.');
 }
-
+// testare che un programma sia installato
+$_check_bin = function ($binary) {
+    $r = `which $binary`;
+    if ('' == trim(strval($r))) {
+        echo ("--- $binary is not installed!\n");
+        return false;
+    }
+    return true;
+};
 if (!request_is_cli()) {
     die("usa questo comando da cli.");
 } else {
@@ -34,15 +50,7 @@ if (!request_is_cli()) {
         switch ($ext) {
         case 'php':
         case 'phtml':
-            // testare che un programma sia installato
-            $_check_bin = function ($binary) {
-                $r = `which $binary`;
-                if ('' == trim(strval($r))) {
-                    echo ("--- $binary is not installed!\n");
-                    return false;
-                }
-                return true;
-            };
+
             $a_v = ['php', 'php8.0', 'php7.4', 'php7.2', /*'php7.1',*/'php5.6'];
             foreach ($a_v as $binary) {
                 if ($_check_bin($binary)) {
@@ -55,10 +63,14 @@ if (!request_is_cli()) {
             }
             break;
         case 'ts':
+            # Create a configuration (optional)
+            # npx rome init
+            echo "EXPERIMENTAL /usr/bin/npx rome check $file_path " . "\n";
             $cmd = "/data/bin_tools/ts_lint $file_path";
             e($cmd);
             break;
         case 'js':
+            echo "EXPERIMENTAL /usr/bin/npx rome check $file_path " . "\n";
             // eslint may be a newer alternative
             $cmd = "/usr/local/bin/jshint -c '/data/bin_tools/jslint.rc' $file_path";
             // altro linter da provare

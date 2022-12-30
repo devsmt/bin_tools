@@ -1,0 +1,191 @@
+#!/usr/bin/env php
+<?php
+/*
+https://beta.openai.com/examples
+
+*/
+declare (strict_types = 1);
+require_once __DIR__ . '/lib/__init__.php';
+
+ini_set('register_argc_argv', '1');
+ini_set('max_execution_time', '0');
+ini_set('html_errors', '0');
+ini_set('implicit_flush', '0');
+ini_set('apc.enable_cli', '1');
+set_time_limit(0);
+//
+
+// main su argv[1]
+function main() {
+    $action = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : ''; // 0=>pgr name
+    if ($_SERVER['argc'] == 1) {
+        action_usage();
+    } else {
+        switch ($action) {
+        case 'write':
+            $spec = stream_get_contents(fopen('php://stdin', 'r'));
+            action_write($spec);
+            break;
+        // interactive
+        case 'in':
+            $spec = readline("Enter your spec: ");
+            action_write($spec);
+            break;
+        // todo: translate foreign code to php
+        // todo: translate php code to go or typescript or else
+        default:
+            action_usage();
+            break;
+        }
+    }
+    exit(0);
+}
+
+// funzione:
+const OPENAI_API_KEY = trim(file_get_contents(__DIR__."/../_openai_key"));
+final class openai {
+    //
+    public static function ask(string $spec): string{
+        $res = self::curl_cli($spec);
+        if (!empty($res)) {
+            $data = json_decode_safe($res);
+            if( isset( $data["choices"] ) ) {
+                $a_text = array_pluck($key = 'text', $data["choices"]);
+                $a_text = array_map(function (string $txt): string {
+                    return html_entity_decode($txt);
+                }, $a_text);
+            } else {
+                echo sprintf("<pre>%s() L:%s F:%s\n",__FUNCTION__,__LINE__,__FILE__),var_dump(
+                    $data
+                ),"</pre>\n";
+                die();
+
+            }
+
+            $res = implode($sep ="---\n\n", $a_text);
+        }
+        return $res;
+    }
+    // TODO:
+    // make the request using lib curl
+    public static function curl_cli(string $spec): string{
+        $OPENAI_API_KEY = OPENAI_API_KEY;
+        $json_payload = json_encode([
+            "model" => 'text-davinci-003',
+            "prompt" => (addslashes($spec)),
+            "temperature" => 0,
+            "max_tokens" => 2549,
+            "top_p" => 1,
+            "frequency_penalty" => 0,
+            "presence_penalty" => 0,
+            "stop" => ['"""'],
+        ]);
+        $url = 'https://api.openai.com/v1/completions';
+        $cmd = <<<__END__
+curl --silent $url \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${OPENAI_API_KEY}" \
+-d '$json_payload'
+__END__;
+        $res = shell_exec($cmd);
+        $res = trim($res);
+        return $res;
+    }
+    public static function curl_lib(string $spec): string{
+        $url = 'https://api.openai.com/v1/completions';
+
+        $querystring = ["max_tokens" => 2549, "temperature" => 0, "top_p" => 1];
+        $OPENAI_API_KEY = OPENAI_API_KEY;
+        $payload = ([
+            "model" => 'text-davinci-003',
+            "prompt" => $spec,
+            "temperature" => 0,
+            "max_tokens" => 2549,
+            "top_p" => 1,
+            "frequency_penalty" => 0,
+            "presence_penalty" => 0,
+            "stop" => ['"""'],
+        ]);
+        $headers = [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer ' . $OPENAI_API_KEY,
+            'cache-control: no-cache',
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+    }
+
+}
+function json_decode_safe(string $json_str): array{
+    $data = json_decode($json_str, $use_assoc = true, $depth = 512,
+        $json_opt = JSON_BIGINT_AS_STRING | JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        die("JSON decode error: " . json_last_error_msg() . "\n");
+    }
+    return $data;
+}
+// da RS ritorna Array<string>
+function array_pluck(string $key, array $data) :array {
+    return array_reduce($data, function ($result, $array) use ($key) {
+        if( isset($array[$key]) ) {
+            $result[] = $array[$key];
+        }
+        return $result;
+    }, []);
+}
+main();
+//-- actions --------------------------------------
+//
+function action_write($spec) {
+    echo openai::ask($spec);
+}
+function action_usage() {
+    echo "{$_SERVER['argv'][0]} [act1|act2] [param1]
+actions:
+    XXX = ...
+\n";
+}
+
+exit(0);
+
+# python example
+# import os
+# import openai
+#
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+#
+# response = openai.Completion.create(
+#   model='text-davinci-003',
+#   prompt="class Log:\n    def __init__(self, path):\n        dirname = os.path.dirname(path)\n        os.makedirs(dirname, exist_ok=True)\n        f = open(path, \"a+\")\n\n        # Check that the file is newline-terminated\n        size = os.path.getsize(path)\n        if size > 0:\n            f.seek(size - 1)\n            end = f.read(1)\n            if end != \"\\n\":\n                f.write(\"\\n\")\n        self.f = f\n        self.path = path\n\n    def log(self, event):\n        event[\"_event_id\"] = str(uuid.uuid4())\n        json.dump(event, self.f)\n        self.f.write(\"\\n\")\n\n    def state(self):\n        state = {\"complete\": set(), \"last\": None}\n        for line in open(self.path):\n            event = json.loads(line)\n            if event[\"type\"] == \"submit\" and event[\"success\"]:\n                state[\"complete\"].add(event[\"id\"])\n                state[\"last\"] = event\n        return state\n\n\"\"\"\nHere's what the above class is doing:\n1.",
+#   temperature=0,
+#   max_tokens=2549,
+#   top_p=1,
+#   frequency_penalty=0,
+#   presence_penalty=0,
+#   stop=["\"\"\""]
+# )
+
+/* curl example
+
+curl https://api.openai.com/v1/completions \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${OPENAI_API_KEY}" \
+-d '{
+"model": 'text-davinci-003',
+"prompt": "class Log:\n    def __init__(self, path):\n        dirname = os.path.dirname(path)\n        os.makedirs(dirname, exist_ok=True)\n        f = open(path, \"a+\")\n\n        # Check that the file is newline-terminated\n        size = os.path.getsize(path)\n        if size > 0:\n            f.seek(size - 1)\n            end = f.read(1)\n            if end != \"\\n\":\n                f.write(\"\\n\")\n        self.f = f\n        self.path = path\n\n    def log(self, event):\n        event[\"_event_id\"] = str(uuid.uuid4())\n        json.dump(event, self.f)\n        self.f.write(\"\\n\")\n\n    def state(self):\n        state = {\"complete\": set(), \"last\": None}\n        for line in open(self.path):\n            event = json.loads(line)\n            if event[\"type\"] == \"submit\" and event[\"success\"]:\n                state[\"complete\"].add(event[\"id\"])\n                state[\"last\"] = event\n        return state\n\n\"\"\"\nWhat the above class is doing:\n1.",
+"temperature": 0,
+"max_tokens": 2549,
+"top_p": 1,
+"frequency_penalty": 0,
+"presence_penalty": 0,
+"stop": ["\"\"\""]
+}'
+ */

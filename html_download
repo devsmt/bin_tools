@@ -28,9 +28,12 @@ function main() {
     // --silent
     // $cmd = "monolith -I --no-audio --no-fonts --no-frames --no-js --no-video $url  -o /tmp/{$filename}.html  ";
     // $cmd = "monolith -I $url  -o /tmp/{$filename}.html";
-    $cmd = "curl -L -s $url  --output /tmp/{$filename}.html ";
-    e($cmd);
     $file_path = "/tmp/{$filename}.html";
+
+
+    e($cmd="curl -L -s $url  --output $file_path ");
+    // download completo di immagini
+    e("monolith -acfFjkMv    $url > /tmp/{$filename}.mono.html");
 
     //
     // e("tidy  -indent  --indent-spaces 2  -quiet  --tidy-mark no  $file_path -o $file_path.clean");
@@ -40,8 +43,10 @@ function main() {
     e("pandoc -f html -t mediawiki -o $file_path.mw  +RTS -K7770000000 -RTS $file_path ");
     e("cat $file_path.mw | strip_tags > $file_path.stripped ");
     //
-    e("cat $file_path | pandoc --from html --to textile -o $file_path.textile ");
-    e("cat $file_path.textile | strip_tags > $file_path.textile.stripped ");
+    //e("cat $file_path | pandoc --from html --to textile -o $file_path.textile ");
+    e("cat $file_path | pandoc --from html --to markdown -o $file_path.md --strip-comments --no-highlight --ascii --self-contained");
+    //e("cat $file_path.textile | strip_tags > $file_path.textile.stripped ");
+    e("cat $file_path.md | strip_tags > $file_path.md.stripped ");
     // convert back
     // e("pandoc -thtml $file_path.mw");
     // e("pandoc -fmediawiki -thtml -o $file_path.2.html  $file_path.mw");
