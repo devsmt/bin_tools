@@ -548,6 +548,9 @@ $          -> Signifies the end of the line.
     'php_processing'=>'
         echo "test" | php /tmp/test.php
     ',
+    //----------------------------------------------------------------------------
+    //  docker
+    //----------------------------------------------------------------------------
     'docker'=>'
 # get the image from registry
 docker pull php
@@ -589,7 +592,57 @@ docker run -d httpd:2.4 # non espone la porta del container
 docker run -d -p 8088:80 httpd:2.4  # espone porta locale 8088 sul container 80
 docker-machine ip # ottiene Ip container, a cui puntare il browser, quindi http://192.168.99.100:8088
 @see dockerfile
+
+
+
+
+
+
 ',
+    'docker_help' => '
+    # Start the docker daemon
+    docker -d
+    # Get help with Docker. Can also use –help on all subcommands
+    docker --help
+    # Display system-wide information
+    docker info ',
+'docker_images' => '
+    # Build an Image from a Dockerfile
+    docker build -t <image_name>
+    # Build an Image from a Dockerfile without the cache
+    docker build -t <image_name> . –no-cache
+    # List local images
+    docker images
+    # Delete an Image
+    docker rmi <image_name>
+    # Remove all unused images
+    docker image prune
+    ',
+    'docker_container_manage' => '
+        # Create and run a container from an image, with a custom name:
+        docker run --name <container_name> <image_name>
+        # Run a container with and publish a container’s port(s) to the host.
+        docker run -p <host_port>:<container_port> <image_name>
+        #Run a container in the background
+        docker run -d <image_name>
+        # Start or stop an existing container:
+        docker start|stop <container_name> (or <container-id>)
+        # Remove a stopped container:
+        docker rm <container_name>
+        # Open a shell inside a running container (i:interactive t:tty):
+        docker exec -it <container_name> sh
+        # Fetch and follow the logs of a container:
+        docker logs -f <container_name>
+        # To inspect a running container:
+        docker inspect <container_name> (or <container_id>)
+        # To list currently running containers:
+        docker ps
+        # List all docker containers (running and stopped):
+        docker ps --all
+        docker ps -a
+        # View resource usage stats
+        docker container stats ',
+
     'dockerfile'=>'
 # Create a new file named Dockerfile in the root folder of project and then put the following contents:
 FROM php:7.0-apache   # which image should be used as base of the new image

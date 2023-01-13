@@ -42,7 +42,9 @@ function main() {
 }
 
 // funzione:
-const OPENAI_API_KEY = trim(file_get_contents(__DIR__."/../_openai_key"));
+$key = file_get_contents(__DIR__."/../_openai_key.txt");
+$key = trim($key);
+define('OPENAI_API_KEY' , $key ); 
 final class openai {
     //
     public static function ask(string $spec): string{
